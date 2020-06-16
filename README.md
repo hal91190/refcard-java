@@ -1,6 +1,8 @@
-# Template pour un projet Java
-Ce projet propose un modèle pour démarrer des projets Java.
-Son usage nécessite bien sûr l'installation préalable du [JDK](http://www.oracle.com/technetwork/java/javase/downloads/index.html).
+# Aide-mémoire pour le langage Java
+Ce projet contient un aide-mémoire pour le langage Java au format [Asciidoctor](https://asciidoctor.org/).
+Il est disponible à l'adresse [https://hal91190.github.io/refcard-java/](https://hal91190.github.io/refcard-java/).
+Il est accompagné d'un ensemble de codes sources illustrant les différents aspects du langage.
+L'usage des exemples nécessite bien sûr l'installation préalable du [JDK](https://adoptopenjdk.net/).
 
 ## Compiler le projet
 Le projet se compile en utilisant [gradle](https://gradle.org/).
@@ -15,27 +17,13 @@ Sous Windows
 > gradlew.bat build
 ```
 
+L'aide-mémoire se trouve dans le répertoire ...
+
 ## Éxécuter l'application
-1. Décompresser l'une des archives zip ou tar se trouvant dans le répertoire ``build/distributions``.
-1. Lancer l'application.
 
-Sous Linux
+## Générer l'aide-mémoire
+L'aide-mémoire est généré dans le répertoire `build/docs/asciidoc/`.
+
 ```bash
-$ tpl-java/bin/tpl-java
+$ ./gradlew asciidoctor
 ```
-
-Sous Windows
-```
-> tpl-java/bin/tpl-java.bat
-```
-
-## Créer un projet à partir du template
-1. Changer le nom du projet dans
-  * ``settings.gradle.kts``
-  * ``build.gradle.kts`` (nom du package de la classe principale)
-  * ``src/main/java/fr/uvsq/poo/tpljava`` (nom du package)
-  * ``src/main/java/fr/uvsq/poo/tpljava/Application.java`` (nom du package)
-  * ``src/test/java/fr/uvsq/poo/tpljava`` (nom du package)
-  * ``src/test/java/fr/uvsq/poo/tpljava/ApplicationTest.java`` (nom du package)
-1. Modifier le README.md
-
