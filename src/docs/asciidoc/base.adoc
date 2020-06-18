@@ -1,48 +1,183 @@
-= A level-1 (section) title
+= Notions de base
+ifndef::masterdoc[]
+include::meta.adoc[]
+include::attributes.adoc[]
+endif::masterdoc[]
 
-== A level-2 (slide) title
-* Avec un https://en.wikipedia.org/wiki/Compiled_language[_langage compilé_], le code source du programme est transformé en _code machine_ par le _compilateur_
-* Dans un https://en.wikipedia.org/wiki/Interpreted_language[_langage interprété_], le code source du programme est exécuté "à la volée" par l'_interpréteur_
-* Certains langages sont à la fois compilés et interprétés
-* Il existe des approches intermédiaires (compilation _Just In Time_ (JIT))
+== Syntaxe
+* Java possède une syntaxe proche du C
+** se retrouve à tous les niveaux (commentaires, types, opérateurs, ...)
+** chaque instruction se termine par un `;`
+** Java différencie majuscules et minuscules
+* Commentaires
+`/* ... */`:: le texte entre `/*` et `*/` est ignoré
+`// ...`:: le texte jusqu'à la fin de la ligne est ignoré
 
-== Another level-2 (slide) title
-.Compilation séparée (produit `util.o` et `main.o`)
+== Types primitifs
+Un _type primitif_ est un type de base du langage, i.e. non défini par l'utilisateur.
 
-[source,bash,indent=0]
+IMPORTANT: *En Java, les valeurs de ces types ne sont pas des objets*.
+
+`boolean`:: `true` ou `false`
+`byte`:: entier signé sur 8 bits (-128 à 127)
+`short`:: entier signé sur 16 bits (-32768 à 32767)
+`int`:: entier signé sur 32 bits (-2^31^ à 2^31^-1)
+`long`:: entier signé sur 64 bits (-2^63^ à 2^63^-1)
+`float`:: nombre en virgule flottante simple précision (32 bits IEEE 754)
+`double`:: nombre en virgule flottante double précision (64 bits IEEE 754)
+`char`:: caractère Unicode sur 16 bits de `\u0000` à `\uffff`
+
+== Littéraux
+Un _littéral_ est la représentation dans le code source d'une valeur d'un type.
+
+Entiers:: `123` de type `int`, `123L` de type `long`, `0x123F` en hexadécimal, `0b101` en binaire (depuis Java SE 7)
+Flottants:: `1.23E-4` de type `double`, `1.23E-4F` de type `float`
+Booléens:: `true` ou `false`
+Caractères:: `'a'`, `'\t'` ou `'\u0000'`
+Chaînes:: `"texte"`
+IMPORTANT: le type chaîne de caractères n'est pas un type primitif : les chaînes de caractères sont des instances de la classe https://docs.oracle.com/en/java/javase/14/docs/api/java.base/java/lang/String.html[`java.lang.String`]
+Null:: `null` (valeur des références non initialisées)
+
+.Remarques
+* Depuis Java SE 7, il est possible d'inclure le caractère `_` dans les littéraux numériques pour en améliorer la lisibilité
+
+== Variables
+Une _variable_ permet d'associer un nom (identifiant) à une valeur.
+
+En Java, la valeur peut être directement la valeur d'un type primitif ou une _référence_.
+
+.Exemples de déclarations et initialisations de variables
+[source,java,indent=0]
 ----
-$ gcc -c util.c
-$ gcc -c main.c
+include::{tstdir}/base/BaseTest.java[tag=base-var-decl]
 ----
 
-.Édition de liens (produit `monprog`)
+== Références 1/2
+* Les variables de type tableau, énumération, objet ou interface sont en fait des _références_
+* La valeur d'une telle variable est une _référence vers_ (_l'adresse de_) une donnée
+* Dans d'autres langages, une référence est appelée _pointeur_ ou _adresse mémoire_
+* En Java, la différence réside dans le fait qu'on ne manipule pas directement l'adresse mémoire: le nom de la variable est utilisé à la place
+** pas d'arithmétique des pointeurs en Java
+** les références assurent une meilleure sécurité (moins d'erreurs de programmation)
+* L'association (l'affectation) d'une donnée à une variable _lie_ l'identificateur et la donnée
 
-[source,bash,indent=0]
+== Références 2/2
+image::reference.png[]
+
+== Référence vs. pointeur
+* Dans les deux cas, ce sont des variables (ou des constantes) dont la valeur (le contenu) est une adresse mémoire
+* Un pointeur est un concept de bas-niveau permettant une manipulation précise de l'adresse (arithmétique des pointeurs, pointeur de fonction, ...)
+* Une référence est une _abstraction_ de plus haut niveau qui fournit une interface plus simple mais plus limitée pour manipuler l'adresse
+
+== Gestion de la mémoire dans la JVM
+* Les variables locales (types primitifs et références vers des objets du tas) sont créées sur la pile (_stack_)
+* Lors de la création d'un object, la mémoire est allouée dans une zone mémoire appelée le _tas_ (_heap_)
+* La libération de la mémoire est automatique et gérée par le _ramasse-miette_ (_garbage collector_)
+** le GC s'exécute lorque certaines conditions sont réunies
+* Certains paramètres de la JVM permettent de contrôler le GC et les zones mémoires (`-mx`|`-Xmx`, `-XX:+UseParallelGC`, ...)
+
+== Tableaux
+* Un _tableau_ est une structure de données regroupant plusieurs valeurs de même type
+* La taille d'un tableau est déterminée lors de sa création (à l'exécution)
+* La taille d'un tableau ne varie pas par la suite
+* Un tableau peut contenir des références
+** tableau d'objets ou tableau de tableaux
+** permet de créer des tableaux à plusieurs dimensions
+
+.http://docs.oracle.com/javase/tutorial/java/nutsandbolts/arrays.html[The Java Tutorials: Arrays]
+image::array.png[]
+
+== Déclaration et création de tableaux
+* La déclaration d'une variable de type tableau se fait en ajoutant `[]` au type des éléments
+
+[source,java,indent=0]
 ----
-$ gcc -o monprog main.o util.o
+int[] unTableau;
+----
+* La création du tableau se fait en utilisant l'opérateur `new` suivi du type des éléments du tableau et de sa taille entre `[]`
+
+[source,java,indent=0]
+----
+new int[10];
+----
+* La référence retournée par `new` peut être liée à une variable
+
+[source,java,indent=0]
+----
+int[] unTableau = new int[10];
+----
+* Il est possible de créer et d'initialiser un tableau en une seule étape
+
+[source,java,indent=0]
+----
+int[] unTableau = { 1, 5, 10 };
 ----
 
-.`monprog` est exécutable
+== Manipulation de tableaux
+* L'accès aux éléments d'un tableau se fait en utilisant le nom du tableau suivi de l'indice entre `[]` (exemple: `unTableau[2]`)
+* La taille d'un tableau peut être obtenue en utilisant la propriété `length` (exemple: `unTableau.length`)
+* La méthode de classe `arraycopy` de `System` permet de copier efficacement un tableau
 
-[source,bash,indent=0]
+== Tableaux et références 1/6
+[source,java,indent=0]
 ----
-$ ./monprog
+int[] unTableau = new int[10];
 ----
 
-== How to use tables with Asciidoctor
+image::tabref1.png[]
 
-[options="header"]
-|===
-| Langage | Implémentation | Scripts | Typage | Paradigme | Mémoire
+== Tableaux et références 2/6
+[source,java,indent=0]
+----
+int[] unTableau = new int[10];
+int[] leMemeTableau = unTableau;
+----
 
-| C | Compilé | Non | explicite, statique | procédural | manuelle
+image::tabref2.png[]
 
-| Java | Compilé, interprété | Non | explicite, statique | OO, fonc., générique | auto
+== Tableaux et références 3/6
+[source,java,indent=0]
+----
+int[] unTableau = new int[10];
+int[] leMemeTableau = unTableau;
+leMemeTableau[0] = 12;
+----
 
-| PHP | Interprété | Oui | implicite, dynamique | proc., OO | auto
+image::tabref3.png[]
 
-| Python | Compilé, Interprété | Oui | implicite, dynamique | proc., OO, fonc. | auto
+== Tableaux et références 4/6
+[source,java,indent=0]
+----
+int[] unTableau = new int[10];
+int[] leMemeTableau = unTableau;
+leMemeTableau[0] = 12;
+int[] unAutreTableau = new int[5];
+----
 
-| Scala | Compilé, interprété | Oui | implicite, statique | OO, fonc., générique | auto
+image::tabref4.png[]
 
-|===
+== Tableaux et références 5/6
+[source,java,indent=0]
+----
+int[] unTableau = new int[10];
+int[] leMemeTableau = unTableau;
+leMemeTableau[0] = 12;
+int[] unAutreTableau = new int[5];
+leMemeTableau = unAutreTableau;
+----
+
+image::tabref5.png[]
+
+== Tableaux et références 6/6
+[source,java,indent=0]
+----
+int[] unTableau = new int[10];
+int[] leMemeTableau = unTableau;
+leMemeTableau[0] = 12;
+int[] unAutreTableau = new int[5];
+leMemeTableau = unAutreTableau;
+leMemeTableau[0] = 21;
+----
+
+image::tabref6.png[]
+

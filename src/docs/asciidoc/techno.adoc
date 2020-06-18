@@ -1,0 +1,82 @@
+= Langage Java
+ifndef::masterdoc[]
+include::meta.adoc[]
+include::attributes.adoc[]
+endif::masterdoc[]
+
+== Java Runtime Environment
+* Le _Java Runtime Environment_ (JRE) fournit la _machine virtuelle Java_, les bibliothèques et d'autres composants nécessaires pour l'exécution de programmes Java
+* Le lanceur d'application (`java`) est l'outil ligne de commande permettant l'exécution de programme Java
+
+== Java Development Kit
+* Le _Java Development Kit_ (JDK) fournit le JRE ainsi qu'un ensemble d'outils pour le développement d'applications
+* L'outil `javac` est le compilateur en ligne de commande
+
+NOTE: Plus d'informations : http://docs.oracle.com/javase/8/docs/technotes/guides/[Java Platform Overview]
+
+== Compilation et interprétation
+* Le langage Java est à la fois _interprété_ et _compilé_
+* Un fichier source (`.java`) est compilé en un langage intermédiaire appelé _bytecode_ (`.class`)
+* Ce bytecode est ensuite interprété par la _machine virtuelle Java_
+
+//TODO faire un schéma pour la compilation et l'exécution
+
+== Compilation en ligne de commande (JDK)
+.Le compilateur https://docs.oracle.com/en/java/javase/14/docs/specs/man/javac.html[`javac`] génère le _bytecode_ en ligne de commande.
+[source,bash,indent=0]
+----
+$ javac <options> <fichiers source>
+----
+
+.Quelques options importantes
+`--class-path`|`-classpath`|`-cp`:: fixe le chemin de recherche des classes compilées (_Classpath_)
+`-d`:: fixe le répertoire de destination pour les classes compilées
+`-encoding`:: précise l'encodage des fichiers sources ("UTF-8", ...)
+`-g`|`-g:none`:: gère les informations pour le débogage
+`--source`|`-source`:: précise la version des fichiers sources (`8`, ..., `11`, ...)
+`-sourcepath`:: fixe le chemin de recherche des sources
+`--target`|`-target`:: précise la version de la VM cible (`8`, ..., `11`, ...)
+
+.Compilation séparant les sources des fichiers compilés
+[source,bash,indent=0]
+----
+$ javac -sourcepath src \ #<1>
+        -source 11 \ #<2>
+        -d classes \ #<3>
+        -classpath classes \ #<4>
+        -g \ #<5>
+        src/MonApplication.java #<6>
+----
+<1> les sources se trouvent dans le répertoire `src`
+<2> les fichiers sources sont conformes à la version 11 de Java
+<3> les fichiers compilés `.class` doivent être placés dans le répertoire `classes`
+<4> le réperoire `classes` est ajouté au _Classpath_
+<5> les informations de débogage sont intégrées
+<6> le programme principal se trouve dans `src/MonApplication.java`
+
+== Exécution en ligne de commande (JRE)
+.https://docs.oracle.com/en/java/javase/14/docs/specs/man/java.html[`java`] permet d'exécuter le programme
+[source,bash,indent=0]
+----
+$ java [-options] class [args...]
+$ java [-options] -jar jarfile [args...]
+----
+
+.Quelques options importantes
+`class`:: le nom de la classe contenant le programme principal (le `.class` doit pouvoir être trouvé dans le _CLASSPATH_)
+`--class-path`|`-classpath`|`-cp`:: fixe le chemin de recherche des classes compilées
+`-jar`:: exécute un programme encapsulé dans un fichier `jar`
+
+.Exécution}
+[source,bash,indent=0]
+----
+$ java -cp classes \ #<1>
+       MonApplication #<2>
+----
+<1> ajoute le répertoire `classes` au_CLASSPATH_
+<2> l'exécution débutera par la méthode `main` de la classe `MonApplication`
+
+== _Classpath_
+* Le _Classpath_ précise la liste des bibliothèques ou des classes compilées utilisées par l'environnement Java
+* Le compilateur et la machine virtuelle ont besoin d'avoir accès aux classes compilées
+* Il peut être défini en ligne de commande ou par la variable d'environnement `CLASSPATH`

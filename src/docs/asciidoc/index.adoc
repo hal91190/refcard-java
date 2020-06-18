@@ -1,0 +1,18 @@
+= Aide-mémoire Java
+include::meta.adoc[]
+:doctype: book
+:toc: left
+:toc-title: Sommaire
+:sectanchors:
+:sectlinks:
+:sectnums:
+:masterdoc: // les sections sont intégrées dans un document maître
+include::attributes.adoc[]
+
+:leveloffset: +1
+
+include::techno.adoc[]
+
+include::base.adoc[]
+
+:leveloffset: -1

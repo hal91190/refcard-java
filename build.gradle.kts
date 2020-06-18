@@ -33,7 +33,8 @@ dependencies {
 tasks {
     "asciidoctor"(org.asciidoctor.gradle.jvm.AsciidoctorTask::class) {
         sources(delegateClosureOf<PatternSet> {
-            include("base.adoc")
+            include("index.adoc", "techno.adoc", "base.adoc")
         })
+        baseDirFollowsSourceDir()
     }
 }

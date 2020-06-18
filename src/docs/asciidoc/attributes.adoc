@@ -1,0 +1,5 @@
+:stem:
+:icons: font
+:srcdir: ../../main/java/fr/uvsq/refcardjava
+:tstdir: ../../test/java/fr/uvsq/refcardjava
+:source-highlighter: coderay
