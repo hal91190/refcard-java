@@ -52,7 +52,7 @@ En Java, la valeur peut être directement la valeur d'un type primitif ou une _r
 include::{tstdir}/base/BaseTest.java[tag=base-var-decl]
 ----
 
-== Références 1/2
+== Références
 * Les variables de type tableau, énumération, objet ou interface sont en fait des _références_
 * La valeur d'une telle variable est une _référence vers_ (_l'adresse de_) une donnée
 * Dans d'autres langages, une référence est appelée _pointeur_ ou _adresse mémoire_
@@ -61,17 +61,20 @@ include::{tstdir}/base/BaseTest.java[tag=base-var-decl]
 ** les références assurent une meilleure sécurité (moins d'erreurs de programmation)
 * L'association (l'affectation) d'une donnée à une variable _lie_ l'identificateur et la donnée
 
-== Références 2/2
-image::reference.png[]
-
-== Référence vs. pointeur
-* Dans les deux cas, ce sont des variables (ou des constantes) dont la valeur (le contenu) est une adresse mémoire
-* Un pointeur est un concept de bas-niveau permettant une manipulation précise de l'adresse (arithmétique des pointeurs, pointeur de fonction, ...)
-* Une référence est une _abstraction_ de plus haut niveau qui fournit une interface plus simple mais plus limitée pour manipuler l'adresse
+.Une référence contient un pointeur vers un objet
+[ditaa, "java-reference",svg]
+----
+ unObjet
+ +-----+    /------\
+ |     +--->|cGRE  |
+ +-----+    |      |
+            |      |
+            \------/
+----
 
 == Gestion de la mémoire dans la JVM
 * Les variables locales (types primitifs et références vers des objets du tas) sont créées sur la pile (_stack_)
-* Lors de la création d'un object, la mémoire est allouée dans une zone mémoire appelée le _tas_ (_heap_)
+* Lors de la création d'un objet, la mémoire est allouée dans une zone mémoire appelée le _tas_ (_heap_)
 * La libération de la mémoire est automatique et gérée par le _ramasse-miette_ (_garbage collector_)
 ** le GC s'exécute lorque certaines conditions sont réunies
 * Certains paramètres de la JVM permettent de contrôler le GC et les zones mémoires (`-mx`|`-Xmx`, `-XX:+UseParallelGC`, ...)
@@ -85,99 +88,53 @@ image::reference.png[]
 ** permet de créer des tableaux à plusieurs dimensions
 
 .http://docs.oracle.com/javase/tutorial/java/nutsandbolts/arrays.html[The Java Tutorials: Arrays]
-image::array.png[]
+image::https://docs.oracle.com/javase/tutorial/figures/java/objects-tenElementArray.gif[Un tableau en Java]
 
-== Déclaration et création de tableaux
+=== Déclaration et création de tableaux
 * La déclaration d'une variable de type tableau se fait en ajoutant `[]` au type des éléments
-
++
+WARNING: une déclaration n'alloue pas de mémoire mais juste une référence
++
 [source,java,indent=0]
 ----
 int[] unTableau;
 ----
-* La création du tableau se fait en utilisant l'opérateur `new` suivi du type des éléments du tableau et de sa taille entre `[]`
 
+* La création du tableau se fait en utilisant l'opérateur `new` suivi du type des éléments du tableau et de sa taille entre `[]`
++
 [source,java,indent=0]
 ----
 new int[10];
 ----
-* La référence retournée par `new` peut être liée à une variable
 
+* La référence retournée par `new` peut être liée à une variable
++
 [source,java,indent=0]
 ----
 int[] unTableau = new int[10];
 ----
-* Il est possible de créer et d'initialiser un tableau en une seule étape
 
+* Il est possible de créer et d'initialiser un tableau en une seule étape
++
 [source,java,indent=0]
 ----
 int[] unTableau = { 1, 5, 10 };
 ----
 
-== Manipulation de tableaux
+=== Manipulation de tableaux
 * L'accès aux éléments d'un tableau se fait en utilisant le nom du tableau suivi de l'indice entre `[]` (exemple: `unTableau[2]`)
 * La taille d'un tableau peut être obtenue en utilisant la propriété `length` (exemple: `unTableau.length`)
 * La méthode de classe `arraycopy` de `System` permet de copier efficacement un tableau
 
-== Tableaux et références 1/6
+.Exemples de manipulations de tableaux
 [source,java,indent=0]
 ----
-int[] unTableau = new int[10];
+include::{tstdir}/base/ArrayTest.java[tag=base-arrays]
 ----
-
-image::tabref1.png[]
-
-== Tableaux et références 2/6
-[source,java,indent=0]
-----
-int[] unTableau = new int[10];
-int[] leMemeTableau = unTableau;
-----
-
-image::tabref2.png[]
-
-== Tableaux et références 3/6
-[source,java,indent=0]
-----
-int[] unTableau = new int[10];
-int[] leMemeTableau = unTableau;
-leMemeTableau[0] = 12;
-----
-
-image::tabref3.png[]
-
-== Tableaux et références 4/6
-[source,java,indent=0]
-----
-int[] unTableau = new int[10];
-int[] leMemeTableau = unTableau;
-leMemeTableau[0] = 12;
-int[] unAutreTableau = new int[5];
-----
-
-image::tabref4.png[]
-
-== Tableaux et références 5/6
-[source,java,indent=0]
-----
-int[] unTableau = new int[10];
-int[] leMemeTableau = unTableau;
-leMemeTableau[0] = 12;
-int[] unAutreTableau = new int[5];
-leMemeTableau = unAutreTableau;
-----
-
-image::tabref5.png[]
-
-== Tableaux et références 6/6
-[source,java,indent=0]
-----
-int[] unTableau = new int[10];
-int[] leMemeTableau = unTableau;
-leMemeTableau[0] = 12;
-int[] unAutreTableau = new int[5];
-leMemeTableau = unAutreTableau;
-leMemeTableau[0] = 21;
-----
-
-image::tabref6.png[]
+<1> les tableaux `arrayOfFiveZeros` et `anArray` contiennent les mêmes éléments mais ne sont pas identiques, i.e. ils ne référencent pas le même objet
+<2> les tableaux `anArray` et `theSameArray` sont identiques, i.e. ils référencent le même objet
+<3> comme `anArray` et `theSameArray` sont identiques, la modification est visible par l'intermédiaire des deux références
+<4> même cas que 1
+<5> `theSameArray` référence maintenant `anotherArray` donc `theSameArray` et `anotherArray` sont identiques mais `theSameArray` et `anArray` ne le sont plus
+<6> comme `theSameArray` et `anotherArray` sont identiques, la modification est visible par l'intermédiaire des deux références mais `anArray` n'a pas été modifié
 
