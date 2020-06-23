@@ -19,7 +19,14 @@ NOTE: Plus d'informations : http://docs.oracle.com/javase/8/docs/technotes/guide
 * Un fichier source (`.java`) est compilé en un langage intermédiaire appelé _bytecode_ (`.class`)
 * Ce bytecode est ensuite interprété par la _machine virtuelle Java_
 
-//TODO faire un schéma pour la compilation et l'exécution
+[ditaa, "java-compil-exec",svg]
+----
+ +-----------+    +-------------+    +-----------+    +------------+    +-----------+
+ |           |    | Compilateur |    |           |    | Machine    |    | Exécution |
+ | Prog.java |--->| (javac)     |--->| Prog.class|--->| Virtuelle  |--->| de Prog   |
+ |        {d}|    | cYEL        |    |        {d}|    | (java) cBLU|    |           |
+ +-----------+    +-------------+    +-----------+    +------------+    +-----------+
+----
 
 == Compilation en ligne de commande (JDK)
 .Le compilateur https://docs.oracle.com/en/java/javase/14/docs/specs/man/javac.html[`javac`] génère le _bytecode_ en ligne de commande.

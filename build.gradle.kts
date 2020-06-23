@@ -10,6 +10,8 @@ plugins {
 
 val javaVersion = JavaVersion.VERSION_11
 val jUnitVersion = "5.6.2"
+val asciidoctorJVersion = "2.3.1"
+val asciidoctorDiagramVersion = "2.0.2"
 
 configure<JavaPluginConvention> {
     sourceCompatibility = javaVersion
@@ -32,9 +34,15 @@ dependencies {
 
 tasks {
     "asciidoctor"(org.asciidoctor.gradle.jvm.AsciidoctorTask::class) {
+        version = asciidoctorJVersion
         sources(delegateClosureOf<PatternSet> {
             include("index.adoc", "techno.adoc", "base.adoc")
         })
         baseDirFollowsSourceDir()
     }
+}
+
+asciidoctorj {
+    modules.diagram.version(asciidoctorJVersion)
+    modules.diagram.use()
 }
