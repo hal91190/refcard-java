@@ -8,11 +8,13 @@ endif::masterdoc[]
 * Le _Java Runtime Environment_ (JRE) fournit la _machine virtuelle Java_, les bibliothèques et d'autres composants nécessaires pour l'exécution de programmes Java
 * Le lanceur d'application (`java`) est l'outil ligne de commande permettant l'exécution de programme Java
 
+NOTE: https://docs.oracle.com/javase/specs/index.html[Java Language and Virtual Machine Specifications]
+
 == Java Development Kit
 * Le _Java Development Kit_ (JDK) fournit le JRE ainsi qu'un ensemble d'outils pour le développement d'applications
 * L'outil `javac` est le compilateur en ligne de commande
 
-NOTE: Plus d'informations : http://docs.oracle.com/javase/8/docs/technotes/guides/[Java Platform Overview]
+NOTE: https://docs.oracle.com/en/java/javase/14/docs/specs/man/index.html[JDK Tool Specifications]
 
 == Compilation et interprétation
 * Le langage Java est à la fois _interprété_ et _compilé_
@@ -27,6 +29,8 @@ NOTE: Plus d'informations : http://docs.oracle.com/javase/8/docs/technotes/guide
  |        {d}|    | cYEL        |    |        {d}|    | (java) cBLU|    |           |
  +-----------+    +-------------+    +-----------+    +------------+    +-----------+
 ----
+
+NOTE: https://docs.oracle.com/javase/tutorial/getStarted/intro/definition.html[About the Java Technology]
 
 == Compilation en ligne de commande (JDK)
 .Le compilateur https://docs.oracle.com/en/java/javase/14/docs/specs/man/javac.html[`javac`] génère le _bytecode_ en ligne de commande.
@@ -61,6 +65,8 @@ $ javac -sourcepath src \ #<1>
 <5> les informations de débogage sont intégrées
 <6> le programme principal se trouve dans `src/MonApplication.java`
 
+NOTE: https://docs.oracle.com/en/java/javase/14/docs/specs/man/javac.html[The javac Command]
+
 == Exécution en ligne de commande (JRE)
 .https://docs.oracle.com/en/java/javase/14/docs/specs/man/java.html[`java`] permet d'exécuter le programme
 [source,bash,indent=0]
@@ -83,7 +89,11 @@ $ java -cp classes \ #<1>
 <1> ajoute le répertoire `classes` au_CLASSPATH_
 <2> l'exécution débutera par la méthode `main` de la classe `MonApplication`
 
+NOTE: https://docs.oracle.com/en/java/javase/14/docs/specs/man/java.html[The java Command]
+
 == _Classpath_
 * Le _Classpath_ précise la liste des bibliothèques ou des classes compilées utilisées par l'environnement Java
 * Le compilateur et la machine virtuelle ont besoin d'avoir accès aux classes compilées
 * Il peut être défini en ligne de commande ou par la variable d'environnement `CLASSPATH`
+
+NOTE: https://docs.oracle.com/javase/tutorial/essential/environment/paths.html[PATH and CLASSPATH] et https://docs.oracle.com/javase/specs/jls/se14/html/jls-12.html[Execution]

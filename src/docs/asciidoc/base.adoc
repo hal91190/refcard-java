@@ -13,6 +13,8 @@ endif::masterdoc[]
 `/* ... */`:: le texte entre `/*` et `*/` est ignoré
 `// ...`:: le texte jusqu'à la fin de la ligne est ignoré
 
+NOTE: https://docs.oracle.com/javase/specs/jls/se14/html/jls-3.html[Lexical Structure]
+
 == Types primitifs
 Un _type primitif_ est un type de base du langage, i.e. non défini par l'utilisateur.
 
@@ -26,6 +28,8 @@ IMPORTANT: *En Java, les valeurs de ces types ne sont pas des objets*.
 `float`:: nombre en virgule flottante simple précision (32 bits IEEE 754)
 `double`:: nombre en virgule flottante double précision (64 bits IEEE 754)
 `char`:: caractère Unicode sur 16 bits de `\u0000` à `\uffff`
+
+NOTE: https://docs.oracle.com/javase/specs/jls/se14/html/jls-4.html#jls-4.2[Primitive Types and Values]
 
 == Littéraux
 Un _littéral_ est la représentation dans le code source d'une valeur d'un type.
@@ -41,6 +45,8 @@ Null:: `null` (valeur des références non initialisées)
 .Remarques
 * Depuis Java SE 7, il est possible d'inclure le caractère `_` dans les littéraux numériques pour en améliorer la lisibilité
 
+NOTE: https://docs.oracle.com/javase/specs/jls/se14/html/jls-3.html#jls-3.10[Literals]
+
 == Variables
 Une _variable_ permet d'associer un nom (identifiant) à une valeur.
 
@@ -51,6 +57,8 @@ En Java, la valeur peut être directement la valeur d'un type primitif ou une _r
 ----
 include::{tstdir}/base/BaseTest.java[tag=base-var-decl]
 ----
+
+NOTE: https://docs.oracle.com/javase/specs/jls/se14/html/jls-4.html#jls-4.12[Variables]
 
 == Références
 * Les variables de type tableau, énumération, objet ou interface sont en fait des _références_
@@ -72,12 +80,16 @@ include::{tstdir}/base/BaseTest.java[tag=base-var-decl]
             \------/
 ----
 
+NOTE: https://docs.oracle.com/javase/specs/jls/se14/html/jls-4.html#jls-4.3[Reference Types and Values]
+
 == Gestion de la mémoire dans la JVM
 * Les variables locales (types primitifs et références vers des objets du tas) sont créées sur la pile (_stack_)
 * Lors de la création d'un objet, la mémoire est allouée dans une zone mémoire appelée le _tas_ (_heap_)
 * La libération de la mémoire est automatique et gérée par le _ramasse-miette_ (_garbage collector_)
 ** le GC s'exécute lorque certaines conditions sont réunies
 * Certains paramètres de la JVM permettent de contrôler le GC et les zones mémoires (`-mx`|`-Xmx`, `-XX:+UseParallelGC`, ...)
+
+NOTE: https://docs.oracle.com/en/java/javase/14/gctuning/[HotSpot Virtual Machine Garbage Collection Tuning Guide]
 
 == Tableaux
 * Un _tableau_ est une structure de données regroupant plusieurs valeurs de même type
@@ -89,6 +101,8 @@ include::{tstdir}/base/BaseTest.java[tag=base-var-decl]
 
 .http://docs.oracle.com/javase/tutorial/java/nutsandbolts/arrays.html[The Java Tutorials: Arrays]
 image::https://docs.oracle.com/javase/tutorial/figures/java/objects-tenElementArray.gif[Un tableau en Java]
+
+NOTE: https://docs.oracle.com/javase/specs/jls/se14/html/jls-10.html[Arrays]
 
 === Déclaration et création de tableaux
 * La déclaration d'une variable de type tableau se fait en ajoutant `[]` au type des éléments
@@ -138,3 +152,5 @@ include::{tstdir}/base/ArrayTest.java[tag=base-arrays]
 <5> `theSameArray` référence maintenant `anotherArray` donc `theSameArray` et `anotherArray` sont identiques mais `theSameArray` et `anArray` ne le sont plus
 <6> comme `theSameArray` et `anotherArray` sont identiques, la modification est visible par l'intermédiaire des deux références mais `anArray` n'a pas été modifié
 
+== Expressions, instructions et blocs
+NOTE: https://docs.oracle.com/javase/tutorial/java/nutsandbolts/operators.html[Operators], https://docs.oracle.com/javase/tutorial/java/nutsandbolts/expressions.html[Expressions, Statements, and Blocks], https://docs.oracle.com/javase/tutorial/java/nutsandbolts/flow.html[Control Flow Statements], https://docs.oracle.com/javase/specs/jls/se14/html/jls-15.html[Expressions], https://docs.oracle.com/javase/specs/jls/se14/html/jls-14.html[Blocks and Statements]
