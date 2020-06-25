@@ -92,43 +92,8 @@ https://docs.oracle.com/en/java/javase/14/docs/api/java.base/java/lang/StringBui
 include::{tstdir}/classes/StringTest.java[tag=class-string-exemple]
 ----
 
-= Caractéristiques d'une classe
-== Catégories de méthodes
-Accesseur:: permet de consulter l'état d'un objet
-Mutateur:: modifie l'état d'un objet (doit préserver l'invariant)
-Constructeur:: initialise un objet afin de le placer dans un état cohérent
-Destructeur:: libère les ressources allouées par l'objet
-
-== Surcharge de méthode
-* La _surcharge_ (ou _polymorphisme ad hoc_) d'une méthode consiste à définir plusieurs méthodes de même nom mais ayant des signatures différentes
-* Une opération n'est donc plus simplement identifiée par son nom mais également par le nombre, l'ordre et le type de ses arguments
-* Le choix de la méthode est résolu lors de la compilation
-
-[example]
-====
-* La surcharge est souvent utilisée pour définir plusieurs constructeurs de façon à initialiser les objets de différentes manières
-* Une alternative plus souple consiste à appliquer un modèle de conception http://fr.wikipedia.org/wiki/Fabrique_\%28patron_de_conception\%29[Fabrique] (_Factory_)
-====
-
-== Accès aux membres
-* Une classe peut contrôler l'accès à ses membres (données ou fonctions)
-
-privé:: accès limité à la classe
-protégé:: accès limité à la classe et à ses sous-classes
-module:: accès limité au module (_package_) contenant la classe
-public:: accès non limité
-
-== Invariant de classe
-IMPORTANT: l'_invariant d'une classe_ impose une contrainte sur l'état des instances de la classe. Chaque objet doit respecter les conditions imposées par l'invariant.
-
-* L'invariant est établi lors de la création d'une instance
-* Il doit être vérifié avant l'exécution d'une opération publique
-* Chaque opération publique doit rétablir l'invariant avant de se terminer
-* L'invariant peut être violé temporairement lors de l'exécution d'une opération
-* Avec un langage de programmation, l'invariant peut être exprimé avec des assertions ou avec une construction spécifique
-
-= Les classes en Java
-== Définir une classe
+== Les classes en Java
+=== Définition d'une classe
 NOTE: La _définition_ d'une classe comporte deux parties: la _déclaration_ et le _corps_ de la classe
 
 [source,java,indent=0]
@@ -136,7 +101,7 @@ NOTE: La _définition_ d'une classe comporte deux parties: la _déclaration_ et 
 /**
  * Un bref commentaire.
  * Un commentaire plus détaillé...
- * @version janv. 2017
+ * @version juin 2020
  * @author Prénom NOM
  */
 class NomClasse { // Déclaration de la classe
@@ -146,9 +111,9 @@ class NomClasse { // Déclaration de la classe
 * La déclaration précise au compilateur un certain nombre d'informations sur la classe (son nom, ...)
 * Le corps de la classe contient les attributs et les méthodes (les _membres_) de la classe
 
-== Déclarer des attributs
+=== Déclarer des attributs
 * La déclaration d'un attribut spécifie son nom et son type
-
++
 [source,java,indent=0]
 ----
 /** Description de l'attribut. */
@@ -156,29 +121,26 @@ Type nom;
 /** Description de l'attribut. */
 final Type nom;
 ----
-
-* *L'initialisation des attributs se fait dans un constructeur*
+* L'initialisation des attributs peut se faire
+    lors de la déclaration,
+    dans le constructeur, ou
+    dans un bloc d'initialisation d'instance (_instance initialization block_)
 * `final` est optionnel et permet de déclarer un attribut qui ne pourra être affecté qu'une unique fois
 //TODO : revoir la discussion sur final (http://mindprod.com/jgloss/final.html)
 
-== Pseudo-attribut `this`
+=== Pseudo-attribut `this`
 * Chaque classe possède un attribut privé particulier nommé `this` qui référence l'objet courant
-* Cette attribut est maintenu par le système et ne peut pas être modifié par le programmeur
+* Cet attribut est maintenu par le système et ne peut pas être modifié par le programmeur
 * `this` n'est accessible que dans le corps de la classe
-* Usage
+* Il est utilisé pour
 ** passer l'objet courant en paramètre d'une méthode (`unObjet.uneMethode(this)`)
 ** lever certaines ambiguïtés à propos des membres (`this.centre = centre`)
 ** invoquer un autre constructeur dans un constructeur (`this(centre, 1)`)
 
-== Exemple : les attributs d'un cercle
-[source,java,indent=0]
-----
-include::{java-sourcedir}/classes/Cercle2D.java[tag=cercle-attr]
-----
-
-== Définir des méthodes
-* La _définition_ d'une méthode comporte deux parties: la _déclaration_ et le _corps_ (l'_implémentation_) de la méthode
-
+=== Définir des méthodes
+* La _définition_ d'une méthode comporte deux parties :
+    la _déclaration_ et le _corps_ (l'_implémentation_) de la méthode
++
 [source,java,indent=0]
 ----
 /**
@@ -192,13 +154,11 @@ TypeRetour nomMethode(listeDeParametres) { // Déclaration
   // Corps de la méthode
 }
 ----
-
 * `TypeRetour` est le type de la valeur retournée ou `void` si aucune valeur n'est retournée
 * Dans le corps de la méthode, on utilise l'opérateur `return` pour renvoyer une valeur
 * Un constructeur a le même nom que sa classe et ne possède pas de type de retour
-** bien que l'on puisse initialiser les attributs directement (affection lors de leur déclaration ou bloc d'initialisation), il est préférable de toujours le faire dans le constructeur (plus de souplesse, initialisations à un seul endroit)
 
-== Paramètres de méthode
+=== Paramètres de méthode
 * `listeDeParamètres` est une liste de déclarations de variables séparées par des virgules
 ** un paramètre peut être vu comme une variable locale à la méthode
 ** `final` peut préfixer la déclaration si le paramètre ne doit pas être modifié
@@ -206,26 +166,8 @@ TypeRetour nomMethode(listeDeParametres) { // Déclaration
 ** la valeur d'un paramètre d'un type primitif ne peut pas être modifiée
 ** la valeur d'une référence ne peut pas être modifiée mais l'objet référencé peut l'être (comme avec un pointeur en C)
 
-== Exemple : les constructeurs de la classe `Cercle2D`
-[source,java,indent=0]
-----
-include::{java-sourcedir}/classes/Cercle2D.java[tag=cercle-cons]
-----
-
-== Exemple : les accesseurs de la classe `Cercle2D`
-[source,java,indent=0]
-----
-include::{java-sourcedir}/classes/Cercle2D.java[tag=cercle-access]
-----
-
-== Exemple : le mutateur de la classe `Cercle2D`
-[source,java,indent=0]
-----
-include::{java-sourcedir}/classes/Cercle2D.java[tag=cercle-mut]
-----
-
-== Contrôle d'accès aux membres en Java
-* Le contrôle de l'accès aux membres permet de spécifier l'interface d'un classe
+== Contrôle d'accès aux membres
+* Le contrôle de l'accès aux membres permet de contrôler l'interface d'une classe
 * Le niveau d'accès est précisé en ajoutant un mot-clé devant la déclaration du membre (attribut ou méthode)
 * Il peut prendre l'une des valeurs `private, public, protected` ou être absent
 
@@ -239,45 +181,19 @@ aucun,X,X,,
 ,===
 
 * La restriction d'accès s'applique au niveau de la classe et non pas de l'objet
-* *Les attributs sont déclarés `private`* pour respecter l'encapsulation
 
-ifdef::masterdoc[]
-== La classe `Cercle2D` dans son ensemble
+== Un exemple de classe pour des nombres complexes
+WARNING: Cet exemple est volontairement simplifié et sera étoffé par la suite.
+Une http://commons.apache.org/proper/commons-math/userguide/complex.html[classe complexe] plus complète peut être trouvée dans la bibliothèque http://commons.apache.org/proper/commons-math/[Apache Commons Math].
+
+.Définition de `Complex`
 [source,java,indent=0]
 ----
-include::{java-sourcedir}/classes/Cercle2D.java[]
+include::{srcdir}/classes/Complex.java[]
 ----
-endif::masterdoc[]
 
-== Exercice : manipulation d'objets et définition de classes
-Pour cet exercice, on reprendra les spécifications obtenues lors de l'exercice précédent.
-
-* Soit le terrain suivant (M = mur, R = robot, N = nord, O = ouest).
-
-[ditaa]
-....
-+--+--+--+
-|RN|  |M |
-+--+--+--+
-|M |  |RO|
-+--+--+--+
-....
-
-. Écrire les instructions Java permettant de créer ce terrain puis de déplacer le robot (0, 0) en (1, 1).
-. Écrire en Java la classe `Robot`.
-
-ifndef::masterdoc[]
-== Exercice (solutions) : déplacement du robot
+.Utilisation de la classe `Complex`
 [source,java,indent=0]
 ----
-include::{robot-sourcedir}/step1/RobotApplication.java[tag=robot-app]
+include::{tstdir}/classes/ComplexTest.java[]
 ----
-
-== Exercice (solutions) : Classe `Robot`
-[source,java,indent=0]
-----
-include::{robot-sourcedir}/step1/Robot.java[tag=robot-step1]
-----
-endif::masterdoc[]
-
-
