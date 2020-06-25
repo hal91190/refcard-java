@@ -15,4 +15,6 @@ include::techno.adoc[]
 
 include::base.adoc[]
 
+include::class.adoc[]
+
 :leveloffset: -1

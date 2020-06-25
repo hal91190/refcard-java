@@ -1,0 +1,283 @@
+= Objets et classes
+ifndef::masterdoc[]
+include::meta.adoc[]
+include::attributes.adoc[]
+endif::masterdoc[]
+
+== Les objets en Java
+=== Création d'objets
+* Un objet est créé à partir d'une classe en utilisant le mot-clé `new`
+* L'utilisation de `new` provoque la réservation de mémoire pour l'objet et l'invocation du _constructeur_ qui initialise l'objet
+* L'invocation de `new` retourne une référence sur l'objet créé
+* Cette référence doit être affectée (liée) à une variable pour permettre l'accès à l'objet
+
+=== Déclaration et affectation
+* La syntaxe pour la déclaration d'une variable est `type nom`
++
+WARNING: *la déclaration ne crée pas d'objet* mais uniquement une référence. La variable est donc invalide tant qu'elle n'est pas liée à un objet (_null reference_)
+* Une affectation va lier une variable à un objet `variable = objet`
+* Il est possible de lier la variable lors de sa déclaration (_initialisation_)
+* Il est conseillé de toujours initialiser une variable lors de sa déclaration (si possible)
+
+.Exemple de déclarations et d'instanciation de chaînes de caractères
+[source,java,indent=0]
+----
+include::{tstdir}/classes/StringTest.java[tag=class-string-decl]
+----
+
+=== Accès aux attributs et aux méthodes
+* L'accès aux attributs d'un objet est possible
+** simplement avec le nom de l'attribut dans la classe où il est défini
+** en qualifiant/préfixant avec une référence sur l'objet
+* L'invocation d'une méthode utilise la même syntaxe que pour les attributs suivie de la liste des paramètres
+* L'accès dépend du niveau de contrôle d'accès utilisé lors de la déclaration
+
+.Exemple de manipulation de chaînes de caractères
+[source,java,indent=0]
+----
+include::{tstdir}/classes/StringTest.java[tag=class-string-manip]
+----
+
+=== Destruction
+* Quand un objet n'est plus utilisé, il doit être retiré de la mémoire
+* La destruction des objets en Java est automatique
+** l'environnement d'exécution de Java supprime les objets lorsqu'il détermine qu'ils ne sont plus utilisés
+** un objet est éligible pour la destruction quand plus aucune référence n'est liée à lui
+* Ce processus de suppression s'appelle _garbage collector_
+* Avant de détruire l'objet, la méthode `protected void finalize()` de l'objet est invoquée
+** utilisée pour restituer les ressources allouées par l'objet
+** `finalize` est membre de la classe `Object`
+** `super.finalize()` doit être appelé à la fin de la méthode
+
+=== Les chaînes de caractères en Java
+* Java fournit trois classes pour les chaînes de caractères:
+    https://docs.oracle.com/en/java/javase/14/docs/api/java.base/java/lang/String.html[`String`],
+    https://docs.oracle.com/en/java/javase/14/docs/api/java.base/java/lang/StringBuffer.html[`StringBuffer`] et
+https://docs.oracle.com/en/java/javase/14/docs/api/java.base/java/lang/StringBuilder.html[`StringBuilder`]
+* `String` est dédiée aux chaînes de caractères immuables, i.e. dont la valeur ne change pas
+* `StringBuilder` est dédiée aux chaînes de caractères pouvant être modifiées (contexte _mono-thread_)
+* `StringBuffer` est dédiée aux chaînes de caractères pouvant être modifiées (contexte _multi-threads_)
+
+.Création d'une chaîne (`String`)
+* Une instance de `String` représente une chaîne au format UTF-16
+* Une chaîne est souvent créée à partir d'un littéral (une suite de caractères entre guillemets)
+** quand Java rencontre un littéral de type chaîne, il crée un objet de type `String` dont la valeur est le littéral
+* Une chaîne peut aussi être créée en utilisant l'un des constructeurs de `String`
+
+.Quelques accesseurs de `String`
+`length()`:: taille de la chaîne,
+`charAt(int)`:: caractère à l'indice spécifié,
+`substring(int, int)`:: extraction d'une sous-chaîne,
+`indexOf(...)`, `lastIndexOf(...)`:: recherche dans la chaîne
+
+.Compléments sur `String`
+* *Un littéral chaîne peut être utilisé à tout endroit où un objet `String` peut l'être*
+** on peut invoquer des méthodes de `String` sur un littéral chaîne
+* L'opérateur `+` permet de concaténer des objets de type `String`
+** c'est le seul opérateur surchargé pour un objet en Java
+* Une chaîne peut être utilisée avec l'instruction `switch`
+
+.Les classes `StringBuilder` et `StringBuffer`
+* Les instances disposent à peu prés des mêmes accesseurs que `String`
+* Quelques mutateurs:
+`append(...)`:: ajout de caractères
+`delete(...)`:: suppression de caractères
+`insert(...)`:: insertion de caractères
+* `StringBuilder` est optimisée pour un environnement _mono-thread_
+* `StringBuffer` est à utiliser dans un contexte _multi-threads_
+
+.Utilisation de `String` et de `StringBuilder`
+[source,java,indent=0]
+----
+include::{tstdir}/classes/StringTest.java[tag=class-string-exemple]
+----
+
+= Caractéristiques d'une classe
+== Catégories de méthodes
+Accesseur:: permet de consulter l'état d'un objet
+Mutateur:: modifie l'état d'un objet (doit préserver l'invariant)
+Constructeur:: initialise un objet afin de le placer dans un état cohérent
+Destructeur:: libère les ressources allouées par l'objet
+
+== Surcharge de méthode
+* La _surcharge_ (ou _polymorphisme ad hoc_) d'une méthode consiste à définir plusieurs méthodes de même nom mais ayant des signatures différentes
+* Une opération n'est donc plus simplement identifiée par son nom mais également par le nombre, l'ordre et le type de ses arguments
+* Le choix de la méthode est résolu lors de la compilation
+
+[example]
+====
+* La surcharge est souvent utilisée pour définir plusieurs constructeurs de façon à initialiser les objets de différentes manières
+* Une alternative plus souple consiste à appliquer un modèle de conception http://fr.wikipedia.org/wiki/Fabrique_\%28patron_de_conception\%29[Fabrique] (_Factory_)
+====
+
+== Accès aux membres
+* Une classe peut contrôler l'accès à ses membres (données ou fonctions)
+
+privé:: accès limité à la classe
+protégé:: accès limité à la classe et à ses sous-classes
+module:: accès limité au module (_package_) contenant la classe
+public:: accès non limité
+
+== Invariant de classe
+IMPORTANT: l'_invariant d'une classe_ impose une contrainte sur l'état des instances de la classe. Chaque objet doit respecter les conditions imposées par l'invariant.
+
+* L'invariant est établi lors de la création d'une instance
+* Il doit être vérifié avant l'exécution d'une opération publique
+* Chaque opération publique doit rétablir l'invariant avant de se terminer
+* L'invariant peut être violé temporairement lors de l'exécution d'une opération
+* Avec un langage de programmation, l'invariant peut être exprimé avec des assertions ou avec une construction spécifique
+
+= Les classes en Java
+== Définir une classe
+NOTE: La _définition_ d'une classe comporte deux parties: la _déclaration_ et le _corps_ de la classe
+
+[source,java,indent=0]
+----
+/**
+ * Un bref commentaire.
+ * Un commentaire plus détaillé...
+ * @version janv. 2017
+ * @author Prénom NOM
+ */
+class NomClasse { // Déclaration de la classe
+  // Corps de la classe
+}
+----
+* La déclaration précise au compilateur un certain nombre d'informations sur la classe (son nom, ...)
+* Le corps de la classe contient les attributs et les méthodes (les _membres_) de la classe
+
+== Déclarer des attributs
+* La déclaration d'un attribut spécifie son nom et son type
+
+[source,java,indent=0]
+----
+/** Description de l'attribut. */
+Type nom;
+/** Description de l'attribut. */
+final Type nom;
+----
+
+* *L'initialisation des attributs se fait dans un constructeur*
+* `final` est optionnel et permet de déclarer un attribut qui ne pourra être affecté qu'une unique fois
+//TODO : revoir la discussion sur final (http://mindprod.com/jgloss/final.html)
+
+== Pseudo-attribut `this`
+* Chaque classe possède un attribut privé particulier nommé `this` qui référence l'objet courant
+* Cette attribut est maintenu par le système et ne peut pas être modifié par le programmeur
+* `this` n'est accessible que dans le corps de la classe
+* Usage
+** passer l'objet courant en paramètre d'une méthode (`unObjet.uneMethode(this)`)
+** lever certaines ambiguïtés à propos des membres (`this.centre = centre`)
+** invoquer un autre constructeur dans un constructeur (`this(centre, 1)`)
+
+== Exemple : les attributs d'un cercle
+[source,java,indent=0]
+----
+include::{java-sourcedir}/classes/Cercle2D.java[tag=cercle-attr]
+----
+
+== Définir des méthodes
+* La _définition_ d'une méthode comporte deux parties: la _déclaration_ et le _corps_ (l'_implémentation_) de la méthode
+
+[source,java,indent=0]
+----
+/**
+ * Brêve description de la méthode.
+ * Une description plus longue...
+ * @param param1 description du paramêtre
+ * @param ...
+ * @return description de la valeur de retour
+ */
+TypeRetour nomMethode(listeDeParametres) { // Déclaration
+  // Corps de la méthode
+}
+----
+
+* `TypeRetour` est le type de la valeur retournée ou `void` si aucune valeur n'est retournée
+* Dans le corps de la méthode, on utilise l'opérateur `return` pour renvoyer une valeur
+* Un constructeur a le même nom que sa classe et ne possède pas de type de retour
+** bien que l'on puisse initialiser les attributs directement (affection lors de leur déclaration ou bloc d'initialisation), il est préférable de toujours le faire dans le constructeur (plus de souplesse, initialisations à un seul endroit)
+
+== Paramètres de méthode
+* `listeDeParamètres` est une liste de déclarations de variables séparées par des virgules
+** un paramètre peut être vu comme une variable locale à la méthode
+** `final` peut préfixer la déclaration si le paramètre ne doit pas être modifié
+* Le passage de paramètres se fait _par valeur_
+** la valeur d'un paramètre d'un type primitif ne peut pas être modifiée
+** la valeur d'une référence ne peut pas être modifiée mais l'objet référencé peut l'être (comme avec un pointeur en C)
+
+== Exemple : les constructeurs de la classe `Cercle2D`
+[source,java,indent=0]
+----
+include::{java-sourcedir}/classes/Cercle2D.java[tag=cercle-cons]
+----
+
+== Exemple : les accesseurs de la classe `Cercle2D`
+[source,java,indent=0]
+----
+include::{java-sourcedir}/classes/Cercle2D.java[tag=cercle-access]
+----
+
+== Exemple : le mutateur de la classe `Cercle2D`
+[source,java,indent=0]
+----
+include::{java-sourcedir}/classes/Cercle2D.java[tag=cercle-mut]
+----
+
+== Contrôle d'accès aux membres en Java
+* Le contrôle de l'accès aux membres permet de spécifier l'interface d'un classe
+* Le niveau d'accès est précisé en ajoutant un mot-clé devant la déclaration du membre (attribut ou méthode)
+* Il peut prendre l'une des valeurs `private, public, protected` ou être absent
+
+,===
+Niveau,Classe,Module,Sous-classe,Extérieur
+
+`private`,X,,,
+aucun,X,X,,
+`protected`,X,X,X,
+`public`,X,X,X,X
+,===
+
+* La restriction d'accès s'applique au niveau de la classe et non pas de l'objet
+* *Les attributs sont déclarés `private`* pour respecter l'encapsulation
+
+ifdef::masterdoc[]
+== La classe `Cercle2D` dans son ensemble
+[source,java,indent=0]
+----
+include::{java-sourcedir}/classes/Cercle2D.java[]
+----
+endif::masterdoc[]
+
+== Exercice : manipulation d'objets et définition de classes
+Pour cet exercice, on reprendra les spécifications obtenues lors de l'exercice précédent.
+
+* Soit le terrain suivant (M = mur, R = robot, N = nord, O = ouest).
+
+[ditaa]
+....
++--+--+--+
+|RN|  |M |
++--+--+--+
+|M |  |RO|
++--+--+--+
+....
+
+. Écrire les instructions Java permettant de créer ce terrain puis de déplacer le robot (0, 0) en (1, 1).
+. Écrire en Java la classe `Robot`.
+
+ifndef::masterdoc[]
+== Exercice (solutions) : déplacement du robot
+[source,java,indent=0]
+----
+include::{robot-sourcedir}/step1/RobotApplication.java[tag=robot-app]
+----
+
+== Exercice (solutions) : Classe `Robot`
+[source,java,indent=0]
+----
+include::{robot-sourcedir}/step1/Robot.java[tag=robot-step1]
+----
+endif::masterdoc[]
+
+
