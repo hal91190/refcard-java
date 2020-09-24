@@ -48,9 +48,8 @@ Null:: `null` (valeur des références non initialisées)
 NOTE: https://docs.oracle.com/javase/specs/jls/se14/html/jls-3.html#jls-3.10[Literals]
 
 == Variables
-Une _variable_ permet d'associer un nom (identifiant) à une valeur.
-
-En Java, la valeur peut être directement la valeur d'un type primitif ou une _référence_.
+* Une _variable_ permet d'associer un nom (identifiant) à une valeur.
+* En Java, la valeur peut être directement la valeur d'un type primitif ou une _référence_.
 
 .Exemples de déclarations et initialisations de variables pour des types primitifs
 [source,java,indent=0]
@@ -93,11 +92,10 @@ NOTE: https://docs.oracle.com/en/java/javase/14/gctuning/[HotSpot Virtual Machin
 
 == Tableaux
 * Un _tableau_ est une structure de données regroupant plusieurs valeurs de même type
-* La taille d'un tableau est déterminée lors de sa création (à l'exécution)
-* La taille d'un tableau ne varie pas par la suite
+* La taille d'un tableau est déterminée lors de sa création (à l'exécution) et ne varie pas par la suite
 * Un tableau peut contenir des références
 ** tableau d'objets ou tableau de tableaux
-** permet de créer des tableaux à plusieurs dimensions
+** permet de simuler des tableaux à plusieurs dimensions
 
 .http://docs.oracle.com/javase/tutorial/java/nutsandbolts/arrays.html[The Java Tutorials: Arrays]
 image::https://docs.oracle.com/javase/tutorial/figures/java/objects-tenElementArray.gif[Un tableau en Java]
@@ -107,27 +105,24 @@ NOTE: https://docs.oracle.com/javase/specs/jls/se14/html/jls-10.html[Arrays]
 === Déclaration et création de tableaux
 * La déclaration d'une variable de type tableau se fait en ajoutant `[]` au type des éléments
 +
-WARNING: une déclaration n'alloue pas de mémoire mais juste une référence
-+
 [source,java,indent=0]
 ----
 int[] unTableau;
 ----
-
++
+IMPORTANT: une déclaration n'alloue pas de mémoire mais juste une référence
 * La création du tableau se fait en utilisant l'opérateur `new` suivi du type des éléments du tableau et de sa taille entre `[]`
 +
 [source,java,indent=0]
 ----
 new int[10];
 ----
-
 * La référence retournée par `new` peut être liée à une variable
 +
 [source,java,indent=0]
 ----
 int[] unTableau = new int[10];
 ----
-
 * Il est possible de créer et d'initialiser un tableau en une seule étape
 +
 [source,java,indent=0]
@@ -153,4 +148,9 @@ include::{tstdir}/base/ArrayTest.java[tag=base-arrays]
 <6> comme `theSameArray` et `anotherArray` sont identiques, la modification est visible par l'intermédiaire des deux références mais `anArray` n'a pas été modifié
 
 == Expressions, instructions et blocs
-NOTE: https://docs.oracle.com/javase/tutorial/java/nutsandbolts/operators.html[Operators], https://docs.oracle.com/javase/tutorial/java/nutsandbolts/expressions.html[Expressions, Statements, and Blocks], https://docs.oracle.com/javase/tutorial/java/nutsandbolts/flow.html[Control Flow Statements], https://docs.oracle.com/javase/specs/jls/se14/html/jls-15.html[Expressions], https://docs.oracle.com/javase/specs/jls/se14/html/jls-14.html[Blocks and Statements]
+//TODO à compléter
+NOTE: https://docs.oracle.com/javase/tutorial/java/nutsandbolts/operators.html[Operators],
+https://docs.oracle.com/javase/tutorial/java/nutsandbolts/expressions.html[Expressions, Statements, and Blocks],
+https://docs.oracle.com/javase/tutorial/java/nutsandbolts/flow.html[Control Flow Statements],
+https://docs.oracle.com/javase/specs/jls/se14/html/jls-15.html[Expressions],
+https://docs.oracle.com/javase/specs/jls/se14/html/jls-14.html[Blocks and Statements]
