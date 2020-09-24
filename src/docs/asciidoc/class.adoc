@@ -280,3 +280,89 @@ Cette approche possède plusieurs avantages :
 
 === Interface
 //TODO à compléter
+
+== Généricité
+* La _généricité_ permet de paramétrer une classe par un ou plusieurs paramètres formels (généralement des types)
+* La généricité permet de définir une famille de classes, chaque classe étant instanciée lors du passage des paramètres effectifs
+* Il peut être souhaitable de limiter les paramètres possibles, la généricité est alors _contrainte_
+* Cette notion est orthogonale au paradigme objet : on parle de _programmation générique_
+* En Java, les _paramètres formels de type_ sont placés entre "`<`" et "`>`"
+* Un paramètre effectif est obligatoirement une classe (pas un type primitif)
+* Le mécanisme implémentant la généricité en Java se nomme _Type erasure_
+** Ce mécanisme supprime toute trace de la généricité dans le bytecode => il n'existe pas d'information concernant la généricité à l'exécution
+
+=== Classe générique
+* Les _paramètres formels de type_ sont placés entre "`<`" et "`>`" juste après le nom de la classe
++
+[source,java,indent=0]
+----
+class Complex<T> {
+  //...
+}
+----
+* Le paramètre de type peut ensuite être utilisé comme tout autre type dans la définition de la classe
+** sans contrainte précisée sur le type, aucune méthode ne peut être appelée sur une instance de ce type (impossible de vérifier statiquement)
+* La déclaration d'une variable de ce type nécessite de passer le type effectif à la classe paramétrée
++
+[source,java,indent=0]
+----
+Complex<Float> c = //...
+----
+* La création d'une instance ne nécessite pas de répèter le type effectif (_diamond notation_)
++
+[source,java,indent=0]
+----
+Complex<Float> c = new Complex<>(/* ... */);
+----
+
+.Définition de la classe générique `Complex`
+[source,java,indent=0]
+----
+include::{srcdir}/classes/GenericComplex.java[]
+----
+
+.Utilisation de la classe générique `Complex`
+[source,java,indent=0]
+----
+include::{tstdir}/classes/GenericComplexTest.java[]
+----
+
+=== Méthode générique en Java
+* Une _méthode générique_ possède un type formel entre "`<`" et "`>`" placé en début de déclaration
++
+[source,java,indent=0]
+----
+public static <T> T max(T o1, T o2) // ...
+----
+* La portée de ce paramètre est alors restreinte à la méthode
+* L'invocation de la méthode peut préciser le type effectif ou se baser sur l'_inférence de type_
++
+[source,java,indent=0]
+----
+// Type effectif explicite
+Integer i = uneClasse.<Integer>max(i1, i2);
+
+// Type effectif déterminé par inférence de type
+Integer i = uneClasse.max(i1, i2);
+----
+
+=== Généricité contrainte en Java
+* Il est possible d'imposer que le paramètre de type formel soit un sous-type d'un autre type avec le mot-clé `extends`
++
+[source,java,indent=0]
+----
+public static <T extends Number> T max(T o1, T o2) // ...
+----
+* Le mot-clé `super` permet d'imposer que le paramètre de type formel soit un super-type d'un autre type (exemple : `<T super Number>`)
+* Il peut être nécessaire d'utiliser le caractère _joker_ `?` si le type effectif n'est pas connu
++
+[source,java,indent=0]
+----
+// Une boite qui peut contenir des nombres
+Boite<? extends Number> b = //...
+
+// Un boite qui peut contenir n'importe quoi
+Boite<?> b = //...
+----
+
+NOTE: En complément : https://docs.oracle.com/javase/tutorial/java/generics/wildcardGuidelines.html[The Java Tutorials - Guidelines for Wildcard Use]
