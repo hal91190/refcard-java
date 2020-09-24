@@ -4,16 +4,25 @@ include::meta.adoc[]
 include::attributes.adoc[]
 endif::masterdoc[]
 
-== Java Runtime Environment
-* Le _Java Runtime Environment_ (JRE) fournit la _machine virtuelle Java_, les bibliothèques et d'autres composants nécessaires pour l'exécution de programmes Java
-* Le lanceur d'application (`java`) est l'outil ligne de commande permettant l'exécution de programme Java
+== Le langage Java
+* Le https://fr.wikipedia.org/wiki/Java_(langage)[langage Java] est un langage de programmation orienté objet développé chez https://fr.wikipedia.org/wiki/Sun_Microsystems[Sun Microsystems] (racheté par Oracle en 2009) et lancé officiellement en 1995
++
+NOTE: http://www.oracle.com/technetwork/java/langenv-140151.html[The Java Language Environment: A White Paper], James Gosling, 1996.
+* https://docs.oracle.com/en/java/index.html[Différents versions] du langage sont disponibles
+** _Java SE_ pour les postes de travail,
+** _Java EE_ pour les serveurs, et
+** _Java Embedded_ pour les terminaux à ressources contraintes.
++
+NOTE: Cet aide-mémoire se focalise sur Java SE
+* Depuis 2006, le code source de Java est _libre_ et _open source_ et l'implémentation de référence se nomme https://openjdk.java.net/[OpenJDK]
+* Depuis 2019 et suite à un changement de licence et de modèle de support opéré par Oracle, plusieurs distributions du JDK sont apparues (https://adoptopenjdk.net/[AdoptOpenJDK], https://aws.amazon.com/fr/corretto/[Amazon Corretto], https://www.graalvm.org/[GraalVM], https://www.azul.com/downloads/zulu-community/[Zulu OpenJDK])
 
+== JRE et JDK
+* Le _Java Runtime Environment_ (JRE) fournit la _machine virtuelle Java_, les bibliothèques et d'autres composants nécessaires pour l'*exécution* de programmes Java
++
 NOTE: https://docs.oracle.com/javase/specs/index.html[Java Language and Virtual Machine Specifications]
-
-== Java Development Kit
 * Le _Java Development Kit_ (JDK) fournit le JRE ainsi qu'un ensemble d'outils pour le développement d'applications
-* L'outil `javac` est le compilateur en ligne de commande
-
++
 NOTE: https://docs.oracle.com/en/java/javase/14/docs/specs/man/index.html[JDK Tool Specifications]
 
 == Compilation et interprétation
@@ -97,3 +106,24 @@ NOTE: https://docs.oracle.com/en/java/javase/14/docs/specs/man/java.html[The jav
 * Il peut être défini en ligne de commande ou par la variable d'environnement `CLASSPATH`
 
 NOTE: https://docs.oracle.com/javase/tutorial/essential/environment/paths.html[PATH and CLASSPATH] et https://docs.oracle.com/javase/specs/jls/se14/html/jls-12.html[Execution]
+
+== Webographie
+* https://docs.oracle.com/en/java/javase/index.html[Java Platform, Standard Edition Documentation]
+* https://docs.oracle.com/en/java/javase/15/docs/api/index.html[Java API]
+* http://docs.oracle.com/javase/tutorial/[_The Java Tutorials_]
+* Aide-mémoire :
+https://dzone.com/asset/download/51834[Core Java],
+https://www.azul.com/files/12992683-dzone-refcard318-java13-v2.pdf[Java 13],
+https://www.azul.com/files/13301143-dzone-refcard-318-java-14-v2.pdf[Java 14]
+* https://blog.jetbrains.com/?s=Java+Annotated+Monthly[Java Annotated Monthly] (blog)
+
+== Bibliographie
+=== Apprentissage
+* *David J. Barnes & Michael Kölling*. http://www.bluej.org/objects-first/[_Objects First with Java_].  Pearson. 2016.
+* *Marc Loy, Patrick Niemeyer, Daniel Leuck*, https://www.oreilly.com/library/view/learning-java-5th/9781492056263/[Learning Java: An Introduction to Real-world Programming With Java]. O'Reilly Media. 2020.
+
+=== Perfectionnement
+* *Joshua Bloch*. _Effective Java 3rd Edition_. Addison-Wesley Professional. 2017.
+* *Kevlin Henney & Trisha Gee*, https://www.oreilly.com/library/view/97-things-every/9781491952689/[97 Things Every Java Programmer Should Know]. 2020.
+* *Joshua Bloch & Neal Gafter*. http://www.javapuzzlers.com/[_Java Puzzlers_].  Addison-Wesley. 2005.
+* *Cay S. Horstmann & Gary Cornell*, https://horstmann.com/corejava/index.html[Core Java]. Prentice Hall. 2015.
