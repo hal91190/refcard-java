@@ -107,6 +107,12 @@ NOTE: https://docs.oracle.com/en/java/javase/14/docs/specs/man/java.html[The jav
 
 NOTE: https://docs.oracle.com/javase/tutorial/essential/environment/paths.html[PATH and CLASSPATH] et https://docs.oracle.com/javase/specs/jls/se14/html/jls-12.html[Execution]
 
+== Les indispensables pour développer en Java
+* Adopter un _style de codage_ comme le https://google.github.io/styleguide/javaguide.html[Google Java Style Guide] et vérifier les violations avec https://checkstyle.sourceforge.io/[Checkstyle]
+* Utiliser un _système de gestion de versions_ (https://git-scm.com/[git]) et une _forge logicielle_ (https://github.com/[github], https://bitbucket.org/[bitbucket], https://gitlab.com/[gitlab])
+* Faire des _tests unitaires_ (https://junit.org/junit5/[JUnit])
+* Automatiser les tâches répétitives (https://maven.apache.org/[Maven], https://gradle.org/[Gradle])
+
 == Webographie
 * https://docs.oracle.com/en/java/javase/index.html[Java Platform, Standard Edition Documentation]
 * https://docs.oracle.com/en/java/javase/15/docs/api/index.html[Java API]
