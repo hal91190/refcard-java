@@ -8,7 +8,7 @@ package fr.uvsq.refcardjava.classes;
  */
 public class ComplexWithCounter {
   /** Le nomdre de complexe */
-  static long complexCounter = 0L;
+  private static long complexCounter = 0L;
   /** La partie réelle du nombre. */
   private final double real;
   /** La partie imaginaire du nombre. */

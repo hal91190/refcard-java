@@ -7,17 +7,22 @@ endif::masterdoc[]
 == Les objets en Java
 === Création d'objets
 * Un objet est créé à partir d'une classe en utilisant le mot-clé `new`
-* L'utilisation de `new` provoque la réservation de mémoire pour l'objet et l'invocation du _constructeur_ qui initialise l'objet
-* L'invocation de `new` retourne une référence sur l'objet créé
+* L'invocation de `new`
+** provoque la réservation de mémoire pour l'objet,
+** invoque le _constructeur_ qui initialise l'objet, et
+** retourne une référence sur l'objet créé
 * Cette référence doit être affectée (liée) à une variable pour permettre l'accès à l'objet
 
 === Déclaration et affectation
 * La syntaxe pour la déclaration d'une variable est `type nom`
 +
-WARNING: *la déclaration ne crée pas d'objet* mais uniquement une référence. La variable est donc invalide tant qu'elle n'est pas liée à un objet (_null reference_)
-* Une affectation va lier une variable à un objet `variable = objet`
+IMPORTANT: *la déclaration ne crée pas d'objet* mais uniquement une référence.
+La variable est donc invalide tant qu'elle n'est pas liée à un objet (_null reference_).
+Une tentative d'accès à une telle référence lancera une _exception_ de type https://docs.oracle.com/en/java/javase/15/docs/api/java.base/java/lang/NullPointerException.html[`NullPointerException`] (cf. https://stackoverflow.com/questions/218384/what-is-a-nullpointerexception-and-how-do-i-fix-it[What is a NullPointerException, and how do I fix it?])
+* Une affectation `variable = objet` va lier la variable `variable` à l'objet `objet`
 * Il est possible de lier la variable lors de sa déclaration (_initialisation_)
-* Il est conseillé de toujours initialiser une variable lors de sa déclaration (si possible)
++
+TIP: Il est conseillé de toujours initialiser une variable lors de sa déclaration (si possible)
 
 .Exemple de déclarations et d'instanciation de chaînes de caractères
 [source,java,indent=0]
@@ -43,20 +48,19 @@ include::{tstdir}/classes/StringTest.java[tag=class-string-manip]
 * La destruction des objets en Java est automatique
 ** l'environnement d'exécution de Java supprime les objets lorsqu'il détermine qu'ils ne sont plus utilisés
 ** un objet est éligible pour la destruction quand plus aucune référence n'est liée à lui
-* Ce processus de suppression s'appelle _garbage collector_
+* Ce processus de suppression s'appelle _garbage collector_ (_GC_)
 * Avant de détruire l'objet, la méthode `protected void finalize()` de l'objet est invoquée
 ** utilisée pour restituer les ressources allouées par l'objet
 ** `finalize` est membre de la classe `Object`
 ** `super.finalize()` doit être appelé à la fin de la méthode
 
+WARNING: *La redéfinition de `finalize` est fortement déconseillée* et son usage a même été https://docs.oracle.com/javase/9/docs/api/java/lang/Object.html#finalize--[déprécié dans Java 9] (cf. https://www.informit.com/articles/article.aspx?p=1216151&seqNum=7[Avoid finalizers], *Effective Java*, _Joshua Bloch_).
+
 === Les chaînes de caractères en Java
-* Java fournit trois classes pour les chaînes de caractères:
-    https://docs.oracle.com/en/java/javase/14/docs/api/java.base/java/lang/String.html[`String`],
-    https://docs.oracle.com/en/java/javase/14/docs/api/java.base/java/lang/StringBuffer.html[`StringBuffer`] et
-https://docs.oracle.com/en/java/javase/14/docs/api/java.base/java/lang/StringBuilder.html[`StringBuilder`]
-* `String` est dédiée aux chaînes de caractères immuables, i.e. dont la valeur ne change pas
-* `StringBuilder` est dédiée aux chaînes de caractères pouvant être modifiées (contexte _mono-thread_)
-* `StringBuffer` est dédiée aux chaînes de caractères pouvant être modifiées (contexte _multi-threads_)
+* Java fournit trois classes pour les chaînes de caractères :
+** https://docs.oracle.com/en/java/javase/14/docs/api/java.base/java/lang/String.html[`String`] dédiée aux chaînes de caractères immuables, i.e. dont la valeur ne change pas,
+** https://docs.oracle.com/en/java/javase/14/docs/api/java.base/java/lang/StringBuffer.html[`StringBuffer`] pour les chaînes de caractères pouvant être modifiées (contexte _mono-thread_), et
+** https://docs.oracle.com/en/java/javase/14/docs/api/java.base/java/lang/StringBuilder.html[`StringBuilder`] pour les chaînes de caractères pouvant être modifiées (contexte _multi-threads_).
 
 .Création d'une chaîne (`String`)
 * Une instance de `String` représente une chaîne au format UTF-16
@@ -70,12 +74,14 @@ https://docs.oracle.com/en/java/javase/14/docs/api/java.base/java/lang/StringBui
 `substring(int, int)`:: extraction d'une sous-chaîne,
 `indexOf(...)`, `lastIndexOf(...)`:: recherche dans la chaîne
 
-.Compléments sur `String`
+[TIP]
+====
 * *Un littéral chaîne peut être utilisé à tout endroit où un objet `String` peut l'être*
 ** on peut invoquer des méthodes de `String` sur un littéral chaîne
 * L'opérateur `+` permet de concaténer des objets de type `String`
 ** c'est le seul opérateur surchargé pour un objet en Java
 * Une chaîne peut être utilisée avec l'instruction `switch`
+====
 
 .Les classes `StringBuilder` et `StringBuffer`
 * Les instances disposent à peu prés des mêmes accesseurs que `String`
@@ -94,7 +100,7 @@ include::{tstdir}/classes/StringTest.java[tag=class-string-exemple]
 
 == Les classes en Java
 === Définition d'une classe
-NOTE: La _définition_ d'une classe comporte deux parties: la _déclaration_ et le _corps_ de la classe
+La _définition_ d'une classe comporte deux parties: la _déclaration_ et le _corps_ de la classe
 
 [source,java,indent=0]
 ----
@@ -124,11 +130,13 @@ final Type nom;
 * L'initialisation des attributs peut se faire
     lors de la déclaration,
     dans le constructeur, ou
-    dans un bloc d'initialisation d'instance (_instance initialization block_)
+    dans un bloc d'initialisation d'instance (https://stackoverflow.com/questions/3987428/what-is-an-initialization-block[_instance initialization block_])
++
+TIP: Si la classe possède au moins un constructeur, il est préférable d'y regrouper les initialisations afin de ne pas les disperser dans le fichier source.
 * `final` est optionnel et permet de déclarer un attribut qui ne pourra être affecté qu'une unique fois
 //TODO : revoir la discussion sur final (http://mindprod.com/jgloss/final.html)
 
-=== Pseudo-attribut `this`
+==== Pseudo-attribut `this`
 * Chaque classe possède un attribut privé particulier nommé `this` qui référence l'objet courant
 * Cet attribut est maintenu par le système et ne peut pas être modifié par le programmeur
 * `this` n'est accessible que dans le corps de la classe
@@ -158,19 +166,20 @@ TypeRetour nomMethode(listeDeParametres) { // Déclaration
 * Dans le corps de la méthode, on utilise l'opérateur `return` pour renvoyer une valeur
 * Un constructeur a le même nom que sa classe et ne possède pas de type de retour
 
-=== Paramètres de méthode
+==== Paramètres de méthode
 * `listeDeParamètres` est une liste de déclarations de variables séparées par des virgules
 ** un paramètre peut être vu comme une variable locale à la méthode
 ** `final` peut préfixer la déclaration si le paramètre ne doit pas être modifié
 * Le passage de paramètres se fait _par valeur_
-** la valeur d'un paramètre d'un type primitif ne peut pas être modifiée
-** la valeur d'une référence ne peut pas être modifiée mais l'objet référencé peut l'être (comme avec un pointeur en C)
+** la valeur d'un paramètre d'un type primitif modifié dans la méthode ne le sera pas à l'extérieur
+** la valeur d'une référence modifié dans la méthode ne le sera pas à l'extérieur
+** dans la méthode, les appels de méthode sur un paramètre de type référence seront appliqués sur l'objet original (comme avec un pointeur en C)
 
 == Contrôle d'accès aux membres
 * Le contrôle de l'accès aux membres permet de contrôler l'interface d'une classe
 * Le niveau d'accès est précisé en ajoutant un mot-clé devant la déclaration du membre (attribut ou méthode)
 * Il peut prendre l'une des valeurs `private, public, protected` ou être absent
-
++
 ,===
 Niveau,Classe,Module,Sous-classe,Extérieur
 
@@ -179,8 +188,9 @@ aucun,X,X,,
 `protected`,X,X,X,
 `public`,X,X,X,X
 ,===
-
 * La restriction d'accès s'applique au niveau de la classe et non pas de l'objet
+
+TIP: En général, afin de maintenir l'https://fr.wikipedia.org/wiki/Encapsulation_(programmation)[encapsulation], les attributs sont déclarés avec `private` et les méthodes avec le niveau le plus restrictif possible.
 
 == Un exemple de classe pour des nombres complexes
 WARNING: Cet exemple est volontairement simplifié et sera étoffé par la suite.
@@ -198,10 +208,11 @@ include::{srcdir}/classes/Complex.java[]
 include::{tstdir}/classes/ComplexTest.java[]
 ----
 
-== Membres de classe
+== Membre de classe
 * Un _membre de classe_ est un attribut ou une méthode partagé par toutes les instances de la classe
 * Il se déclare avec le mot-clé `static`
-* *L'accès à un membre de classe se fait de préférence par l'intermédiaire de la classe*
++
+TIP: L'accès à un membre de classe se fait de préférence par l'intermédiaire de la classe
 * Pour un attribut de classe, le système alloue un espace mémoire pour un attribut par classe (et non pas un attribut par instance)
 * Un attribut de classe est souvent utilisé pour définir une constante (`static final`)
 +
@@ -211,10 +222,11 @@ public static final double E = 2.718281828459045d;
 public static final double PI = 3.141592653589793d;
 ----
 * L'initialisation d'un attribut de classe peut se faire directement ou en utilisant un _bloc d'initialisation statique_
-* Un _bloc d'initialisation statique_ est un bloc de code Java classique commençant par le mot-clé `static` et placé dans le corps de la classe
-* *Une méthode de classe ne peut pas accéder aux attributs d'instance* (pas d'accès à `this`)
+** c'est un bloc de code Java classique commençant par le mot-clé `static` et placé dans le corps de la classe
 
-=== Exemple : compter les instances de nombre complexe
+IMPORTANT: Une méthode de classe ne peut pas accéder aux attributs d'instance (pas d'accès à `this`)
+
+=== Exemple : compter les instances de nombres complexes
 .Définition de `ComplexWithCounter`
 [source,java,indent=0]
 ----
@@ -247,7 +259,7 @@ class Application {
 * Le paramètre de `main` est un tableau de chaînes de caractères contenant les _arguments de ligne de commande_ passés lors de l'appel du programme
 
 TIP: On limite en général le code se trouvant dans le `main` au strict minimum: création d'un objet application et invocation d'une méthode.
-En effet, en https://fr.wikipedia.org/wiki/Programmation_orient%C3%A9e_objet[programmation objet], une programme est composé d'un ensemble d'objets qui interagissent et non pas de méthodes de classe s'appelant les unes les autres. Cette dernière approche s'apparente plus à ce la https://fr.wikipedia.org/wiki/Programmation_proc%C3%A9durale[programmation procédurale].
+En effet, en https://fr.wikipedia.org/wiki/Programmation_orient%C3%A9e_objet[programmation objet], un programme est composé d'un ensemble d'objets qui interagissent et non pas de méthodes de classe s'appelant les unes les autres. Cette dernière approche s'apparente plus à ce la https://fr.wikipedia.org/wiki/Programmation_proc%C3%A9durale[programmation procédurale].
 
 == Autres types de classe
 === Énumération
@@ -261,7 +273,7 @@ En effet, en https://fr.wikipedia.org/wiki/Programmation_orient%C3%A9e_objet[pro
 
 NOTE: Plus d'information dans le tutoriel https://docs.oracle.com/javase/tutorial/java/javaOO/enum.html[The Java Tutorials - Enum Types] ou dans la section https://docs.oracle.com/javase/specs/jls/se14/html/jls-8.html#jls-8.9[8.9. Enum Types] de la spécification du langage.
 
-.Exemple : un singleton pour le programme principa
+.Exemple : un singleton pour le programme principal
 [source,java,indent=0]
 ----
 include::{tstdir}/classes/Application.java[]
@@ -275,21 +287,22 @@ Cette approche possède plusieurs avantages :
 . le singleton est accessible dans tout le programme (`Application.APPLICATION`)
 . c'est un bon endroit pour conserver les informations partagées (configuration, ...)
 
-*Attention toutefois*, une surexploitation de cette classe conduit à l'anti-pattern https://fr.wikipedia.org/wiki/God_object[God object].
+WARNING: Une surexploitation de cette classe conduit à l'anti-pattern https://fr.wikipedia.org/wiki/God_object[God object].
 ====
 
 === Interface
 //TODO à compléter
+_À compléter_
 
 == Généricité
 * La _généricité_ permet de paramétrer une classe par un ou plusieurs paramètres formels (généralement des types)
 * La généricité permet de définir une famille de classes, chaque classe étant instanciée lors du passage des paramètres effectifs
-* Il peut être souhaitable de limiter les paramètres possibles, la généricité est alors _contrainte_
 * Cette notion est orthogonale au paradigme objet : on parle de _programmation générique_
 * En Java, les _paramètres formels de type_ sont placés entre "`<`" et "`>`"
 * Un paramètre effectif est obligatoirement une classe (pas un type primitif)
 * Le mécanisme implémentant la généricité en Java se nomme _Type erasure_
 ** Ce mécanisme supprime toute trace de la généricité dans le bytecode => il n'existe pas d'information concernant la généricité à l'exécution
+* Il peut être souhaitable de limiter les paramètres possibles, la généricité est alors _contrainte_
 
 === Classe générique
 * Les _paramètres formels de type_ sont placés entre "`<`" et "`>`" juste après le nom de la classe
