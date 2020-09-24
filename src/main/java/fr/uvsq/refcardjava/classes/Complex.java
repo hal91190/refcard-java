@@ -49,7 +49,7 @@ public class Complex {
   }
 
   /**
-   * Retourne un nouveau nombre complexe, somme de lu nombre courant et du paramètre.
+   * Retourne un nouveau nombre complexe, somme du nombre courant et du paramètre.
    *
    * @param rhs le nombre complexe en partie droite de l'opération
    * @return la somme de l'objet courant et de rhs

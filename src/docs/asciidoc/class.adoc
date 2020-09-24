@@ -197,3 +197,86 @@ include::{srcdir}/classes/Complex.java[]
 ----
 include::{tstdir}/classes/ComplexTest.java[]
 ----
+
+== Membres de classe
+* Un _membre de classe_ est un attribut ou une méthode partagé par toutes les instances de la classe
+* Il se déclare avec le mot-clé `static`
+* *L'accès à un membre de classe se fait de préférence par l'intermédiaire de la classe*
+* Pour un attribut de classe, le système alloue un espace mémoire pour un attribut par classe (et non pas un attribut par instance)
+* Un attribut de classe est souvent utilisé pour définir une constante (`static final`)
++
+[source,java,indent=0]
+----
+public static final double E = 2.718281828459045d;
+public static final double PI = 3.141592653589793d;
+----
+* L'initialisation d'un attribut de classe peut se faire directement ou en utilisant un _bloc d'initialisation statique_
+* Un _bloc d'initialisation statique_ est un bloc de code Java classique commençant par le mot-clé `static` et placé dans le corps de la classe
+* *Une méthode de classe ne peut pas accéder aux attributs d'instance* (pas d'accès à `this`)
+
+=== Exemple : compter les instances de nombre complexe
+.Définition de `ComplexWithCounter`
+[source,java,indent=0]
+----
+include::{srcdir}/classes/ComplexWithCounter.java[]
+----
+
+.Utilisation de la classe `ComplexWithCounter`
+[source,java,indent=0]
+----
+include::{tstdir}/classes/ComplexWithCounterTest.java[]
+----
+
+WARNING: Si cet exemple illustre en effet la notion de _membre de classe_, il ne fonctionne pas en pratique pour compter le nombre d'instances d'une classe (cf. https://stackoverflow.com/questions/28947571/how-to-count-number-of-instances-of-a-class[How to Count Number of Instances of a Class] et en particulier la https://stackoverflow.com/a/28947722/3982584[réponse] utilisant `PhantomReference`).
+En effet, il n'existe pas en Java de moyens simples pour forcer la destruction d'objet et donc l'appel de `finalize`.
+De plus, *la redéfinition de cette dernière est fortement déconseillée* et son usage a même été https://docs.oracle.com/javase/9/docs/api/java/lang/Object.html#finalize--[déprécié dans Java 9] (cf. https://www.informit.com/articles/article.aspx?p=1216151&seqNum=7[Avoid finalizers], *Effective Java*, _Joshua Bloch_).
+
+=== Le programme principal en Java : la méthode `main`
+* Le point d'entrée d'une application Java est une méthode de classe nommée `main`
+* Lors de l'exécution, l'interpréteur Java est invoqué avec le nom d'une classe qui doit implémenter une méthode `main`
+* La déclaration de la méthode `main` est :
++
+[source,java,indent=0]
+----
+class Application {
+  public static void main(String[] args) {
+
+  }
+}
+----
+* Le paramètre de `main` est un tableau de chaînes de caractères contenant les _arguments de ligne de commande_ passés lors de l'appel du programme
+
+TIP: On limite en général le code se trouvant dans le `main` au strict minimum: création d'un objet application et invocation d'une méthode.
+En effet, en https://fr.wikipedia.org/wiki/Programmation_orient%C3%A9e_objet[programmation objet], une programme est composé d'un ensemble d'objets qui interagissent et non pas de méthodes de classe s'appelant les unes les autres. Cette dernière approche s'apparente plus à ce la https://fr.wikipedia.org/wiki/Programmation_proc%C3%A9durale[programmation procédurale].
+
+== Autres types de classe
+=== Énumération
+* Un _type énuméré_ permet de contraindre l'ensemble des instances possibles pour un type donné
+* En Java, le type énuméré `enum` est en fait une classe dont les instances sont connues et déclarées lors de la compilation
+* Les instances d'un type énuméré sont des objets et peuvent donc être utilisées partout où un objet peut l'être
+* Un type énuméré étant une classe, il peut contenir des méthodes et des attributs
+* De plus, le compilateur ajoute automatiquement certaines méthodes
+** `values()` retourne un tableau contenant les constantes dans l'ordre de leur déclaration
+** un type énuméré hérite implicitement de la classe https://docs.oracle.com/en/java/javase/14/docs/api/java.base/java/lang/Enum.html[`Enum`]
+
+NOTE: Plus d'information dans le tutoriel https://docs.oracle.com/javase/tutorial/java/javaOO/enum.html[The Java Tutorials - Enum Types] ou dans la section https://docs.oracle.com/javase/specs/jls/se14/html/jls-8.html#jls-8.9[8.9. Enum Types] de la spécification du langage.
+
+.Exemple : un singleton pour le programme principa
+[source,java,indent=0]
+----
+include::{tstdir}/classes/Application.java[]
+----
+
+[TIP]
+====
+Cette approche possède plusieurs avantages :
+
+. la méthode `main` est utilisée à minima ce qui favorise une approche objet
+. le singleton est accessible dans tout le programme (`Application.APPLICATION`)
+. c'est un bon endroit pour conserver les informations partagées (configuration, ...)
+
+*Attention toutefois*, une surexploitation de cette classe conduit à l'anti-pattern https://fr.wikipedia.org/wiki/God_object[God object].
+====
+
+=== Interface
+//TODO à compléter
