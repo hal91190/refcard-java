@@ -1,10 +1,15 @@
-= Objets et classes
+= Objets, types, interfaces et classes
 ifndef::masterdoc[]
 include::meta.adoc[]
 include::attributes.adoc[]
 endif::masterdoc[]
 
-== Les objets en Java
+== Objet
+* Un _objet_ est formé de deux composants indissociables
+** son _état_, i.e. les valeurs prises par des variables le décrivant (_propriétés_)
+** son _comportement_, i.e. les opérations qui lui sont applicables
+* Un objet est une _instance_ d'une _classe_ et peut avoir plusieurs types, i.e. supporter plusieurs interfaces
+
 === Création d'objets
 * Un objet est créé à partir d'une classe en utilisant le mot-clé `new`
 * L'invocation de `new`
@@ -96,6 +101,67 @@ WARNING: *La redéfinition de `finalize` est fortement déconseillée* et son us
 [source,java,indent=0]
 ----
 include::{tstdir}/classes/StringTest.java[tag=class-string-exemple]
+----
+
+== Type
+* Un _type (de donnée)_ spécifie :
+** l'ensemble des valeurs possibles pour cette donnée (définition en _extension_),
+** l'ensemble des opérations applicables à cette donnée (définition en _intention_).
+* Un type spécifie l'_interface_ par laquelle une donnée peut être manipulée
+
+.Exemple : un type _Comparable_
+[plantuml,deplacable,png]
+....
+interface Comparable<T> {
+    +int compareTo(T o)
+}
+....
+
+== Interface
+* Une _interface_ regroupe des signatures d'opérations et des déclarations de constantes
++
+TIP: Une interface permet donc de définir un type
+* La définition d'une interface comporte une déclaration et un corps
++
+[source,java,indent=0]
+----
+interface UneInterface extends UneSecondeInterface, UneAutreInterface {
+  String uneChaine = "abcde";
+  double unDouble = 123.456;
+  void uneMethode(int unEntier, String uneChaine);
+}
+----
+* Toutes les méthodes de l'interface sont implicitement `public` et `abstract`
+* Toutes les constantes de l'interface sont implicitement `public`, `static`, et `final`
+
+.Exemple : définir l'_ordre naturel_ des objets (interface https://docs.oracle.com/en/java/javase/15/docs/api/java.base/java/lang/Comparable.html[`Comparable`])
+[source,java,indent=0]
+----
+/**
+ * This interface imposes a total ordering on the objects
+ * of each class that implements it. ...
+ */
+interface Comparable<T> {
+  /**
+   * Compares this object with the specified object for order. ...
+   */
+  int compareTo(T o);
+}
+----
+
+=== Objet et interface
+* Un objet peut être manipulé par une référence sur une interface si sa classe _implémente_ cette dernière
++
+TIP: la référence étant alors du type de l'interface, seules les méthodes de l'interface sont accessibles
++
+.Exemple : manipuler une chaîne de caractères par le type `Comparable`
+[source,java,indent=0]
+----
+// La classe String implémente Comparable<String>
+Comparable<String> uneChaine = "abcd";
+if (uneChaine.compareTo("defg") > 0) System.out.println("abcd > defg");
+else if (uneChaine.compareTo("defg") == 0) System.out.println("abcd == defg");
+else System.out.println("abcd < defg");
 ----
 
 == Les classes en Java
@@ -261,8 +327,7 @@ class Application {
 TIP: On limite en général le code se trouvant dans le `main` au strict minimum: création d'un objet application et invocation d'une méthode.
 En effet, en https://fr.wikipedia.org/wiki/Programmation_orient%C3%A9e_objet[programmation objet], un programme est composé d'un ensemble d'objets qui interagissent et non pas de méthodes de classe s'appelant les unes les autres. Cette dernière approche s'apparente plus à ce la https://fr.wikipedia.org/wiki/Programmation_proc%C3%A9durale[programmation procédurale].
 
-== Autres types de classe
-=== Énumération
+== Énumération
 * Un _type énuméré_ permet de contraindre l'ensemble des instances possibles pour un type donné
 * En Java, le type énuméré `enum` est en fait une classe dont les instances sont connues et déclarées lors de la compilation
 * Les instances d'un type énuméré sont des objets et peuvent donc être utilisées partout où un objet peut l'être
@@ -289,10 +354,6 @@ Cette approche possède plusieurs avantages :
 
 WARNING: Une surexploitation de cette classe conduit à l'anti-pattern https://fr.wikipedia.org/wiki/God_object[God object].
 ====
-
-=== Interface
-//TODO à compléter
-_À compléter_
 
 == Généricité
 * La _généricité_ permet de paramétrer une classe par un ou plusieurs paramètres formels (généralement des types)
