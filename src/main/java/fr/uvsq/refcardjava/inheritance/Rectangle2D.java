@@ -39,6 +39,7 @@ class Rectangle2D implements Cloneable {
         return orig.getY() - fin.getY();
     }
 
+    // tag::rect-tostring[]
     /**
      * Retourne une chaîne représentant l'objet.
      * @return la chaîne.
@@ -47,6 +48,7 @@ class Rectangle2D implements Cloneable {
     public String toString() {
         return String.format("O = %s L = %s, H = %s", orig, getLargeur(), getHauteur());
     }
+    // end::rect-tostring[]
 
     /**
      * Retourne une copie "profonde" de l'objet.
@@ -83,6 +85,7 @@ class Rectangle2D implements Cloneable {
     public int hashCode() {
         return orig.hashCode() ^ fin.hashCode();
     }
+    // end::rect-equals[]
 
     /**
      * Translate le rectangle.

@@ -40,6 +40,7 @@ class Rectangle2DPlein extends Rectangle2D { //<1>
         return couleur;
     } //<4>
 
+    // tag::rect-plein-tostring[]
     /**
      * Retourn une chaîne représentant l'objet.
      *
@@ -49,4 +50,5 @@ class Rectangle2DPlein extends Rectangle2D { //<1>
     public String toString() {
         return String.format("%s, couleur : %s", super.toString(), couleur);
     }
+    // end::rect-plein-tostring[]
 }

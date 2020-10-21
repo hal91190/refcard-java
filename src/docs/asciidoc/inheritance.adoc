@@ -215,7 +215,7 @@ Rectangle2D <|-- Rectangle2DPlein
 * C'est le type de l'objet (et non pas de la référence) qui permettra de déterminer la méthode à invoquer et ce type ne peut être connu qu'au moment de l'exécution
 ====
 
-.Exemple : une description pour les rectangles
+.Exemple : une description pour les rectangles (méthode `toString`)
 [plantuml,rectangle_et_rectangle_plein_polym,png]
 ....
 class Rectangle2D {
@@ -225,47 +225,35 @@ class Rectangle2D {
     +getSupGauche() : Point2D
     +getLargeur() : Réel
     +getHauteur() : Réel
-    +getDescription() : Chaîne
+    +toString() : Chaîne
 }
 
 class Rectangle2DPlein {
     -couleur : Couleur
     +Rectangle2DPlein(supGauche : Point2D, infDroit : Point2D, couleur : Couleur)
     +getCouleur() : Couleur
-    +getDescription() : Chaîne
+    +toString() : Chaîne
 }
 
 Rectangle2D <|-- Rectangle2DPlein
 ....
 
-.Exemple : la classe `Rectangle2D`
+.Exemple : redéfinition de la méthode `toString` de la classe `Rectangle2D`
 [source,java,indent=0]
 ----
-include::{java-sourcedir}/inheritance/Rectangle2D.java[tag=rect]
+include::{srcdir}/inheritance/Rectangle2D.java[tag=rect-tostring]
 ----
 
-.Exemple : la classe `Rectangle2DPlein`
+.Exemple : redéfinition de la méthode `toString` de la classe `Rectangle2DPlein`
 [source,java,indent=0]
 ----
-include::{java-sourcedir}/inheritance/Rectangle2DPlein.java[tag=rect-plein-1,rect-plein-tostring]
+include::{srcdir}/inheritance/Rectangle2DPlein.java[tag=rect-plein-tostring]
 ----
 
 .Exemple : utilisation du polymorphisme
 [source,java,indent=0]
 ----
-include::{java-sourcedir}/inheritance/Rectangle2DPlein.java[tag=rect-plein-use-2]
-----
-
-.Exemple : la description dans Rectangle2D (Java)
-[source,java,indent=0]
-----
-include::{java-sourcedir}/inheritance/Rectangle2D.java[tag=rect-tostring]
-----
-
-.Exemple : la description dans Rectangle2DPlein (Java)
-[source,java,indent=0]
-----
-include::{java-sourcedir}/inheritance/Rectangle2DPlein.java[tag=rect-plein-tostring]
+include::{tstdir}/inheritance/Rectangle2DPleinTest.java[tag=rect-plein-use-2]
 ----
 
 === La classe `Object`
@@ -286,23 +274,6 @@ include::{java-sourcedir}/inheritance/Rectangle2DPlein.java[tag=rect-plein-tostr
 ** `Class getClass()` retourne un objet de type `Class` représentant la classe de l'objet
 *** la classe `Class` est par exemple utile pour créer des objets dont la classe n'est pas connu à la compilation
 ** quelques méthodes pour les _threads_
-
-.Exemple : redéfinition de la méthode `toString()` de `Rectangle2D`
-[source,java,indent=0]
-----
-include::{java-sourcedir}/inheritance/Rectangle2D.java[tag=rect-tostring]
-----
-
-.Exemple : redéfinition de la méthode `toString()` de `Rectangle2DPlein`
-[source,java,indent=0]
-----
-include::{java-sourcedir}/inheritance/Rectangle2DPlein.java[tag=rect-plein-tostring]
-----
-
-[source,java,indent=0]
-----
-include::{java-sourcedir}/inheritance/Rectangle2DPlein.java[tag=rect-plein-use-3]
-----
 
 ==== Copie d'objets
 * L'opération de copie peut avoir différentes sémantiques
@@ -335,13 +306,13 @@ include::{java-sourcedir}/inheritance/Rectangle2DPlein.java[tag=rect-plein-use-3
 .Exemple : égalité de rectangles
 [source,java,indent=0]
 ----
-include::{java-sourcedir}/inheritance/Rectangle2D.java[rect-equals]
+include::{srcdir}/inheritance/Rectangle2D.java[tag=rect-equals]
 ----
 
 .Exemple : contraintes de `equals`
 [source,java,indent=0]
 ----
-include::{java-sourcedir}/inheritance/Rectangle2DPlein.java[tag=rect-plein-use-4]
+include::{tstdir}/inheritance/Rectangle2DTest.java[tag=rect-use-4]
 ----
 
 == Classe abstraite

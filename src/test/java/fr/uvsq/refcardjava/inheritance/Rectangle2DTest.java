@@ -19,7 +19,7 @@ class Rectangle2DTest {
 
   @Test
   public void testEquals() {
-    // tag::rect-plein-use-4[]
+    // tag::rect-use-4[]
     Rectangle2D r1 = new Rectangle2D(new Point2D.Double(0.0, 5.0),
       new Point2D.Double(2.0, 2.0));
     Rectangle2D r2 = new Rectangle2D(new Point2D.Double(0.0, 5.0),
@@ -33,6 +33,6 @@ class Rectangle2DTest {
     assertEquals(r1, r3); // Transitivité
     assertNotNull(r1);
     assertEquals(r1.hashCode(), r2.hashCode());
-    // end::rect-plein-use-4[]
+    // end::rect-use-4[]
   }
 }
