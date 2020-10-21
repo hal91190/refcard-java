@@ -1,10 +1,17 @@
 package fr.uvsq.refcardjava.classes;
 
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class ComplexWithCounterTest {
+  @BeforeEach
+  public void setup() {
+    ComplexWithCounter.resetComplexCounter();
+  }
+
   @Test
   public void shouldHaveNoInstances() {
     assertEquals(0, ComplexWithCounter.getComplexCounter());
@@ -29,6 +36,7 @@ class ComplexWithCounterTest {
     assertEquals(3, ComplexWithCounter.getComplexCounter());
   }
 
+  @Disabled
   @Test
   public void shouldHaveTwoInstances() throws InterruptedException {
     var c1 = new ComplexWithCounter(0.0, 0.0);

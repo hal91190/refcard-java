@@ -33,6 +33,10 @@ public class ComplexWithCounter {
     return complexCounter;
   }
 
+  public static void resetComplexCounter() {
+    complexCounter = 0;
+  }
+
   /**
    * Décrémente le compteur quand l'objet est détruit.
    */
