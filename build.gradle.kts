@@ -36,7 +36,7 @@ tasks {
     "asciidoctor"(org.asciidoctor.gradle.jvm.AsciidoctorTask::class) {
         version = asciidoctorJVersion
         sources(delegateClosureOf<PatternSet> {
-            include("index.adoc", "techno.adoc", "base.adoc", "class.adoc")
+            include("index.adoc", "techno.adoc", "base.adoc", "class.adoc", "inheritance.adoc", "modules.adoc")
         })
         baseDirFollowsSourceDir()
     }
