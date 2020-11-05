@@ -19,4 +19,6 @@ include::class.adoc[]
 
 include::inheritance.adoc[]
 
+include::modules.adoc[]
+
 :leveloffset: -1
