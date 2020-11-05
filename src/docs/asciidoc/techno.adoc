@@ -8,7 +8,7 @@ endif::masterdoc[]
 * Le https://fr.wikipedia.org/wiki/Java_(langage)[langage Java] est un langage de programmation orienté objet développé chez https://fr.wikipedia.org/wiki/Sun_Microsystems[Sun Microsystems] (racheté par Oracle en 2009) et lancé officiellement en 1995
 +
 NOTE: http://www.oracle.com/technetwork/java/langenv-140151.html[The Java Language Environment: A White Paper], James Gosling, 1996.
-* https://docs.oracle.com/en/java/index.html[Différents versions] du langage sont disponibles
+* https://docs.oracle.com/en/java/index.html[Différentes éditions] de la plateforme Java sont disponibles
 ** _Java SE_ pour les postes de travail,
 ** _Java EE_ pour les serveurs, et
 ** _Java Embedded_ pour les terminaux à ressources contraintes.
