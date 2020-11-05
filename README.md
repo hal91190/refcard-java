@@ -4,9 +4,22 @@ Il est disponible à l'adresse [https://hal91190.github.io/refcard-java/](https:
 Il est accompagné d'un ensemble de codes sources illustrant les différents aspects du langage.
 L'usage des exemples nécessite bien sûr l'installation préalable du [JDK](https://adoptopenjdk.net/).
 
-## Compiler le projet
+## Construire le projet
 Le projet se compile en utilisant [gradle](https://gradle.org/).
 
+### Générer l'aide-mémoire
+L'aide-mémoire est généré dans le répertoire `build/docs/asciidoc/`.
+
+```bash
+$ ./gradlew asciidoctor
+```
+
+Sous Windows
+```
+> gradlew.bat asciidoctor
+```
+
+### Compiler les exemples et lancer les tests
 Sous Linux
 ```bash
 $ ./gradlew build
@@ -17,13 +30,3 @@ Sous Windows
 > gradlew.bat build
 ```
 
-L'aide-mémoire se trouve dans le répertoire ...
-
-## Éxécuter l'application
-
-## Générer l'aide-mémoire
-L'aide-mémoire est généré dans le répertoire `build/docs/asciidoc/`.
-
-```bash
-$ ./gradlew asciidoctor
-```
