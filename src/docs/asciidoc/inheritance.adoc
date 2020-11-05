@@ -320,16 +320,17 @@ include::{tstdir}/inheritance/Rectangle2DTest.java[tag=rect-use-4]
 ** En général, son comportement ne peut pas être intégralement implémenté à cause de son niveau de généralisation
 ** Elle sera donc seulement utilisée comme classe de base dans une hiérarchie d'héritage
 * En Java, une classe est spécifiée abstraite en ajoutant le mot-clé `abstract` dans sa déclaration
-* L'instanciation d'une telle classe est alors refusée par le compilateur
++
+WARNING: L'instanciation d'une telle classe est alors refusée par le compilateur
 * Une classe abstraite contient généralement des _méthodes abstraites_, i.e. qui ne possèdent pas d'implémentation
-* Une méthode est déclarée abstraite en utilisant le mot-clé `abstract` lors de sa déclaration
+** Une méthode est déclarée abstraite en utilisant le mot-clé `abstract` lors de sa déclaration
 * Toute sous-classe non abstraite d'une classe abstraite doit redéfinir les méthodes abstraites de cette classe
 * Une classe possédant des méthodes abstraites est obligatoirement abstraite
 
 .Exemple : La hiérarchie d'héritage des figures
 [plantuml,hierarchie_heritage,png]
 ....
-abstract class Forme {
+abstract class FigureFermee2D {
     + {abstract} translate(dx: réel, dy: réel)
 }
 
@@ -348,75 +349,26 @@ Forme <|-- Rectangle2D
 .Exemple : une classe abstraite (Java)
 [source,java,indent=0]
 ----
-include::{java-sourcedir}/inheritance/FigureFermee2D.java[lines=3..-1]
+include::{srcdir}/inheritance/FigureFermee2D.java[lines=3..-1]
 ----
 
 .Exemple : redéfinition d'une méthode (Java)
 .Translation dans la classe `Rectangle2D`
 [source,java,indent=0]
 ----
-include::{java-sourcedir}/inheritance/Rectangle2D.java[tag=rect-translate]
+include::{srcdir}/inheritance/Rectangle2D.java[tag=rect-translate]
 ----
 
 .Translation dans la classe `Cercle2D`
 [source,java,indent=0]
 ----
-include::{java-sourcedir}/inheritance/Cercle2D.java[tag=cercle-translate]
+include::{srcdir}/inheritance/Cercle2D.java[tag=cercle-translate]
 ----
 
 .Exemple : utilisation d'une classe abstraite (Java)
 [source,java,indent=0]
 ----
-include::{java-sourcedir}/inheritance/AbstractClassDemo.java[tag=abstract-class-demo]
-----
-
-.Exemple : la classe abstraite Forme (Python)
-[source,python,indent=0]
-----
-include::{python-sourcedir}/coo/forme.py[]
-----
-
-
-.Exemple : la hiérarchie d'héritage des figures
-[plantuml,abstract_class,png]
-....
-abstract class Forme {
-    + {abstract} translate(dx: réel, dy: réel)
-}
-
-class Rectangle2D {
-    +translate(dx: réel, dy: réel)
-}
-
-class Cercle2D {
-    +translate(dx: réel, dy: réel)
-}
-
-Forme <|-- Cercle2D
-Forme <|-- Rectangle2D
-....
-
-.Exemple : la classe abstraite `FigureFermee2D`
-[source,java,indent=0]
-----
-include::{java-sourcedir}/inheritance/FigureFermee2D.java[]
-----
-
-.Exemple : redéfinition du déplacement
-[source,java,indent=0]
-----
-include::{java-sourcedir}/inheritance/Rectangle2D.java[tag=rect-translate]
-----
-
-[source,java,indent=0]
-----
-include::{java-sourcedir}/inheritance/Cercle2D.java[tag=cercle-translate]
-----
-
-.Exemple : utilisation de la classe abstraite `FigureFermee2D`
-[source,java,indent=0]
-----
-include::{java-sourcedir}/inheritance/AbstractClassDemo.java[tag=abstract-class-demo]
+include::{tstdir}/inheritance/FigureFermee2DTest.java[tag=abstract-class-demo]
 ----
 
 === La classe `Number`

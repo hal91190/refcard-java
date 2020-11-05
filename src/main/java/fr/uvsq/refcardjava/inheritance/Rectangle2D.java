@@ -10,7 +10,7 @@ import java.awt.geom.Point2D;
  * @author   Stéphane Lopes
  * 
  */
-class Rectangle2D implements Cloneable {
+class Rectangle2D extends FigureFermee2D implements Cloneable {
     /** Coordonnées du coin supérieur gauche */
     private Point2D.Double orig;
 
@@ -62,7 +62,7 @@ class Rectangle2D implements Cloneable {
         return r;
     }
 
-    // tag::rect-equals[]
+    //tag::rect-equals[]
     /**
      * Teste l'égalité de deux rectangles.
      * @param obj le rectangle à comparer.
@@ -85,15 +85,18 @@ class Rectangle2D implements Cloneable {
     public int hashCode() {
         return orig.hashCode() ^ fin.hashCode();
     }
-    // end::rect-equals[]
+    //end::rect-equals[]
 
+    //tag::rect-translate[]
     /**
      * Translate le rectangle.
      * @param dx déplacement en abscisse.
      * @param dy déplacement en ordonnées.
      */
+    @Override
     public void translate(double dx, double dy) {
         orig.setLocation(orig.getX() + dx, orig.getY() + dy);
         fin.setLocation(fin.getX() + dx, fin.getY() + dy);
     }
+    //end::rect-translate[]
 }
