@@ -1,0 +1,326 @@
+= Gestion d'erreurs et exceptions
+ifndef::masterdoc[]
+include::meta.adoc[]
+include::attributes.adoc[]
+endif::masterdoc[]
+
+== Qu'est-ce qu'une erreur ?
+Un événement dans une fonction _f_ est une erreur dans l'un des cas suivants :
+
+* il viole une des préconditions de _f_,
+** peut être considéré comme une erreur de programmation => utilisation des assertions
+* il empêche _f_ de remplir une des préconditions de ses appelés,
+* il empêche de réaliser une postcondition de _f_,
+* il empêche _f_ de rétablir un invariant dont elle a la responsabilité.
+
+IMPORTANT: Les autres événements ne doivent pas être considérés comme des erreurs
+
+== Erreur vs. bug
+* La _gestion d'erreurs_ est chargée des erreurs d'exécution
+* Les erreurs de logique (bugs) doivent être éliminées durant le développement en utilisant :
+** les _assertions_
+** le _débogage_
+** les _tests_
+
+== Réactions possibles à une erreur
+=== Ignorer le problème
++
+WARNING:  en général, c'est une mauvaise idée...
+
+=== Retourner un code d'erreur
+[source,java,indent=0]
+----
+include::{srcdir}/errors/ErrorHandlingApproaches.java[tags=retcode]
+----
+<1> Quand le paramètre est invalide (_Not A Number_ ou négatif), la fonction retourne le code d'erreur _Not A Number_
+
+NOTE: Dans cette exemple, comme l'erreur est une violation de la pré-condition, on pourrait considérer que c'est une erreur de programmation et la traiter avec des assertions.
+
+[source,java,indent=0]
+----
+include::{srcdir}/errors/ErrorHandlingApproaches.java[tags=retcodeuse]
+----
+<1> Lors de l'appel, il *faut tester la valeur de retour* de la fonction.
+
+WARNING: possible si une valeur de retour est disponible pour cela
+
+=== Utiliser une variable globale
+[source,java,indent=0]
+----
+include::{srcdir}/errors/ErrorHandlingApproaches.java[tags=globalcode]
+----
+<1> Lorsque l'erreur est détectée, on fixe la valeur de la variable globale.
+
+[source,java,indent=0]
+----
+include::{srcdir}/errors/ErrorHandlingApproaches.java[tags=globalcodeuse]
+----
+<1> Après l'appel, il *faut vérifier l'état* de la variable globale.
+
+=== Lancer une exception
+[source,java,indent=0]
+----
+include::{srcdir}/errors/ErrorHandlingApproaches.java[tags=exception]
+----
+<1> Lorsque l'erreur est détectée, une _exception est lancée_.
+
+[source,java,indent=0]
+----
+include::{srcdir}/errors/ErrorHandlingApproaches.java[tags=exceptionuse]
+----
+<1> L'exception se propage selon la pile d'appel du programme et doit être traitée.
+
+=== Utiliser le _type `Option`_
+[source,java,indent=0]
+----
+include::{srcdir}/errors/ErrorHandlingApproaches.java[tags=option]
+----
+<1> Le résultat est encapsulé dans une instance du type `Optional`.
+
+[source,java,indent=0]
+----
+include::{srcdir}/errors/ErrorHandlingApproaches.java[tags=optionuse]
+----
+<1> Les accesseurs de `Optional` permettent d'extraire le résultat.
+
+NOTE: Cette technique est issue de la programmation fonctionnelle (cf. https://en.wikipedia.org/wiki/Option_type[Option Type]).
+
+== Exceptions en Java
+* Trois catégories d'exceptions
+** une _exception non contrôlée_ (_unchecked exceptions_) n'est pas destinée à être traitée par le
+programme
+*** une _erreur_ (_error_) a une cause externe à l'application
+*** une _exception d'exécution_ (_runtime exception_) est provoquée par la JVM
+** une _exception contrôlée_ (_checked exception_) est une exception qui n'est pas lancée par le système d'exécution Java (_runtime exception_)
+* Une exception est une instance d'une classe dérivée de https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/lang/Throwable.html[`Throwable`]
+* Une méthode doit soit _traiter_, soit _spécifier_ toute _exception contrôlée_ qui peut se produire dans cette méthode
+** _traiter_ = fournir un gestionnaire d'exception pour ce type d'exception
+** _spécifier_ = préciser dans la signature de la méthode que l'exception peut être lancée
+* Le compilateur ne requiert pas que les exceptions du système d'exécution soient traitée ou spécifiée
+
+== Traitement d'une exception
+* Un bloc `try` englobe la séquence d'instructions susceptible de lancer une exception
+* Un ou plusieurs blocs `catch` représentent les gestionnaires d'exceptions
+* Au plus un bloc `finally` est toujours exécuté
+
+=== Le bloc `try`
+* Le bloc `try` englobe les instructions susceptibles de lancer une exception
++
+[source,java,indent=0]
+----
+try {
+    // Instructions
+}
+----
+* L'instruction `try` _gouverne_ les instructions englobées
+* Il définit la portée des gestionnaires d'exceptions qui lui sont associés
+* Une instruction `try` *doit* être accompagnée d'au moins un bloc `catch` ou `finally`
+
+=== Les blocs `catch`
+* Les blocs `catch` représentent les gestionnaires d'exceptions
+* Un ou plusieurs blocs `catch` sont placés immédiatement après un bloc `try`
++
+[source,java,indent=0]
+----
+try {
+    // Instructions
+} catch ( /* ... */ ) {
+    // Instructions
+} catch ( /* ... */ ) {
+    // Instructions
+} // ...
+----
+* Les blocs `catch` doivent être ordonnés du plus spécialisé au plus général
+* L'instruction `catch` requiert un unique paramètre
++
+[source,java,indent=0]
+----
+catch (<Type> <variable>) {
+    // Instructions
+}
+----
+** `<Type>` représente le type de l'exception et doit être une classe dérivant de `Throwable`
+** `<variable>` est le nom de la variable locale au gestionnaire liée à l'exception
+** L'argument du `catch` ressemble à la déclaration d'un paramètre de méthode
+* Un gestionnaire peut capturer plusieurs types d'exceptions
+** en capturant une superclasse pour une exception
+** en utilisant plusieurs types dans la clause `catch`
++
+[source,java,indent=0]
+----
+catch (Type1|Type2|Type3 ex) { //...
+----
+
+=== Le bloc `finally`
+* Le bloc `finally` founit un mécanisme pour "nettoyer" l'état du programme
+* Les instructions du bloc `finally` sont toujours exécutées
+* Le bloc `finally` se place après les gestionnaires d'exceptions du bloc `try`
++
+[source,java,indent=0]
+----
+finally {
+    // Instructions
+}
+----
+
+=== Exemple : gestionnaires d'exception pour une pile
+[source,java,indent=0]
+----
+include::{srcdir}/errors/ExceptionDemo.java[tags=exceptions]
+----
+<1> le bloc `try` englobe les instructions pouvant lancer une exception
+<2> le premier gestionnaire capture le cas de la pile vice
+<3> le second gestionnaire traite tous les autres cas car le type `PileException` est la racine des exceptions de la pile
+
+== Exception et allocation de ressources
+* Du fait du mécanisme de propagation des exceptions, la libération des ressources utilisées dans un programme peut devenir délicate
+* La construction _try-with-resources_ gère automatiquement la fermeture des ressources
+* Les ressources devant être gérées de cette façon sont allouées comme "paramètre" de `try`
+* Les classes représentant les ressources doivent implémenter l'interface https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/lang/AutoCloseable.html[`AutoCloseable`]
+
+[source,java,indent=0]
+----
+try (
+    java.util.zip.ZipFile zf = //<1>
+       new java.util.zip.ZipFile(zipFileName);
+    java.io.BufferedWriter writer = //<2>
+       java.nio.file.Files.newBufferedWriter(outputFilePath, charset)
+) {
+    // ...
+}
+----
+<1> l'allocation de la variable `zf` est en "paramètre" de `try` : la fermeture du fichier est garantie même si une exception est lancée
+<2> il en est de même pour `writer`
+
+== Spécification d'exceptions
+* Une _spécification d'exception_ précise qu'une méthode ne capture pas l'exception considérée mais peut la lancer
+* Pour spécifier qu'une ou plusieurs exceptions peuvent être lancées par une méthode, on utilise la clause `throws` dans la signature de la méthode
+
+[source,java,indent=0]
+----
+TypeRetour nomMethode throws Type1Exception, Type2Exception {
+    //...
+}
+----
+
+=== Exemple : spécification d'exceptions pour la pile
+
+.`empile` peut lancer une exception de type `PilePleineException`
+[source,java,indent=0]
+----
+include::{srcdir}/errors/Pile.java[tag=throws-pile-pleine]
+----
+
+.`depile` peut lancer une exception de type `PileVideException`
+[source,java,indent=0]
+----
+include::{srcdir}/errors/Pile.java[tag=throws-pile-vide]
+----
+
+== Lancement d'exceptions
+* L'instruction `throw` est utilisée pour lancer une exception
+* Le mot-clé `throw` doit être suivi d'une instance d'une classe dérivée de https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/lang/Throwable.html[`Throwable`]
++
+[source,java,indent=0]
+----
+throw new ClasseDerivéeDeThrowable();
+----
+* Une exception peut être relancée à partir d'un bloc `catch`
+
+=== Lancements d'exceptions pour la pile
+[source,java,indent=0]
+----
+include::{srcdir}/errors/Pile.java[tag=throw]
+----
+
+== La classe `Throwable`
+* La classe https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/lang/Throwable.html[`Throwable`] est la super-classe de toutes les exceptions ou erreurs du langage Java
+* Seules les instances de cette classe (ou d'une de ses sous-classes) peuvent être lancées
+* Seule cette classe (ou l'une de ses sous-classes) peut être l'argument d'un `catch`
+* Contient un instantané de la _pile d'exécution_ au moment de la création de l'instance
+* Peut contenir une _cause_ (une autre instance de `Throwable`) afin de gérer une _chaîne d'exceptions_
+
+.Les méthodes de la classe `Throwable`
+[plantuml,throwable,png]
+....
+class Throwable {
+  	+Throwable()
+  	+Throwable(String message)
+  	+Throwable(String message, Throwable cause)
+    #Throwable(String message, Throwable cause, boolean enableSuppression, boolean writableStackTrace)
+  	+Throwable(Throwable cause)
+
+    +void addSuppressed(Throwable exception)
+    +Throwable fillInStackTrace()
+    +Throwable getCause()
+    +String getLocalizedMessage()
+    +String getMessage()
+    +StackTraceElement[] getStackTrace()
+    +Throwable[] getSuppressed()
+    +Throwable initCause(Throwable cause)
+    +void printStackTrace()
+    +void printStackTrace(PrintStream s)
+    +void printStackTrace(PrintWriter s)
+    +void setStackTrace(StackTraceElement[] stackTrace)
+    +String toString()
+}
+....
+
+== Extrait de la hiérarchie d'exceptions
+[plantuml,throwable_hier,png]
+....
+Throwable <|-- Exception
+Exception <|-- CloneNotSupportedException
+Exception <|-- IOException
+Exception <|-- RuntimeException
+RuntimeException <|-- ArithmeticException
+RuntimeException <|-- IllegalArgumentException
+RuntimeException <|-- IndexOutOfBoundsException
+IndexOutOfBoundsException <|-- ArrayIndexOutOfBoundsException
+IndexOutOfBoundsException <|-- StringIndexOutOfBoundsException
+RuntimeException <|-- NullPointerException
+Throwable <|-- Error
+Error <|-- AssertionError
+Error <|-- IOError
+Error <|-- LinkageError
+LinkageError <|-- NoClassDefFoundError
+Error <|-- VirtualMachineError
+VirtualMachineError <|-- OutOfMemoryError
+VirtualMachineError <|-- StackOverflowError
+....
+
+== Créer des classes exceptions
+. Déterminer dans quelles méthodes et sous quelles conditions des exceptions seront lancées
+. Choisir le type de chaque exception
+** utiliser une exception existante
+** en créer une nouvelle
+. Choisir quelle sera la super-classe des exceptions définies
+** https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/lang/Exception.html[`Exception`] ou l'une de ses sous-classes
+** les exceptions dérivées de https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/lang/RuntimeException.html[`RuntimeException`] ne sont pas contrôlées
+
+=== Exemple : une hiérarchie d'exceptions pour une pile
+
+[plantuml, pile-exception-hierarchie, png]
+....
+Exception <|-- PileException
+PileException <|-- PileVideException
+PileException <|-- PilePleineException
+....
+
+.La classe `PileException`
+[source,java,indent=0]
+----
+include::{srcdir}/errors/PileException.java[]
+----
+
+.La classe `PileVideException`
+[source,java,indent=0]
+----
+include::{srcdir}/errors/PileVideException.java[]
+----
+
+.La classe `PilePleineException`
+[source,java,indent=0]
+----
+include::{srcdir}/errors/PilePleineException.java[]
+----

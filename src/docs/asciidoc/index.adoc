@@ -21,4 +21,6 @@ include::inheritance.adoc[]
 
 include::modules.adoc[]
 
+include::errors.adoc[]
+
 :leveloffset: -1
