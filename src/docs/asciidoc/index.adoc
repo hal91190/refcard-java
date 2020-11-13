@@ -23,4 +23,6 @@ include::modules.adoc[]
 
 include::errors.adoc[]
 
+include::io.adoc[]
+
 :leveloffset: -1

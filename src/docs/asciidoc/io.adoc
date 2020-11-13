@@ -1,0 +1,384 @@
+= Entrées/sorties et persistance
+ifndef::masterdoc[]
+include::meta.adoc[]
+include::attributes.adoc[]
+endif::masterdoc[]
+
+== Structure et fonctionalités
+La bibliothèque standard Java fournit de nombreuses fonctionnalités liées aux E/S
+
+* la gestion des flux (
+https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/io/package-summary.html[`java.io`])
+* les fichiers à accés aléatoires (
+https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/nio/channels/SeekableByteChannel.html[`java.nio.channels.SeekableByteChannel`],
+https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/io/RandomAccessFile.html[`RandomAccessFile`])
+* des fonctionnalités avancées (
+https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/nio/channels/package-summary.html[`java.nio.channels`])
+* l'interaction avec le système de fichiers (
+https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/nio/file/package-summary.html[`java.nio.file`],
+https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/io/File.html[`File`])
+* l'entrée et la sortie standard (
+https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/io/PrintStream.html[`PrintStream`],
+https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/util/Scanner.html[`java.util.Scanner`],
+https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/io/Console.html[`Console`])
+* la gestion des archives (
+https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/util/zip/package-summary.html[`java.util.zip`],
+https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/util/jar/package-summary.html[`java.util.jar`])
+* les fichiers d'images (
+https://docs.oracle.com/en/java/javase/11/docs/api/java.desktop/javax/imageio/package-summary.html[`javax.imageio`])
+
+== Gestion des flux
+* Un _flux_ (_stream_) est un canal reliant une source (ou une destination) à un programme
+* Une source de données (ou une destination) peut être un fichier, la mémoire, le réseau, ...
+* Un flux peut être ouvert en lecture et/ou en écriture
++
+IMPORTANT: Les données sont lues ou écrites séquentiellement
+* La bibliothèque se divise en deux hiérarchies de classes
+** les flux de caractères (I/O de texte)
+** les flux d'octets (I/O binaire)
+* Un flux est automatiquement ouvert lors de sa création
+* La fermeture d'un flux se fait explicitement avec la méthode `close`
+* La plupart des méthodes peuvent lancer une exception dérivée de
+https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/io/IOException.html[`IOException`]
+
+=== Flux de caractères
+* Les classes https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/io/Reader.html[`Reader`] et https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/io/Writer.html[`Writer`] sont les super-classes abstraites pour les flux de caractères
+* La plate-forme Java manipule des caractères en se basant sur Unicode
+* Les flux de caractères permettent de convertir ce format interne de/vers le format local
+
+.`Reader` et `Writer`
+[plantuml, reader-writer, png]
+....
+abstract class Reader {
+    {abstract} +void close()
+    +void mark(int readAheadLimit)
+    +boolean markSupported()
+    {static} +Reader nullReader()
+    +int read()
+    +int read(char[] cbuf)
+    {abstract} +int read(char[] cbuf, int off, int len)
+    +int read(CharBuffer target)
+    +boolean ready()
+    +void reset()
+    +long skip(long n)
+    +long transferTo(Writer out)
+}
+
+abstract class Writer {
+    +Writer append(char c)
+    +Writer append(CharSequence csq)
+    +Writer append(CharSequence csq, int start, int end)
+    {abstract} +abstract void close()
+    {abstract} +abstract void flush()
+    {static} +Writer nullWriter()
+    +void write(char[] cbuf)
+    {abstract} +void write(char[] cbuf, int off, int len)
+    +void write(int c)
+    +void write(String str)
+    +void write(String str, int off, int len)
+}
+....
+
+.Hiérarchie de `Reader`
+[plantuml, reader-hierarchie, png]
+....
+Reader <|-- PipedReader
+Reader <|-- FilterReader
+Reader <|-- StringReader
+Reader <|-- CharArrayReader
+Reader <|-- InputStreamReader
+Reader <|-- BufferedReader
+FilterReader <|-- PushbackReader
+InputStreamReader <|-- FileReader
+BufferedReader <|-- LineNumberReader
+....
+
+.Hiérarchie de `Writer`
+[plantuml, writer-hierarchie, png]
+....
+Writer <|-- BufferedWriter
+Writer <|-- CharArrayWriter
+Writer <|-- FilterWriter
+Writer <|-- OutputStreamWriter
+Writer <|-- PipedWriter
+Writer <|-- PrintWriter
+Writer <|-- StringWriter
+OutputStreamWriter <|-- FileWriter
+....
+
+=== Flux d'octets
+* Les classes https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/io/InputStream.html[`InputStream`] et https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/io/OutputStream.html[`OutputStream`] sont les super-classes abstraites pour les flux d'octets
+* Les flux d'octets supportent la lecture et l'écriture d'octets (8 bits)
+
+.`InputStream` et `OutputStream`
+[plantuml, inputstream-outputstream, png]
+....
+abstract class InputStream {
+    +InputStream()
+    +int available()
+    +void close()
+    +void mark(int readlimit)
+    +boolean markSupported()
+    {static} +InputStream nullInputStream()
+    {abstract} +int read()
+    +int read(byte[] b)
+    +int read(byte[] b, int off, int len)
+    +byte[] readAllBytes()
+    +int readNBytes(byte[] b, int off, int len)
+    +byte[] readNBytes(int len)
+    +void reset()
+    +long skip(long n)
+    +long transferTo(OutputStream out)
+}
+
+abstract class OutputStream {
+    +OutputStream()
+    +void close()
+    +void flush()
+    {static} +OutputStream nullOutputStream()
+    +void write(byte[] b)
+    +void write(byte[] b, int off, int len)
+    {abstract} +void write(int b)
+}
+....
+
+.Hiérarchie de `InputStream`
+[plantuml, inputstream-hierarchie, png]
+....
+InputStream <|-- ByteArrayInputStream
+InputStream <|-- FileInputStream
+InputStream <|-- FilterInputStream
+InputStream <|-- ObjectInputStream
+InputStream <|-- PipedInputStream
+InputStream <|-- SequenceInputStream
+FilterInputStream <|-- BufferedInputStream
+FilterInputStream <|-- DataInputStream
+FilterInputStream <|-- PushbackInputStream
+....
+
+.Hiérarchie de `OutputStream`
+[plantuml, outputstream-hierarchie, png]
+....
+OutputStream <|-- ByteArrayOutputStream
+OutputStream <|-- FileOutputStream
+OutputStream <|-- FilterOutputStream
+OutputStream <|-- ObjectOutputStream
+OutputStream <|-- PipedOutputStream
+FilterOutputStream <|-- BufferedOutputStream
+FilterOutputStream <|-- DataOutputStream
+FilterOutputStream <|-- PrintStream
+....
+
+=== Principaux flux par type d'I/O
+|===
+| Type d'I/O | Flux de catactères | Flux d'octets
+
+.2+| Mémoire |`CharArrayReader`, `CharArrayWriter` | `ByteArrayInputStream`, `ByteArrayOutputStream`
+
+| `StringReader`, `StringWriter` |
+
+| Fichier | `FileReader`, `FileWriter` | `FileInputStream`, `FileOutputStream`
+
+| Affichage | `PrintWriter` | `PrintStream`
+
+|===
+
+=== Principaux flux par fonction
+|===
+| Type d'I/O | Flux de catactères | Flux d'octets
+
+| Avec buffer | `BufferedReader`, `BufferedWriter` | `BufferedInputStream`, `BufferedOutputStream`
+
+| Conv. de données | | `DataInputStream`, `DataOutputStream`
+
+| Sérialisation | | `ObjectInputStream`, `ObjectOutputStream`
+
+| Conv. oct./car. 2+| `InputStreamReader`, `OutputStreamWriter`
+
+|===
+
+=== Flux de fichiers
+* Les classes des flux de fichiers sont
+** `FileReader/FileWriter` pour l'accès aux fichiers textes
+** `FileInputStream/FileOutputStream` pour les fichiers binaires
+* Un flux de fichier peut être créé
+** à partir d'un nom de fichier sous la forme d'une chaîne de caractères
+** d'une instance de `File`
+** d'une méthode de classe de
+https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/nio/file/Files.html[`java.nio.file.Files`] (`newInputStream`, ...)
+
+.Copie d'un fichier texte
+[source,java,indent=0]
+----
+include::{srcdir}/io/FileCopyDemo.java[tags=textFileCopy]
+----
+
+.Copie d'un fichier texte (avec buffer)
+[source,java,indent=0]
+----
+include::{srcdir}/io/FileCopyDemo.java[tags=bufferedTextFileCopy]
+----
+
+.Copie d'un fichier texte (avec readAllLines)
+[source,java,indent=0]
+----
+include::{srcdir}/io/FileCopyDemo.java[tags=simpleTextFileCopy]
+----
+
+.Copie d'un fichier binaire
+[source,java,indent=0]
+----
+include::{srcdir}/io/FileCopyDemo.java[tags=binaryFileCopy]
+----
+
+=== Flux de filtrage
+* Certaines classes de flux sont destinées à appliquer un traitement sur (à _filtrer_) un flux
+* Les super-classes abstraites pour cela sont
+** `FilterReader/FilterWriter` pour les caractères
+** `FilterOutputStream/FilterInputStream` pour les octets
+* Des flux personnalisés peuvent être définis en héritant de ces classes
+
+==== Principaux flux de filtrage
+* Les principaux flux de filtrage pour les flux d'octets sont
+** `DataInputStream` et `DataOutputStream` pour les I/O des types primitifs
+** `BufferedInputStream` et `BufferedOutputStream` pour des I/O avec buffer
+** `PrintStream` pour l'affichage des données
+** `PushbackInputStream` pour pouvoir "annuler" la lecture d'une séquence d'octets
+* Le seul flux de filtrage pour les flux de caractères est `PushbackReader` (permet d'"annuler" la lecture d'une séquence de caractères)
+
+==== Flux de filtrage et modèle de conception _Décorateur_
+* Un flux de filtrage est construit à partir d'un autre flux selon le modèle de conception https://en.wikipedia.org/wiki/Decorator_pattern[_Décorateur_]
+* Le flux résultant propose des fonctionnalités plus riches que le flux initial
+
+[source,java,indent=0]
+----
+FileInputStream words = new FileInputStream("words.dat");
+BufferedInputStream in = new BufferedInputStream(words);
+----
+
+.Écriture des types primitifs
+[source,java,indent=0]
+----
+include::{srcdir}/io/DataIODemo.java[tags=writeDateToFile]
+----
+
+.Lecture des types primitifs
+[source,java,indent=0]
+----
+include::{srcdir}/io/DataIODemo.java[tags=readDateFromFile]
+----
+
+=== Entrée et sortie standards en Java
+La classe `System` fournit des flux pour :
+
+* l'entrée standard (attribut `in` de type `PrintStream`)
+* la sortie standard (attribut `out` de type `InputStream`)
+* la sortie d'erreurs (attribut `err` de type `PrintStream`)
+
+==== Flux d'affichage `PrintStream` (ou `PrintWriter`)
+* `PrintStream format( /* ... */)` affiche une chaîne selon un format
+** cf. https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/util/Formatter.html[`java.util.Formatter`]
+** `PrintStream printf(/* ... */)` fait la même chose
+* `void print(/* ... */)` affiche différents types de données sur le flux
+** `void println(/* ... */)` idem mais suivi d'un retour à la ligne
+* `PrintStream append(/* ... */)` ajoute des caractères au flux
+* `void flush()` force la sortie des caractères
+* Ne lancent jamais d'exception mais positionnent un indicateur interne
+** interrogeable avec la méthode `boolean checkError()`
+
+==== Lire à partir de l'entrée standard
+* L'entrée standard est utilisée en décorant `System.in` avec `InputStreamReader` (voire avec `BufferedReader`)
++
+[source,java,indent=0]
+----
+InputStreamReader stdin = new InputStreamReader(System.in);
+BufferedReader bufferedStdin = new BufferedReader(stdin));
+----
+* La classe https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/util/Scanner.html[`java.util.Scanner`] simplifie le processus de saisie
+** permet de découper un flux en _token_
+
+.Accéder à l'entrée et la sortie standard (avec Scanner)
+[source,java,indent=0]
+----
+include::{srcdir}/io/StdIODemo.java[tags=stdIoWithScanner]
+----
+
+.Accéder à l'entrée et la sortie standard (avec BufferedReader)
+[source,java,indent=0]
+----
+include::{srcdir}/io/StdIODemo.java[tags=stdIoWithBufferedReader]
+----
+
+==== Utiliser la classe `Console`
+* La classe https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/io/Console.html[`Console`] est une alternative pour l'accès à l'entrée et à la sortie standard
+* Un objet de ce type est initialisé avec la méthode `System.console()`
+
+[source,java,indent=0]
+----
+Console c = System.console();
+if (c == null) {
+    System.err.println("No console.");
+    System.exit(1);
+}
+----
+
+== Persistance et sérialisation
+* La _persistance_ est la capacité de sauvegarder l'état des objets, i.e. les données finales de l'application
+* Elle peut être réalisée avec
+** la bibliothèque d'I/O du langage,
+** à l'aide de bibliothèques spécialisées,
+** grâce à un SGBD externe.
+* La persistance pose un certain nombre de problèmes
+** sauvegarde de l'état de l'objet
+** gestion des types de données
+** gestion des références
+* La _sérialisation_ est un processus permettant de transformer un objet en flux d'octets
+
+== Sérialisation
+* La sérialisation est assurée par les classes `ObjectInputStream` et `ObjectOutputStream`
+* `ObjectOutputStream` implémente les interfaces `DataOutput` et `ObjectOutput`
+* `ObjectInputStream` implémente les interfaces `DataInput` et `ObjectInput`
+
+.Écrire des objets dans un flux
+[source,java,indent=0]
+----
+include::{srcdir}/io/SerializationDemo.java[tags=writeObjectsToFile]
+----
+
+.Lire des objets à partir d'un flux
+[source,java,indent=0]
+----
+include::{srcdir}/io/SerializationDemo.java[tags=readObjectsFromFile]
+----
+
+=== Rendre une classe sérialisable
+* Un objet est sérialisable uniquement si sa classe implémente l'interface `Serializable`
+* L'interface `Serializable` ne comporte aucune méthode et ne sert qu'à spécifier les classes sérialisables
+
+.Une classe sérialisable
+[source,java,indent=0]
+----
+include::{srcdir}/io/Student.java[]
+----
+
+=== Gérer la version des classes
+* L'attribut de classe http://docs.oracle.com/javase/8/docs/api/java/io/Serializable.html[`serialVersionUID`] précise la version d'une classe sérialisable
+* Il permet de déterminer si un objet correspond bien à la classe présente dans la JVM
+* Il est généré par la JVM s'il n'est pas défini dans la classe
+* Le développeur peut gérer les versions lui-même
+
+[source,java,indent=0]
+----
+private static final long serialVersionUID = 354054054054L;
+----
+
+=== Contrôler la sérialisation
+* La sérialisation est gérée par les méthodes
+** `defaultWriteObject` de `ObjectOutputStream`
+** `defaultReadObject` de `ObjectInputStream`
+* Le comportement par défaut de la sérialisation d'un objet est de stocker
+** la classe de l'objet
+** la signature de la classe
+** la valeur des attributs d'instances y compris les références (mais pas les attributs `transcient`)
+* Il est possible d'adapter le comportement par défaut en redéfinissant `writeObject` et `readObject`
+* L'interface `Externalizable` permet d'avoir un contrôle complet du processus de sérialisation
