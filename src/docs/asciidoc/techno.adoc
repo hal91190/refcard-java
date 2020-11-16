@@ -23,7 +23,7 @@ NOTE: Cet aide-mémoire se focalise sur Java SE
 NOTE: https://docs.oracle.com/javase/specs/index.html[Java Language and Virtual Machine Specifications]
 * Le _Java Development Kit_ (JDK) fournit le JRE ainsi qu'un ensemble d'outils pour le développement d'applications
 +
-NOTE: https://docs.oracle.com/en/java/javase/14/docs/specs/man/index.html[JDK Tool Specifications]
+NOTE: {manurl}/index.html[JDK Tool Specifications]
 
 == Compilation et interprétation
 * Le langage Java est à la fois _interprété_ et _compilé_
@@ -39,10 +39,10 @@ NOTE: https://docs.oracle.com/en/java/javase/14/docs/specs/man/index.html[JDK To
  +-----------+    +-------------+    +-----------+    +------------+    +-----------+
 ----
 
-NOTE: https://docs.oracle.com/javase/tutorial/getStarted/intro/definition.html[About the Java Technology]
+NOTE: {tutourl}/getStarted/intro/definition.html[About the Java Technology]
 
 === Compilation en ligne de commande (JDK)
-.Le compilateur https://docs.oracle.com/en/java/javase/14/docs/specs/man/javac.html[`javac`] génère le _bytecode_ en ligne de commande.
+.Le compilateur {manurl}/javac.html[`javac`] génère le _bytecode_ en ligne de commande.
 [source,bash,indent=0]
 ----
 $ javac <options> <fichiers source>
@@ -75,10 +75,10 @@ $ javac -sourcepath src \ #<1>
 <5> les informations de débogage sont intégrées
 <6> le programme principal se trouve dans `src/MonApplication.java`
 
-NOTE: https://docs.oracle.com/en/java/javase/14/docs/specs/man/javac.html[The javac Command]
+NOTE: {manurl}/javac.html[The javac Command]
 
 === Exécution en ligne de commande (JRE)
-.https://docs.oracle.com/en/java/javase/14/docs/specs/man/java.html[`java`] permet d'exécuter le programme
+.{manurl}/java.html[`java`] permet d'exécuter le programme
 [source,bash,indent=0]
 ----
 $ java [-options] class [args...]
@@ -100,14 +100,14 @@ $ java -cp classes \ #<1>
 <1> ajoute le répertoire `classes` au_CLASSPATH_
 <2> l'exécution débutera par la méthode `main` de la classe `MonApplication`
 
-NOTE: https://docs.oracle.com/en/java/javase/14/docs/specs/man/java.html[The java Command]
+NOTE: {manurl}/java.html[The java Command]
 
 == _Classpath_
 * Le _Classpath_ précise la liste des bibliothèques ou des classes compilées utilisées par l'environnement Java
 * Le compilateur et la machine virtuelle ont besoin d'avoir accès aux classes compilées
 * Il peut être défini en ligne de commande ou par la variable d'environnement `CLASSPATH`
 
-NOTE: https://docs.oracle.com/javase/tutorial/essential/environment/paths.html[PATH and CLASSPATH] et {jlsurl}/jls-12.html[Execution]
+NOTE: {tutourl}/essential/environment/paths.html[PATH and CLASSPATH] et {jlsurl}/jls-12.html[Execution]
 
 == Les indispensables pour développer en Java
 [TIP]
@@ -121,7 +121,7 @@ NOTE: https://docs.oracle.com/javase/tutorial/essential/environment/paths.html[P
 == Références
 === Webographie
 * https://docs.oracle.com/en/java/javase/index.html[Java Platform, Standard Edition Documentation]
-* https://docs.oracle.com/en/java/javase/15/docs/api/index.html[Java API]
+* {apiurl}/index.html[Java API]
 * http://docs.oracle.com/javase/tutorial/[_The Java Tutorials_]
 * Aide-mémoire :
 https://dzone.com/asset/download/51834[Core Java],
