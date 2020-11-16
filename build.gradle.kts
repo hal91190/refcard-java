@@ -37,7 +37,7 @@ tasks {
         version = asciidoctorJVersion
         sources(delegateClosureOf<PatternSet> {
             include("index.adoc", "techno.adoc", "base.adoc", "class.adoc", "inheritance.adoc",
-                    "modules.adoc", "errors.adoc", "io.adoc", "collections.adoc", "streams.adoc")
+                    "modules.adoc", "errors.adoc", "io.adoc", "collections.adoc", "streams.adoc", "conclusion.adoc")
         })
         baseDirFollowsSourceDir()
     }

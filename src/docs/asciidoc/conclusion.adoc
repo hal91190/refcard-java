@@ -1,0 +1,31 @@
+= Pour aller plus loin...
+ifndef::masterdoc[]
+include::meta.adoc[]
+include::attributes.adoc[]
+endif::masterdoc[]
+
+== Lisez !
+* Des livres (cf. la bibliographie en début de cours)
+* Des blogs (https://dzone.com/[DZone], https://www.infoq.com/[InfoQ], https://blog.jetbrains.com/idea/tag/java-annotated/[Java Annotated Monthly]), wiki (http://wiki.c2.com/[C2 wiki]), flux, ...
+* Des questions/réponses (https://stackoverflow.com/[Stack Overflow])
+* *Du code* (http://wiki.c2.com/?TipsForReadingCode[Tips For Reading Code], https://github.com/explore[github], http://wiki.c2.com/?ProgramsToRead[Programs To Read])
+
+CAUTION: pour les langages, attention aux versions (Java >= 8)
+
+IMPORTANT: Ayez l'esprit critique (toutes les pages ne se valent pas)
+
+== Pratiquez !
+* http://codekata.com/[Kata], Koans, https://fr.wikipedia.org/wiki/Coding_dojo[Coding Dojo]
++
+.Ajoutez des contraintes
+[TIP]
+====
+* les types primitifs doivent systématiquement être encapsulés
+* pas de méthodes de plus de 4 lignes
+* un seul niveau d'indentation par méthode
+* pas plus de 2 paramètres par méthode
+* pas d'utilisation de la souris
+* ...
+====
+* https://www.codewars.com/[Codewars], https://www.codingame.com/start[CodinGame]
+* Participez à un projet Open Source

@@ -29,4 +29,6 @@ include::collections.adoc[]
 
 include::streams.adoc[]
 
+include::conclusion.adoc[]
+
 :leveloffset: -1
