@@ -22,6 +22,7 @@ Un _type primitif_ est un type de base du langage, i.e. non défini par l'utilis
 
 IMPORTANT: *En Java, les valeurs de ces types ne sont pas des objets*.
 
+[horizontal]
 `boolean`:: `true` ou `false`
 `byte`:: entier signé sur 8 bits (-128 à 127)
 `short`:: entier signé sur 16 bits (-32768 à 32767)
@@ -41,7 +42,7 @@ Flottants:: `1.23E-4` de type `double`, `1.23E-4F` de type `float`
 Booléens:: `true` ou `false`
 Caractères:: `'a'`, `'\t'` ou `'\u0000'`
 Chaînes:: `"texte"`
-IMPORTANT: le type chaîne de caractères n'est pas un type primitif : les chaînes de caractères sont des instances de la classe https://docs.oracle.com/en/java/javase/14/docs/api/java.base/java/lang/String.html[`java.lang.String`]
+IMPORTANT: le type chaîne de caractères n'est pas un type primitif : les chaînes de caractères sont des instances de la classe {apiurl}/java.base/java/lang/String.html[`java.lang.String`]
 Null:: `null` (valeur des références non initialisées)
 
 .Remarques
@@ -90,7 +91,7 @@ NOTE: {jlsurl}/jls-4.html#jls-4.3[Reference Types and Values]
 ** le GC s'exécute lorque certaines conditions sont réunies
 * Certains paramètres de la JVM permettent de contrôler le GC et les zones mémoires (`-mx`|`-Xmx`, `-XX:+UseParallelGC`, ...)
 
-NOTE: https://docs.oracle.com/en/java/javase/14/gctuning/[HotSpot Virtual Machine Garbage Collection Tuning Guide]
+NOTE: {jseurl}/gctuning/[HotSpot Virtual Machine Garbage Collection Tuning Guide]
 
 == Tableaux
 * Un _tableau_ est une structure de données regroupant plusieurs valeurs de même type
@@ -100,7 +101,7 @@ NOTE: https://docs.oracle.com/en/java/javase/14/gctuning/[HotSpot Virtual Machin
 ** permet de simuler des tableaux à plusieurs dimensions
 
 .http://docs.oracle.com/javase/tutorial/java/nutsandbolts/arrays.html[The Java Tutorials: Arrays]
-image::https://docs.oracle.com/javase/tutorial/figures/java/objects-tenElementArray.gif[Un tableau en Java]
+image::{tutourl}/figures/java/objects-tenElementArray.gif[Un tableau en Java]
 
 NOTE: {jlsurl}/jls-10.html[Arrays]
 
@@ -151,8 +152,8 @@ include::{tstdir}/base/ArrayTest.java[tag=base-arrays]
 
 == Expressions, instructions et blocs
 //TODO à compléter
-NOTE: https://docs.oracle.com/javase/tutorial/java/nutsandbolts/operators.html[Operators],
-https://docs.oracle.com/javase/tutorial/java/nutsandbolts/expressions.html[Expressions, Statements, and Blocks],
-https://docs.oracle.com/javase/tutorial/java/nutsandbolts/flow.html[Control Flow Statements],
+NOTE: {tutourl}/java/nutsandbolts/operators.html[Operators],
+{tutourl}/java/nutsandbolts/expressions.html[Expressions, Statements, and Blocks],
+{tutourl}/java/nutsandbolts/flow.html[Control Flow Statements],
 {jlsurl}/jls-15.html[Expressions],
 {jlsurl}/jls-14.html[Blocks and Statements]
