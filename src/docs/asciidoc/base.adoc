@@ -10,10 +10,12 @@ endif::masterdoc[]
 ** chaque instruction se termine par un `;`
 ** Java différencie majuscules et minuscules
 * Commentaires
++
+[horizontal]
 `/* ... */`:: le texte entre `/*` et `*/` est ignoré
 `// ...`:: le texte jusqu'à la fin de la ligne est ignoré
 
-NOTE: https://docs.oracle.com/javase/specs/jls/se14/html/jls-3.html[Lexical Structure]
+NOTE: {jlsurl}/jls-3.html[Lexical Structure]
 
 == Types primitifs
 Un _type primitif_ est un type de base du langage, i.e. non défini par l'utilisateur.
@@ -29,7 +31,7 @@ IMPORTANT: *En Java, les valeurs de ces types ne sont pas des objets*.
 `double`:: nombre en virgule flottante double précision (64 bits IEEE 754)
 `char`:: caractère Unicode sur 16 bits de `\u0000` à `\uffff`
 
-NOTE: https://docs.oracle.com/javase/specs/jls/se14/html/jls-4.html#jls-4.2[Primitive Types and Values]
+NOTE: {jlsurl}/jls-4.html#jls-4.2[Primitive Types and Values]
 
 == Littéraux
 Un _littéral_ est la représentation dans le code source d'une valeur d'un type.
@@ -45,7 +47,7 @@ Null:: `null` (valeur des références non initialisées)
 .Remarques
 * Depuis Java SE 7, il est possible d'inclure le caractère `_` dans les littéraux numériques pour en améliorer la lisibilité
 
-NOTE: https://docs.oracle.com/javase/specs/jls/se14/html/jls-3.html#jls-3.10[Literals]
+NOTE: {jlsurl}/jls-3.html#jls-3.10[Literals]
 
 == Variables
 * Une _variable_ permet d'associer un nom (identifiant) à une valeur.
@@ -57,7 +59,7 @@ NOTE: https://docs.oracle.com/javase/specs/jls/se14/html/jls-3.html#jls-3.10[Lit
 include::{tstdir}/base/BaseTest.java[tag=base-var-decl]
 ----
 
-NOTE: https://docs.oracle.com/javase/specs/jls/se14/html/jls-4.html#jls-4.12[Variables]
+NOTE: {jlsurl}/jls-4.html#jls-4.12[Variables]
 
 == Références
 * Les variables de type tableau, énumération, objet ou interface sont en fait des _références_
@@ -79,7 +81,7 @@ NOTE: https://docs.oracle.com/javase/specs/jls/se14/html/jls-4.html#jls-4.12[Var
             \------/
 ----
 
-NOTE: https://docs.oracle.com/javase/specs/jls/se14/html/jls-4.html#jls-4.3[Reference Types and Values]
+NOTE: {jlsurl}/jls-4.html#jls-4.3[Reference Types and Values]
 
 == Gestion de la mémoire dans la JVM
 * Les variables locales (types primitifs et références vers des objets du tas) sont créées sur la pile (_stack_)
@@ -100,7 +102,7 @@ NOTE: https://docs.oracle.com/en/java/javase/14/gctuning/[HotSpot Virtual Machin
 .http://docs.oracle.com/javase/tutorial/java/nutsandbolts/arrays.html[The Java Tutorials: Arrays]
 image::https://docs.oracle.com/javase/tutorial/figures/java/objects-tenElementArray.gif[Un tableau en Java]
 
-NOTE: https://docs.oracle.com/javase/specs/jls/se14/html/jls-10.html[Arrays]
+NOTE: {jlsurl}/jls-10.html[Arrays]
 
 === Déclaration et création de tableaux
 * La déclaration d'une variable de type tableau se fait en ajoutant `[]` au type des éléments
@@ -152,5 +154,5 @@ include::{tstdir}/base/ArrayTest.java[tag=base-arrays]
 NOTE: https://docs.oracle.com/javase/tutorial/java/nutsandbolts/operators.html[Operators],
 https://docs.oracle.com/javase/tutorial/java/nutsandbolts/expressions.html[Expressions, Statements, and Blocks],
 https://docs.oracle.com/javase/tutorial/java/nutsandbolts/flow.html[Control Flow Statements],
-https://docs.oracle.com/javase/specs/jls/se14/html/jls-15.html[Expressions],
-https://docs.oracle.com/javase/specs/jls/se14/html/jls-14.html[Blocks and Statements]
+{jlsurl}/jls-15.html[Expressions],
+{jlsurl}/jls-14.html[Blocks and Statements]

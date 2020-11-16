@@ -2,4 +2,5 @@
 :icons: font
 :srcdir: ../../main/java/fr/uvsq/refcardjava
 :tstdir: ../../test/java/fr/uvsq/refcardjava
+:jlsurl: https://docs.oracle.com/javase/specs/jls/se14/html
 :source-highlighter: coderay
