@@ -1,2 +1,2 @@
 Stéphane Lopes <stephane.lopes@uvsq.fr>
-v202006
+v2020.11.1,
