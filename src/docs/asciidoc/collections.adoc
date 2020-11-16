@@ -1,0 +1,752 @@
+= Bibliothèque pour la gestion des collections
+ifndef::masterdoc[]
+include::meta.adoc[]
+include::attributes.adoc[]
+endif::masterdoc[]
+
+== Collection
+* Une _collection_ (_conteneur_) est un objet qui regroupe plusieurs éléments en une seule unité
+* Une collection peut être utilisée pour stocker et manipuler des données et pour transmettre des données d'une méthode à une autre
+* Une collection regroupe généralement des objets de même type
+
+== Bibliothèques pour les collections
+* Une _bibliothèque pour les collections_ (_collection framework_) est une architecture unifiée pour représenter et manipuler des collections
+* Elle différencie trois composants :
+** des _interfaces_ définissent les types pour les collections
+** des _implémentations_ représentent les structures de données proprement dites
+** des _algorithmes_ effectuent des traitements sur les types de collections
+* Ce type de bibliothèque s'appuie en général sur la généricité pour le contrôle des types
+
+.Quelques exemples de bibliothèques pour les collections
+Java::
+http://docs.oracle.com/javase/8/docs/technotes/guides/collections/overview.html[_Java Collections Framework_],
+https://commons.apache.org/proper/commons-collections/[_Apache Commons Collections_],
+https://github.com/google/guava/wiki[_Google Guava_]
+C++::
+http://www.cplusplus.com/reference/stl/[_Standard Containers_] de la STL (_Standard Template Library_),
+http://www.boost.org/[_Boost_]
+Python::
+built-in containers https://docs.python.org/3/library/stdtypes.html#dict[`dict`],
+https://docs.python.org/3/library/stdtypes.html#list[`list`],
+https://docs.python.org/3/library/stdtypes.html#set[`set`], and
+https://docs.python.org/3/library/stdtypes.html#tuple[`tuple`]
+C#::
+https://msdn.microsoft.com/fr-fr/library/mt654013.aspx[_Collections_]
+Rust::
+https://doc.rust-lang.org/std/collections/[`std::collections`]
+
+== Vue d'ensemble de la bibliothèque Java
+.Collection simple
+[plantuml, collection-overview, png]
+....
+interface Collection<E>
+interface DeQueue<E>
+Interface Iterable<T>
+interface List<E>
+Interface NavigableSet<E>
+interface Queue<E>
+interface Set<E>
+interface SortedSet<E>
+
+Iterable <|-- Collection
+Collection <|-- List
+Collection <|-- Queue
+Collection <|-- Set
+Queue <|-- DeQueue
+Set <|-- SortedSet
+SortedSet <|-- NavigableSet
+
+abstract class AbstractCollection<E>
+abstract class AbstractList<E>
+abstract class AbstractQueue<E>
+abstract class AbstractSequentialList<E>
+abstract class AbstractSet<E>
+class ArrayDeque<E>
+class ArrayList<E>
+class EnumSet<E extends Enum<E>>
+class HashSet<E>
+class LinkedHashSet<E>
+class LinkedList<E>
+class Stack<E>
+class TreeSet<E>
+class Vector<E>
+
+Collection <|.. AbstractCollection
+DeQueue <|.. ArrayDeque
+List <|.. AbstractList
+Queue <|.. AbstractQueue
+NavigableSet <|.. TreeSet
+Set <|.. AbstractSet
+Set <|.. HashSet
+
+AbstractCollection <|-- AbstractList
+AbstractCollection <|-- AbstractQueue
+AbstractCollection <|-- AbstractSet
+AbstractCollection <|-- ArrayDeque
+AbstractList <|-- AbstractSequentialList
+AbstractList <|-- ArrayList
+AbstractList <|-- Vector
+AbstractSequentialList <|-- LinkedList
+AbstractSet <|-- EnumSet
+AbstractSet <|-- HashSet
+AbstractSet <|-- TreeSet
+HashSet <|-- LinkedHashSet
+Vector <|-- Stack
+....
+
+.Dictionnaires
+[plantuml, map-overview, png]
+....
+Interface Map<K, V>
+Interface NavigableMap<K, V>
+Interface SortedMap<K, V>
+
+Map <|-- SortedMap
+SortedMap <|-- NavigableMap
+
+abstract class AbstractMap<K, V>
+class EnumMap<K extends Enum<K>, V>
+class HashMap<K, V>
+class Hashtable<K, V>
+class LinkedHashMap<K, V>
+class TreeMap<K, V>
+class WeakHashMap<K, V>
+
+Map <|.. AbstractMap
+Map <|.. Hashtable
+NavigableMap <|.. TreeMap
+
+AbstractMap <|-- WeakHashMap
+AbstractMap <|-- EnumMap
+AbstractMap <|-- HashMap
+AbstractMap <|-- TreeMap
+AbstractMap <|-- WeakHashMap
+HashMap <|-- LinkedHashMap
+....
+
+== Caractéristiques communes
+* Une collection Java ne peut pas contenir une donnée d'un type primitif (uniquement des objets)
+* Les composants de la bibliothèque de collections se trouvent dans `java.util`
+* Le découpage interface/implémentation repose sur le modèle de conception https://en.wikipedia.org/wiki/Bridge_pattern[Pont]
+
+== Les interfaces
+* Les interfaces sont utilisées pour manipuler des collections et les transmettre d'une méthode à une autre
+* Les interfaces représentent les types de structures de données et permettent de manipuler les collections indépendamment des différentes implémentations
++
+NOTE: il est préférable de manipuler les collections par les interfaces plutôt que par les implémentations
+* Une implémentation a la possibilité de ne pas supporter toutes les méthodes de modification de l'interface (lancement de l'exception `UnsupportedOperationException`)
+* Les implémentations du JDK implémentent toutes les méthodes optionnelles
+
+.Hiérarchie des types de collections simples
+[plantuml, collection-hierarchie, svg]
+....
+interface Collection<E>
+interface DeQueue<E>
+Interface Iterable<T>
+note right of Iterable : autorise l'utilisation du foreach
+interface List<E>
+Interface NavigableSet<E>
+interface Queue<E>
+interface Set<E>
+interface SortedSet<E>
+
+Iterable <|-- Collection
+Collection <|-- List
+Collection <|-- Queue
+Collection <|-- Set
+Queue <|-- DeQueue
+Set <|-- SortedSet
+SortedSet <|-- NavigableSet
+....
+
+.Hiérarchie des types de dictionnaires
+[plantuml, map-hierarchie, svg]
+....
+interface Map<T>
+note right of Map : représentent des tableaux associatifs (dictionnaires)
+interface SortedMap<T>
+interface NavigableMap<T>
+
+Map <|-- SortedMap
+SortedMap <|-- NavigableMap
+....
+
+=== L'interface `Collection`
+* L'interface `Collection` est la racine de la hiérarchie de collection
+* Le JDK ne fournit pas d'implémentation spécifique pour cette interface
+[horizontal]
+=>:: toutes les implémentations conviennent
+* C'est le plus petit dénominateur commun pour les implémentations
+* Elle doit être utilisée quand un maximum de généralité est souhaitée
+
+[source,java,indent=0]
+----
+public interface Collection<E> extends Iterable<E> {
+  // Opérations simples
+  int size(); // Returns the number of elements in this collection.
+  boolean isEmpty(); // Returns true if this collection contains no elements.
+  boolean contains(Object element); // Returns true if this collection contains the specified element.
+  boolean add(E element); // Ensures that this collection contains the specified element (optional operation).
+  boolean remove(Object element); // Removes a single instance of the specified element from this collection, if it is present (optional operation).
+  boolean equals(Object o); // Compares the specified object with this collection for equality.
+  int hashCode(); // Returns the hash code value for this collection.
+
+  // Opérations de groupe
+  boolean containsAll(Collection<?> c); // Returns true if this collection contains all of the elements in the specified collection.
+  boolean addAll(Collection<? extends E> c); // Adds all of the elements in the specified collection to this collection (optional operation).
+  boolean removeAll(Collection<?> c); // Removes all of this collection's elements that are also contained in the specified collection (optional operation).
+  default boolean removeIf(Predicate<? super E> filter); // Removes all of the elements of this collection that satisfy the given predicate.
+  boolean retainAll(Collection<?> c); // Retains only the elements in this collection that are contained in the specified collection (optional operation).
+  void clear();    // Removes all of the elements from this collection (optional operation).
+
+  // Conversions
+  Object[] toArray(); // Returns an array containing all of the elements in this collection.
+  <T> T[] toArray(T[] a); // Returns an array containing all of the elements in this collection; the runtime type of the returned array is that of the specified array.
+  default <T> T[] toArray(IntFunction<T[]> generator); // Returns an array containing all of the elements in this collection, using the provided generator function to allocate the returned array.
+
+  // Itération et Streams
+  Iterator<E> iterator(); // Returns an iterator over the elements in this collection.
+  default Spliterator<E> spliterator(); // Creates a Spliterator over the elements in this collection.
+  default Stream<E> stream(); // Returns a sequential Stream with this collection as its source.
+  default Stream<E> parallelStream(); // Returns a possibly parallel Stream with this collection as its source.
+}
+----
+
+=== Parcourir des collections
+Trois techniques permettent de parcourir des collections
+
+* Les _Streams_
++
+[source,java,indent=0]
+----
+String joined = elements.stream()
+    .filter(e -> e.getColor() == Color.RED)
+    .map(Object::toString)
+    .collect(Collectors.joining(", "));
+----
+* La boucle _for-each_
++
+[source,java,indent=0]
+----
+for (String element : uneCollectionDeChaines) {
+    // Manipuler element
+}
+----
+** La boucle _for-each_ ne permet pas de modifier la collection lors de l'itération
+[horizontal]
+=>:: utiliser un itérateur dans ce cas
+* Les itérateurs
+** La notion d'itérateur est implantée en Java par l'interface `Iterator`
++
+[source,java,indent=0]
+----
+public interface Iterator<E> {
+    boolean hasNext();
+    E next();
+    default void remove() {
+        throw new UnsupportedOperationException("remove");
+    }
+    default void forEachRemaining(Consumer<? super E> action) {
+        Objects.requireNonNull(action);
+        while (hasNext())
+            action.accept(next());
+    }
+}
+----
+** Un itérateur peut être vu comme un marqueur se trouvant entre deux éléments
+** L'utilisation de `remove` est le seul moyen sûr de modifier une collection lors du parcours
+** On ne peut utiliser `remove()` qu'une seule fois par appel à `next()`
+** Un itérateur est basé sur le modèle de conception https://en.wikipedia.org/wiki/Iterator_pattern[Itérateur]
++
+[source,java,indent=0]
+----
+  for (Iterator<String> i = uneCollectionDeChaines.iterator(); i.hasNext(); ) {
+    String element = i.next(); // Récupère l'élément et passe au suivant
+    // ...
+  }
+----
+
+=== L'interface `Set`
+* L'interface `Set` représente une collection sans doublon
+** modélise le concept mathématique d'ensemble
+* L'interface `Set` n'ajoute aucune méthode à l'interface `Collection`
+* Deux ensembles sont égaux s'ils contiennent les mêmes éléments
+* Sémantique des méthodes de groupe
+** `s1.containsAll(s2)` retourne `true` si stem:[s_2 sube s_1]
+** `s1.addAll(s2)` transforme s1 en stem:[s_1 uu s_2]
+** `s1.retainAll(s2)` transforme s1 en stem:[s_1 nn s_2]
+** `s1.removeAll(s2)` transforme s1 en stem:[s_1 \\ s_2]
+
+=== L'interface `List`
+* L'interface `List` représente une _séquence_ d'éléments, i.e. une collection ordonnée
+* L'interface `List` possède des opérations pour:
+** accéder aux éléments d'une liste par leurs indices
+** retourner l'indice d'un objet que l'on recherche
+** étendre la sémantique des itérateurs
+** manipuler des sous-listes
+* Deux listes sont égales si elles possèdent les mêmes éléments dans le même ordre
+
+[source,java,indent=0]
+----
+public interface List<E> extends Collection<E> {
+  // Accès par position
+  E get(int index); // Returns the element at the specified position in this list.
+  E set(int index, E element); // Replaces the element at the specified position in this list with the specified element (optional operation).
+  void add(int index, E element); // Inserts the specified element at the specified position in this list (optional operation).
+  E remove(int index); // Removes the element at the specified position in this list (optional operation).
+  boolean addAll(int index, Collection<? extends E> c); // Inserts all of the elements in the specified collection into this list at the specified position (optional operation).
+
+  // Opération de groupe
+  default void replaceAll(UnaryOperator<E> operator) {
+        Objects.requireNonNull(operator);
+        final ListIterator<E> li = this.listIterator();
+        while (li.hasNext()) {
+            li.set(operator.apply(li.next()));
+        }
+    }
+  default void sort(Comparator<? super E> c) {
+        Collections.sort(this, c);
+    }
+
+  // Recherche
+  int indexOf(Object o); // Returns the index of the first occurrence of the specified element in this list, or -1 if this list does not contain the element.
+  int lastIndexOf(Object o); // Returns the index of the last occurrence of the specified element in this list, or -1 if this list does not contain the element.
+
+  // Itération
+  ListIterator<E> listIterator(); // Returns a list iterator over the elements in this list (in proper sequence).
+  ListIterator<E> listIterator(int index); // Returns a list iterator over the elements in this list (in proper sequence), starting at the specified position in the list.
+
+  // Vue en sous-liste
+  List<E> subList(int from, int to); // Returns a view of the portion of this list between the specified fromIndex, inclusive, and toIndex, exclusive.
+
+  // Factories
+  static <E> List<E> copyOf(Collection<? extends E> coll); // Returns an unmodifiable List containing the elements of the given Collection, in its iteration order.
+  static <E> List<E> of(); // Returns an unmodifiable list containing zero elements.
+  static <E> List<E> of(E e1); // Returns an unmodifiable list containing one element.
+  static <E> List<E> of(E... elements); // Returns an unmodifiable list containing an arbitrary number of elements.
+  static <E> List<E> of(E e1, E e2); // Returns an unmodifiable list containing two elements.
+  // [...]
+}
+----
+
+=== Itérateur de liste
+* L'interface `ListIterator` étend l'interface `Iterator` pour permettre un parcours dans les deux sens
+
+[source,java,indent=0]
+----
+public interface ListIterator<E> extends Iterator<E> {
+    boolean hasPrevious();
+    E previous();
+
+    int nextIndex();
+    int previousIndex();
+
+    void set(E o);     // Optionnel
+    void add(E o);     // Optionnel
+}
+----
+
+=== L'interface `Queue`
+* L'interface `Queue` représente une file
+* Les méthodes sont proposées sous deux formes
++
+[cols="s,2*",options="header"]
+|===
+
+| | lance une exception | retourne une valeur spéciale
+
+| Insertion | `add(e)` | `offer(e)`
+
+| Suppression | `remove()` | `poll()`
+
+| Accès | `element()` | `peek()`
+
+|===
+* La stratégie d'insertion/suppression est définie par l'implémentation
+
+=== L'interface `DeQueue`
+* L'interface `DeQueue` représente une file à double entrée
++
+[cols="s,4*",options="header"]
+|===
+
+|
+2+| Accès en tête
+2+| Accès en queue
+
+| | Exception | Valeur spéciale | Exception | Valeur spéciale
+
+| Insertion | `addFirst(e)` | `offerFirst(e)` | `addLast(e)` | `offerLast(e)`
+
+| Suppression | `removeFirst()` | `pollFirst()` | `removeLast()` | `pollLast()`
+
+| Accès | `getFirst()` | `peekFirst()` | `getLast()` | `peekLast()`
+
+|===
+
+=== L'interface `Map`
+* L'interface `Map` représente un _tableau associatif_ (_dictionnaire_)
+** i.e. un objet qui associe une clé à chaque valeur
+* Une clé peut correspondre à au plus une valeur
++
+NOTE: pas de multi-map en Java => utiliser une map avec une liste de valeurs associées à chaque clé
+* Deux tableaux associatifs sont égaux s'ils représentent les mêmes associations clé/valeur
+
+WARNING: Les objets mutables comme clés d'une `Map` peuvent poser problème
+
+[source,java,indent=0]
+----
+public interface Map<K, V> {
+  // Opérations de base
+  int size();
+  boolean isEmpty();
+  V put(K key, V value);
+  V get(Object key);
+  V remove(Object key);
+  boolean containsKey(Object key);
+  boolean containsValue(Object value);
+
+  // Opérations sur des groupes
+  void putAll(Map<? extends K,? extends V> t);
+  void clear();
+
+  // Vues
+  public Set<K> keySet();
+  public Collection<V> values();
+  public Set<Map.Entry<K,V>> entrySet();
+
+  // Interface pour entrySet
+  public interface Entry<K, V> {
+    K getKey();
+    V getValue();
+    V setValue(V value);
+  }
+
+  // Factories
+  static <K, V> Map<K, V> copyOf(Map<? extends K,? extends V> map); // Returns an unmodifiable Map containing the entries of the given Map.
+  static <K, V> Map.Entry<K, V> entry(K k, V v); // Returns an unmodifiable Map.Entry containing the given key and value.
+  static <K, V> Map<K, V> of(); // Returns an unmodifiable map containing zero mappings.
+  static <K, V> Map<K, V> of(K k1, V v1); // Returns an unmodifiable map containing a single mapping.
+  static <K, V> Map<K, V> of(K k1, V v1, K k2, V v2); // Returns an unmodifiable map containing two mappings.
+  // [...]
+  static <K, V> Map<K, V> ofEntries(Map.Entry<? extends K, ? extends V>... entries); // Returns an unmodifiable map containing keys and values extracted from the given entries.
+
+  // + des méthodes par défaut
+}
+----
+
+=== Parcourir une `Map`
+* Les méthodes de _vue comme collection_ permettent de voir une `Map` comme une collection de trois façons différentes
+[horizontal]
+`keySet`:: représente l'*ensemble* des clés
+`values`:: représente la *collection* des valeurs
+`entrySet`:: représente l'ensemble des couples _(clé, valeur)_
+* Ces méthodes fournissent un moyen pour parcourir une `Map`
+
+=== Exemple : construire l'histogramme d'une image
+.Méthode de construction de l'histogramme
+[source,java,indent=0]
+----
+include::{srcdir}/collections/HistogrammeDemo.java[tags=frequency]
+----
+
+.Manipulation de l'histogramme
+[source,java,indent=0]
+----
+include::{srcdir}/collections/HistogrammeDemo.java[tags=histo]
+----
+
+=== Ordonner des objets
+.Le problème
+* Comment ordonner des objets selon leur _ordre naturel_ (lexicographique pour les chaînes, chronologique pour les dates, ...) ?
+
+.En Java
+* La solution proposée est d'implémenter l'interface `Comparable`
+
+==== L'interface `Comparable`
+[source,java,indent=0]
+----
+public interface Comparable<T> {
+  public int compareTo(<T> o);
+}
+----
+
+* La plupart des classes de la librairie Java implémentent cette interface
+* `compareTo` doit retourner un entier négatif (respectivement zéro, un entier positif) si l'objet est inférieur (respectivement égal, supérieur) au paramètre
+* Si l'argument n'est pas du bon type, `compareTo` doit lancer l'exception `ClassCastException`
+* L'ordre ainsi défini doit induire un _ordre partiel_ (cf. la documentation de https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/lang/Comparable.html[`Comparable`])
+
+==== Exemple : définir un ordre naturel sur des personnes
+.Déclaration de la classe
+[source,java,indent=0]
+----
+include::{srcdir}/collections/Person.java[tags=person]
+----
+
+.Redéfinition de la comparaison selon l'ordre naturel
+[source,java,indent=0]
+----
+include::{srcdir}/collections/Person.java[tags=compareto]
+----
+
+=== Ordonner des objets selon un ordre spécifique
+.Le problème
+* Comment ordonner des objets selon un ordre particulier (différent de l'ordre naturel) ?
+
+.En Java
+* La solution proposée est de fournir un _comparateur_, i.e. une instance d'une classe implémentant l'interface `Comparator`
+
+==== L'interface `Comparator`
+[source,java,indent=0]
+----
+public interface Comparator<T> {
+  int compare(T o1, T o2);
+}
+----
+
+* `compare` doit retourner un entier négatif (respectivement zéro, un entier positif) si le premier paramètre est inférieur (respectivement égal, supérieur) au second
+* Si l'argument n'est pas du bon type, `compare` doit lancer l'exception `ClassCastException`
+* L'ordre ainsi défini doit induire un _ordre partiel_ (cf. la documentation de https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/util/Comparator.html[`Comparator`])
+
+==== Exemple : définir un ordre spécifique sur des personnes
+[source,java,indent=0]
+----
+include::{srcdir}/collections/ByAgeComparator.java[]
+----
+
+==== Exemple : trier une liste de personnes
+[source,java,indent=0]
+----
+include::{srcdir}/collections/OrderingObjectsDemo.java[tags=orderingdemo]
+----
+
+=== L'interface `SortedSet`
+* Cette interface permet de maintenir les éléments d'un ensemble en ordre croissant selon l'ordre naturel ou un ordre spécifié par un comparateur
+* Elle fournit des méthodes pour :
+** manipuler un interval d'éléments
+** accéder au plus petit ou au plus grand élément
+** récupérer le comparateur utilisé (s'il existe)
+* Les opérations héritées de `Set` fonctionnent à l'identique mais :
+** l'itérateur respecte l'ordre
+** `toArray` conserve l'ordre
+
+[source,java,indent=0]
+----
+public interface SortedSet<E> extends Set<E> {
+  // Vue par intervalle
+  SortedSet<E> subSet(E fromElement, E toElement);
+  SortedSet<E> headSet(E toElement);
+  SortedSet<E> tailSet(E fromElement);
+
+  // Extrémités
+  E first();
+  E last();
+
+  // Comparateur
+  Comparator<? super E> comparator();
+}
+----
+
+=== L'interface `SortedMap`
+* Cette interface permet de maintenir une `Map` ordonnée selon l'odre naturel de ses clés ou selon un comparateur
+* Elle fournit des méthodes pour:
+** manipuler un interval d'éléments
+** accéder au plus petit ou au plus grand élément
+** récupérer le comparateur utilisé (s'il existe)
+
+[source,java,indent=0]
+----
+public interface SortedMap<K, V> extends Map<K, V> {
+  // Range-view
+  SortedMap<K, V> subMap(K fromKey, K toKey);
+  SortedMap<K, V> headMap(K toKey);
+  SortedMap<K, V> tailMap(K fromKey);
+
+  // Endpoints
+  K firstKey();
+  K lastKey();
+
+  // Comparator access
+  Comparator<? super K> comparator();
+}
+----
+
+== Les implémentations
+* Les implémentations sont les structures de données proprement dites
+* On en trouve plusieurs sortes en Java
+** les _implémentations généralistes_ sont les plus couramment utilisées
+** les _implémentations spécialisées_ sont conçues pour un cas particulier
+** les _implémentations supportant la concurrence_ pour les applications multi-threads
+** les _implémentations "décorations"_ permettent de modifier les caractéristiques d'une autre implémentation
+** les _implémentations "simples"_ sont des implémentations minimalistes optimisées pour un cas particulier (singleton par exemple)
+** les _implémentations abstraites_ servent de base pour le développement d'implémentation personnalisée
+
+=== Implémentations généralistes
+|===
+
+| Interface | Hashage | Tableau dyn. | Arbre équ. | Liste chaînée | Hash. + chaîn.
+
+| `Set` | `*HashSet*` | | `TreeSet` | | `LinkedHashSet`
+
+| `List` | | `*ArrayList*` | | `LinkedList` |
+
+| `Queue` | | `*ArrayDeque*` | | `LinkedList` |
+
+| `DeQueue` | | `*ArrayDeque*` | | `LinkedList` |
+
+| `Map` | `*HashMap*` | | `TreeMap` | | `LinkedHashMap`
+
+|===
+
+* Les implémentations principales sont en gras
+* `TreeSet` (respectivement `TreeMap`) implémente également `SortedSet` (respectivement `SortedMap`)
+* `Queue` possède aussi pour implémentation `PriorityQueue`
+
+.Caractéristiques des implémentations généralistes
+* Toutes les implémentations implémentent toutes les méthodes optionnelles
+* Toutes sont sérialisables
+* Toutes supportent l'opération `clone`
+* Elles ne sont pas synchronisées (pour des raisons de performance)
+
+.Utilisation des implémentations généralistes
+. Choisir un type d'implémentation
+. Créer une instance de cette implémentation
+. La lier à une référence sur l'interface correspondante
+** le programme reste alors indépendant du choix de l'implémentation
+
+[source,java,indent=0]
+----
+Set<Integer> unEnsemble = new HashSet<>();
+List<Integer> uneList = new ArrayList<>();
+Map<String, String> uneMap = new HashMap<>();
+----
+
+==== Les implémentations généralistes de `Set`
+* `HashSet` est plus rapide mais ne garantit pas l'ordre
+** la plupart des opérations sont en temps constant
+** la _capacité_ et le _facteur de charge_ permettent d'affiner les performances de `HashSet`
+* `TreeSet` maintient l'ordre des éléments
+** la plupart des opérations sont en temps logarithmique
+
+TIP: on choisit `HashSet` sauf si on a besoin d'un ordre sur les éléments
+
+==== Les implémentations généralistes de `Map`
+* Situation analogue à `Set`
+
+TIP: on choisit `HashMap` sauf si on a besoin d'un ordre sur les éléments
+
+==== Les implémentations de `List`
+* `ArrayList` est plus rapide
+** permet un accès par position en temps constant
+** pas d'allocation à chaque ajout
+** on peut passer une _capacité_ au constructeur de `ArrayList`
+** possède les opérations `ensureCapacity` et `trimToSize` en plus de celle de l'interface `List`
+* `LinkedList` est linéaire pour l'accès par position
+** adaptée si on fait beaucoup d'insertions/suppressions en milieu de liste (opérations en temps constant mais le facteur constant est élevé)
+** possède les opérations `addFirst`, `getFirst`, `removeFirst`, `addLast`, `getLast`, et `removeLast`
+
+TIP: on choisit `ArrayList` sauf si on a beaucoup de modifications en milieu de liste
+
+=== Quelques implémentations spécialisées
+* `EnumSet` (`Set`) est une implémentation efficace (vecteur de bits) pour les énumérations
+* `CopyOnWriteArraySet` (`Set`) effectue une copie de l'ensemble pour chaque modification
+* `CopyOnWriteArrayList` (`List`) effectue une copie de la liste pour chaque modification
+* `EnumMap` (`Map`) permet d'associer une instance d'énumération à une valeur
+* `WeakHashMap` (`Map`) autorise la libération de la mémoire d'une paire (clé, valeur) dès que la clé n'est plus référencée
+
+=== Implémentations "décorations"
+* Une telle implémentation délègue les traitements principaux à une collection particulière mais y ajoute un certain nombre de fonctionnalités
+** modèle de conception _Décorateur_
+* Ces implémentations sont _anonymes_
+** pas de classe publique mais une méthode de fabrication statique
+** on les obtient par des méthodes de classe (_static factory method_) de la classe `Collections`
+* Plusieurs catégories sont disponibles :
+** avec synchronisation pour rendre les collections "tolérantes aux threads"
++
+[source,java,indent=0]
+----
+List<Integer> list = Collections.synchronizedList(new ArrayList<Integer>());
+----
+** non modifiables pour supprimer toute possibilité de modification d'une collection
++
+[source,java,indent=0]
+----
+Collection<String> collec = Collections.unmodifiableCollection(uneCollection);
+----
+** vérifiant le type dynamiquement
++
+[source,java,indent=0]
+----
+Set<String> set = Collections.checkedSet(new HashSet<String>(), String.class);
+----
+
+=== Les implémentations "simples"
+* Ces implémentations sont des "mini" implémentations plus pratiques et généralement plus performantes que les implémentations généralistes
+** `Arrays.asList` permet de manipuler un tableau comme une liste
+** `Collections.nCopies` génère une liste non modifiable contenant de multiples copies du même élément
+** `Collections.singleton` génère un ensemble non modifiable contenant un unique élément
+** `emptySet`, `emptyList` et `emptyMap` de la classe `Collections` représentent l'ensemble, la liste et le tableau associatif vides
+
+.Utiliser des implémentations "simples"
+[source,java,indent=0]
+----
+// Créer une liste de taille fixe
+List<String> list = Arrays.asList(new String[size]);
+
+// Créer une liste de 1000 éléments initialisés à null
+List<Type> l = new ArrayList<>(Collections.nCopies(1000, (Type)null));
+
+// Ajouter 10 fois la chaîne "element" à une collection
+uneCollection.addAll(Collections.nCopies(10, "element"));
+
+// Supprimer toutes les occurences de e dans la collection
+c.removeAll(Collections.singleton(e));
+
+// Supprimer tous les juristes d'une map
+profession.values().removeAll(Collections.singleton(JURISTE));
+
+// Récupérer une liste vide
+List<String> s = Collections.emptyList();
+----
+
+=== Écrire une implémentation
+* La notion d'_implémentation abstraite_ simplifie l'écriture d'une implémentation
+* Une _implémentation abstraite_ est un squelette d'implémentation d'une collection
+* Processus pour écrire son implémentation
+.. choisir une implémentation abstraite appropriée
+.. implémenter les méthodes abstraites (et éventuellement certaines méthodes concrêtes)
+.. tester l'implémentation obtenue
+.. si les performances sont importantes, étudier les caractéristiques des méthodes héritées et les redéfinir si nécessaire
+
+==== Principales implémentations abstraites
+* `AbstractCollection` pour une collection quelconque
+** les méthodes `iterator` et `size` doivent être fournies
+* `AbstractSet` pour un ensemble (même utilisation que `AbstractCollection`)
+* `AbstractList` pour une liste basée sur une structure à accès aléatoire (comme un tableau)
+** les méthodes `get(int)` et `size` doivent être fournies
+* `AbstractSequentialList` pour une liste basée sur une structure à accès séquentiel (comme une liste chaînée)
+** les méthodes `listIterator` et `size` doivent être fournies
+* `AbstractQueue` nécessite de fournir les méthodes `offer`, `peek`, `poll` et `size` ainsi qu'un itérateur supportant `remove`
+* `AbstractMap` pour un tableau associatif
+** la vue `entrySet` doit être fournie
+
+== Les algorithmes
+* Les algorithmes sont des méthodes de classe de la classe https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/util/Collections.html[`Collections`]
+* Le premier paramètre de ces algorithmes est la collection traitée
+* La plupart opèrent sur des listes
+
+=== Quelques algorithmes disponibles
+* tri : `sort` (complexité en stem:[n log(n)], stable)
+* mélange : `shuffle`
+* manipulation des données : `reverse`, `fill`, `copy`, `swap`, `addAll`
+* recherche dans une collection triée : `binarySearch`
+* composition : `frequency`, `disjoint`
+* extremum : `min`, `max`
+
+[source,java,indent=0]
+----
+List<Integer> l = new ArrayList<Integer>();
+// ...
+Collections.sort(l);
+int pos = Collections.binarySearch(l, key);
+----

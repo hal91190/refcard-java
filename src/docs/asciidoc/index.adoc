@@ -25,4 +25,6 @@ include::errors.adoc[]
 
 include::io.adoc[]
 
+include::collections.adoc[]
+
 :leveloffset: -1
