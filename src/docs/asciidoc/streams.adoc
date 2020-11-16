@@ -1,0 +1,355 @@
+= La bibliothèques _streams_ et la programmation fonctionnelle en Java
+ifndef::masterdoc[]
+include::meta.adoc[]
+include::attributes.adoc[]
+endif::masterdoc[]
+
+== Fonction lambda
+* Une _fonction lambda_ est une fonction anonyme
+* En Java, la syntaxe est composée
+** d'une liste de paramètres formels entre parenthèses
+** d'une flèche ->
+** d'une expression ou d'un bloc d'instructions
+
+[source,java,indent=0]
+----
+// En précisant le type et avec un bloc
+(Person p1, Person p2) -> {
+    return p1.getAge() - p2.getAge()
+}
+// Avec une expression (sans return)
+(Person p1, Person p2) -> p1.getAge() - p2.getAge()
+// Le type des paramètres est optionnel
+(person1, person2) -> person1.getAge() - person2.getAge()
+// Avec un seul paramètres, les parenthèses sont optionnelles
+person -> person.getAge()
+----
+
+== Fonction lambda et interface
+* Une fonction lambda peut être utilisée quand une _interface fonctionnelle_ est attendue
+* Une interface fonctionnelle (_functional interface_) ne doit comporter qu'une unique méthode abstraite
+* L'annotation `@FunctionalInterface` permet de marquer de telles interfaces
+
+.En utilisant l'interface et une classe anonyme
+[source,java,indent=0]
+----
+uneliste.sort(new Comparator<Person> {
+    public int compare(Person p1, Person p2) {
+        return p1.getAge() - p2.getAge();
+    }
+});
+----
+
+.En utilisant une fonction lambda
+[source,java,indent=0]
+----
+uneliste.sort((person1, person2) -> person1.getAge() - person2.getAge());
+----
+
+== Fermeture
+* Une _fermeture_ est une fonction lamda avec son contexte
++
+[source,java,indent=0]
+----
+public class ClosureDemo {
+    public static Function<Integer, Integer> ajouteur(int n1) {
+        return n2 -> n1 + n2;
+    }
+    public static void main(String[] args) {
+        Function<Integer, Integer> ajouteur10 = ajouteur(10);
+        assert ajouteur10(1) == 11;
+    }
+}
+----
+* En Java, une fermeture ne peut pas modifier les variables de son contexte
+
+== Référence de méthode
+* Une _référence de méthode_ permet d'utiliser une méthode comme fonction lambda
+* Quatre types de référence de méthode existent
++
+[options="header"]
+|===
+| Catégorie | Exemple
+
+| Référence à une méthode de classe | `ContainingClass::staticMethodName`
+
+| Référence à une méthode d'un objet précis | `containingObject::instanceMethodName`
+
+| Référence à une méthode d'un objet quelconque | `ContainingType::methodName`
+
+| Référence à un constructeur | `ClassName::new`
+
+|===
+
+.Exemples de référence de méthode
+[source,java,indent=0]
+----
+List<Integer> numbers = Arrays.asList(1, 2, 3, 4, 5, 6, 7, 8, 9, 10);
+
+numbers.forEach(e -> System.out.println(e)); // lambda
+numbers.forEach(System.out::println); // référence de méthode (objet précis)
+
+numbers.stream()
+       // .map(e -> String.valueOf(e)) // lambda
+       .map(String::valueOf) // référence de méthode (méthode de classe)
+       .forEach(System.out::println);
+
+numbers.stream()
+       .map(String::valueOf(e))
+       // .map(e -> e.toString()) // lambda
+       .map(String::toString) // référence de méthode (objet quelconque)
+       .forEach(System.out::println);
+----
+
+== Parcourir une collection (de l'itératif au fonctionnel)
+=== Itérateur externe avec une boucle classique
+[source,java,indent=0]
+----
+List<Integer> numbers = Arrays.asList(1, 2, 3, 4, 5, 6, 7, 8, 9, 10);
+
+for(int i = 0; i < numbers.size(); i++) {
+    System.out.println(numbers.get(i));
+}
+----
+* Beaucoup de "détails" sont visibles
+** indices limites
+** test d'arrêt
+** accès aux éléments
+
+=== Itérateur externe avec une boucle foreach
+[source,java,indent=0]
+----
+List<Integer> numbers = Arrays.asList(1, 2, 3, 4, 5, 6, 7, 8, 9, 10);
+
+for(int e : numbers) {
+    System.out.println(e);
+}
+----
+* Masque les détails mais demeure impératif
+
+=== Itérateur interne
+[source,java,indent=0]
+----
+List<Integer> numbers = Arrays.asList(1, 2, 3, 4, 5, 6, 7, 8, 9, 10);
+
+numbers.forEach(new Consumer<Integer>() {
+    public void accept(Integer value) {
+        System.out.println(value);
+    }
+});
+----
+* Syntaxe plus déclarative
+* L'argument de `forEach` est ici une https://docs.oracle.com/javase/tutorial/java/javaOO/anonymousclasses.html[_classe anonyme_]
+* https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/util/function/Consumer.html[`java.util.function.Consumer<T>`] est une interface fonctionnelle
+* `Consumer` opère par effet de bord
+
+=== Itérateur interne avec lambda
+[source,java,indent=0]
+----
+List<Integer> numbers = Arrays.asList(1, 2, 3, 4, 5, 6, 7, 8, 9, 10);
+
+numbers.forEach(value -> System.out.println(value));
+----
+* Beaucoup plus concis et lisible
+
+=== Itérateur interne avec référence de méthode
+[source,java,indent=0]
+----
+List<Integer> numbers = Arrays.asList(1, 2, 3, 4, 5, 6, 7, 8, 9, 10);
+
+numbers.forEach(System.out::println);
+----
+* Concis et lisible
+
+== Streams
+* Un _flux_ (_stream_) est une séquence d'éléments
+* Il véhicule des éléments à partir d'une source à travers un _pipeline_
+* Un flux ne stocke aucune donnée
++
+WARNING: Ce n'est pas une structure de données
+
+=== Pipeline
+* Un pipeline est une séquence d'opérations applicables sur un flux
+* Il comporte
+** une source (collection, tableau, fonction génératrice, flux I/O)
+** une séquence d'opérations intermédiaires (chacune produit un nouveau stream)
+** une opération terminal qui calcule un résultat
+* Une opération ne modifie pas le flux d'origine
+* L'évaluation est _paresseuse_
+* Peut être exécuté séquentiellement ou en parallèle
+
+=== Opération terminale
+* Une opération terminal traverse le flux pour produire un résultat ou un effet de bord
+* Après exécution, le flux est considéré comme consommé et ne peut pas être réutilisé
+* Une opération terminale est également nommée _réduction_
+
+.Un exemple de stream
+[source,java,indent=0]
+----
+List<Integer> numbers = Arrays.asList(1, 2, 3, 4, 5, 6, 7, 8, 9, 10);
+
+// Calcul le total des doubles des nombres pairs
+System.out.println(
+    numbers.stream()
+           .filter(e -> e % 2 == 0)
+           .mapToInt(e -> e * 2)
+           .sum());
+----
+
+=== L'interface `Stream`
+* L'interface https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/util/stream/Stream.html[`java.util.stream.Stream`] regroupe l'ensemble des opérations applicables aux pipelines
+* Les interfaces `IntStream`, `LongStream` et `DoubleStream` sont spécialisés pour les types primitifs
+
+=== Création d'un flux
+* À partir d'une collection
+** `Collection.stream`, `Collection.parallelStream` (flux parallèle)
+* À partir d'un tableau (`Arrays.stream`)
+* À partir d'un intervalle
+** `IntStream.range`, `IntStream.rangeClosed` (aussi avec `LongStream`)
+* À partir de valeurs
+** `Stream.of` (aussi dans `IntStream`, `LongStream` et `DoubleStream`)
+* À partir des méthodes de classe de `Stream`
+** `concat`, `empty`, `generate`/`iterate` (flux infini)
+* À partir de nombres aléatoires (`doubles`, `ints` et `longs` de la classe `Random`)
+* À partir d'un fichier (`Files.lines`, `BufferedReader.lines`)
+
+=== Quelques opérations intermédiaires
+[options="header"]
+|===
+| Opération | Description
+
+| `filter` | retourne les éléments respectant un prédicat
+
+| `map` | applique une fonction à chaque élément
+
+| `flatMap` | désimbrique des flux
+
+| `limit` | tronque un flux
+
+| `skip` | ignore les premiers éléments
+
+| `distinct` | élimine les doublons (avec état)
+
+| `sorted` | retourne un flux trié (avec état)
+
+|===
+
+.Exemples d'opérations intermédiaires
+[source,java,indent=0]
+----
+List<Integer> numbers = Arrays.asList(1, 2, 3, 4, 5, 6, 7, 8, 9, 10);
+
+numbers.stream()
+       .filter(e -> e % 2 == 0)
+       .forEach(System.out::println)); // 2 4 6 8 10
+
+numbers.stream()
+       .filter(e -> e % 2 == 0)
+       .map(e -> e * 2)
+       .forEach(System.out::println)); // 4 8 12 16 20
+----
+
+=== Quelques opérations terminales
+[options="header"]
+|===
+| Opération | Description
+
+| `reduce` | applique une réduction avec une fonction d'accumulation
+
+| `count` | compte les éléments
+
+| `sum`, ... | réduction spécialisée sur les flux de types primitifs
+
+| `collect` | réalise une réduction par modification
+
+| `allMatch` | teste si tous les éléments respectent un prédicat
+
+| `forEach` | exécute une action pour chaque élément
+
+|===
+
+.Calculer une somme avec `reduce`
+[source,java,indent=0]
+----
+List<Integer> numbers = Arrays.asList(1, 2, 3, 4, 5, 6, 7, 8, 9, 10);
+
+System.out.println(
+    numbers.stream()
+           .filter(e -> e % 2 == 0)
+           .map(e -> e * 2.0)
+           .reduce(0.0, (carry, e) -> carry + e));
+----
+
+.Calculer une somme avec `sum` et `DoubleStream`
+[source,java,indent=0]
+----
+System.out.println(
+    numbers.stream()
+           .filter(e -> e % 2 == 0)
+           .mapToDouble(e -> e * 2.0)
+           .sum());
+----
+
+.Les doubles des nombres pairs dans une liste avec `collect`
+[source,java,indent=0]
+----
+List<Integer> numbers = Arrays.asList(1, 2, 3, 4, 5, 1, 2, 3, 4, 5);
+
+List<Integer> doubleOfEven =
+    numbers.stream()
+           .filter(e -> e % 2 == 0)
+           .map(e -> e * 2)
+           .collect(Collectors.toList());
+System.out.println(doubleOfEven);
+----
+
+.Les doubles des nombres pairs dans un dictionnaire avec `collect`
+[source,java,indent=0]
+----
+Map<Integer, Integer> doubleOfEven =
+    numbers.stream()
+           .filter(e -> e % 2 == 0)
+           .collect(Collectors.toMap(
+               Function.identity(),
+               i -> i * 2));
+System.out.println(doubleOfEven);
+----
+
+.Un dictionnaire des personnes regroupées par nom
+[source,java,indent=0]
+----
+List<Person> persons = //...
+
+Map<Person, List<Person>> personsByName =
+    persons.stream()
+           .collect(Collectors.groupingBy(Person::getName));
+System.out.println(personsByName);
+----
+
+.Un dictionnaire des noms de personnes regroupés par sexe
+[source,java,indent=0]
+----
+Map<Person.Gender, List<String>> namesByGender =
+    persons.stream()
+           .collect(Collectors.groupingBy(
+               Person::getGender,
+               Collectors.mapping(
+                   Person::getName,
+                   Collectors.toList())));
+----
+
+=== Flux infinis
+* Les méthodes de classe `Stream.generate` et `Stream.iterate` créent un flux infini
+* Ce type de flux peut exister grâce à l'_évaluation paresseuse_
+** l'application d'opérations élémentaires ne provoque pas la traversée du pipeline
+** seules les opérations terminales déclenchent le traitement
+
+.Afficher les 10 premiers entiers
+[source,java,indent=0]
+----
+Stream<Integer> integers = Stream.iterate(0, i -> i + 1);
+integers.limit(10)
+        .forEach(System.out::println);
+----
+
+WARNING: Il ne faut jamais réduire l'intégralité d'un flux infini.
