@@ -24,3 +24,7 @@ jobs:
       run: chmod +x gradlew
     - name: Build with Gradle
       run: ./gradlew build asciidoctor
+    - name: Deploy site
+      uses: NickSchimek/deploy_jamstack_action@v1
+      with:
+        build-dir: build/docs/asciidoc
