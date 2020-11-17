@@ -20,7 +20,7 @@ NOTE: {jlsurl}/jls-3.html[Lexical Structure]
 == Types primitifs
 Un _type primitif_ est un type de base du langage, i.e. non défini par l'utilisateur.
 
-IMPORTANT: *En Java, les valeurs de ces types ne sont pas des objets*.
+WARNING: *En Java, les valeurs de ces types ne sont pas des objets*.
 
 [horizontal]
 `boolean`:: `true` ou `false`
@@ -37,16 +37,18 @@ NOTE: {jlsurl}/jls-4.html#jls-4.2[Primitive Types and Values]
 == Littéraux
 Un _littéral_ est la représentation dans le code source d'une valeur d'un type.
 
+[horizontal]
 Entiers:: `123` de type `int`, `123L` de type `long`, `0x123F` en hexadécimal, `0b101` en binaire (depuis Java SE 7)
 Flottants:: `1.23E-4` de type `double`, `1.23E-4F` de type `float`
 Booléens:: `true` ou `false`
 Caractères:: `'a'`, `'\t'` ou `'\u0000'`
 Chaînes:: `"texte"`
-IMPORTANT: le type chaîne de caractères n'est pas un type primitif : les chaînes de caractères sont des instances de la classe {apiurl}/java.base/java/lang/String.html[`java.lang.String`]
++
+WARNING: Même si un littéral existe, le type _chaîne de caractères_ n'est pas un type primitif : les chaînes de caractères sont des instances de la classe {apiurl}/java.base/java/lang/String.html[`java.lang.String`].
 Null:: `null` (valeur des références non initialisées)
 
 .Remarques
-* Depuis Java SE 7, il est possible d'inclure le caractère `_` dans les littéraux numériques pour en améliorer la lisibilité
+* Depuis _Java 7_, il est possible d'inclure le caractère `_` dans les littéraux numériques pour en améliorer la lisibilité
 
 NOTE: {jlsurl}/jls-3.html#jls-3.10[Literals]
 
@@ -66,7 +68,7 @@ NOTE: {jlsurl}/jls-4.html#jls-4.12[Variables]
 * Les variables de type tableau, énumération, objet ou interface sont en fait des _références_
 * La valeur d'une telle variable est une _référence vers_ (_l'adresse de_) une donnée
 * Dans d'autres langages, une référence est appelée _pointeur_ ou _adresse mémoire_
-* En Java, la différence réside dans le fait qu'on ne manipule pas directement l'adresse mémoire: le nom de la variable est utilisé à la place
+* En Java, la différence réside dans le fait qu'on ne manipule pas directement l'adresse mémoire : le nom de la variable est utilisé à la place
 ** pas d'arithmétique des pointeurs en Java
 ** les références assurent une meilleure sécurité (moins d'erreurs de programmation)
 * L'association (l'affectation) d'une donnée à une variable _lie_ l'identificateur et la donnée
@@ -100,7 +102,7 @@ NOTE: {jseurl}/gctuning/[HotSpot Virtual Machine Garbage Collection Tuning Guide
 ** tableau d'objets ou tableau de tableaux
 ** permet de simuler des tableaux à plusieurs dimensions
 
-.http://docs.oracle.com/javase/tutorial/java/nutsandbolts/arrays.html[The Java Tutorials: Arrays]
+.{tutourl}/java/nutsandbolts/arrays.html[The Java Tutorials: Arrays]
 image::{tutourl}/figures/java/objects-tenElementArray.gif[Un tableau en Java]
 
 NOTE: {jlsurl}/jls-10.html[Arrays]
@@ -113,7 +115,7 @@ NOTE: {jlsurl}/jls-10.html[Arrays]
 int[] unTableau;
 ----
 +
-IMPORTANT: une déclaration n'alloue pas de mémoire mais juste une référence
+WARNING: une telle déclaration n'alloue pas de mémoire mais juste une référence sur la pile
 * La création du tableau se fait en utilisant l'opérateur `new` suivi du type des éléments du tableau et de sa taille entre `[]`
 +
 [source,java,indent=0]
@@ -152,6 +154,8 @@ include::{tstdir}/base/ArrayTest.java[tag=base-arrays]
 
 == Expressions, instructions et blocs
 //TODO à compléter
+À compléter
+
 NOTE: {tutourl}/java/nutsandbolts/operators.html[Operators],
 {tutourl}/java/nutsandbolts/expressions.html[Expressions, Statements, and Blocks],
 {tutourl}/java/nutsandbolts/flow.html[Control Flow Statements],

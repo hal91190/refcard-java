@@ -14,3 +14,24 @@ IMPORTANT: signale un aspect important
 CAUTION: advise the reader to act carefully (i.e., exercise care).
 
 WARNING: inform the reader of danger, harm, or consequences that exist.
+
+== Exemples de code
+Une partie des exemples s'appuie sur la bibliothèque de test unitaire https://junit.org/junit5/[JUnit 5].
+Dans ce cas, les résultats sont vérifiés par des assertions.
+Leur signification est précisée ci-dessous.
+
+.Signification des assertions
+[options="header"]
+|===
+
+| Assertion | Signification
+
+| assertArrayEquals | égalité de 2 tableaux
+
+| assertEquals | égalité de 2 objets
+
+| assertNotSame | les deux références ne sont pas identiques
+
+| assertSame | les deux références sont identiques
+
+|===
