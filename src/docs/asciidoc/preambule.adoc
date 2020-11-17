@@ -1,0 +1,16 @@
+= Préambule
+ifndef::masterdoc[]
+include::meta.adoc[]
+include::attributes.adoc[]
+endif::masterdoc[]
+
+== Légende utilisée dans ce document
+NOTE: donne un complément d'information
+
+TIP: donne un conseil ou un avis
+
+IMPORTANT: signale un aspect important
+
+CAUTION: advise the reader to act carefully (i.e., exercise care).
+
+WARNING: inform the reader of danger, harm, or consequences that exist.
