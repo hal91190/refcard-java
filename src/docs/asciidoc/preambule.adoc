@@ -34,4 +34,6 @@ Leur signification est précisée ci-dessous.
 
 | assertSame | les deux références sont identiques
 
+| assertTrue | le prédicat est vrai
+
 |===

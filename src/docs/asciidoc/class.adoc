@@ -21,13 +21,13 @@ endif::masterdoc[]
 === Déclaration et affectation
 * La syntaxe pour la déclaration d'une variable est `type nom`
 +
-IMPORTANT: *la déclaration ne crée pas d'objet* mais uniquement une référence.
+WARNING: *la déclaration ne crée pas d'objet* mais uniquement une référence.
 La variable est donc invalide tant qu'elle n'est pas liée à un objet (_null reference_).
-Une tentative d'accès à une telle référence lancera une _exception_ de type https://docs.oracle.com/en/java/javase/15/docs/api/java.base/java/lang/NullPointerException.html[`NullPointerException`] (cf. https://stackoverflow.com/questions/218384/what-is-a-nullpointerexception-and-how-do-i-fix-it[What is a NullPointerException, and how do I fix it?])
+Une tentative d'accès à une telle référence lancera une _exception_ de type {apiurl}/java.base/java/lang/NullPointerException.html[`NullPointerException`] (cf. https://stackoverflow.com/questions/218384/what-is-a-nullpointerexception-and-how-do-i-fix-it[What is a NullPointerException, and how do I fix it?])
 * Une affectation `variable = objet` va lier la variable `variable` à l'objet `objet`
 * Il est possible de lier la variable lors de sa déclaration (_initialisation_)
 +
-TIP: Il est conseillé de toujours initialiser une variable lors de sa déclaration (si possible)
+TIP: Si possible, toujours initialiser une variable lors de sa déclaration
 
 .Exemple de déclarations et d'instanciation de chaînes de caractères
 [source,java,indent=0]
@@ -59,13 +59,13 @@ include::{tstdir}/classes/StringTest.java[tag=class-string-manip]
 ** `finalize` est membre de la classe `Object`
 ** `super.finalize()` doit être appelé à la fin de la méthode
 
-WARNING: *La redéfinition de `finalize` est fortement déconseillée* et son usage a même été https://docs.oracle.com/javase/9/docs/api/java/lang/Object.html#finalize--[déprécié dans Java 9] (cf. https://www.informit.com/articles/article.aspx?p=1216151&seqNum=7[Avoid finalizers], *Effective Java*, _Joshua Bloch_).
+CAUTION: *La redéfinition de `finalize` est fortement déconseillée* et son usage a même été {apiurl}/java.base/java/lang/Object.html#finalize[déprécié dans Java 9] (cf. https://www.informit.com/articles/article.aspx?p=1216151&seqNum=7[Avoid finalizers], *Effective Java*, _Joshua Bloch_).
 
 === Les chaînes de caractères en Java
-* Java fournit trois classes pour les chaînes de caractères :
-** https://docs.oracle.com/en/java/javase/14/docs/api/java.base/java/lang/String.html[`String`] dédiée aux chaînes de caractères immuables, i.e. dont la valeur ne change pas,
-** https://docs.oracle.com/en/java/javase/14/docs/api/java.base/java/lang/StringBuffer.html[`StringBuffer`] pour les chaînes de caractères pouvant être modifiées (contexte _mono-thread_), et
-** https://docs.oracle.com/en/java/javase/14/docs/api/java.base/java/lang/StringBuilder.html[`StringBuilder`] pour les chaînes de caractères pouvant être modifiées (contexte _multi-threads_).
+* Java fournit trois classes pour les chaînes de caractères :
+** {apiurl}/java.base/java/lang/String.html[`String`] dédiée aux chaînes de caractères immuables, i.e. dont la valeur ne change pas,
+** {apiurl}/java.base/java/lang/StringBuffer.html[`StringBuffer`] pour les chaînes de caractères pouvant être modifiées (contexte _mono-thread_), et
+** {apiurl}/java.base/java/lang/StringBuilder.html[`StringBuilder`] pour les chaînes de caractères pouvant être modifiées (contexte _multi-threads_).
 
 .Création d'une chaîne (`String`)
 * Une instance de `String` représente une chaîne au format UTF-16
@@ -74,14 +74,15 @@ WARNING: *La redéfinition de `finalize` est fortement déconseillée* et son us
 * Une chaîne peut aussi être créée en utilisant l'un des constructeurs de `String`
 
 .Quelques accesseurs de `String`
+[horizontal]
 `length()`:: taille de la chaîne,
 `charAt(int)`:: caractère à l'indice spécifié,
 `substring(int, int)`:: extraction d'une sous-chaîne,
 `indexOf(...)`, `lastIndexOf(...)`:: recherche dans la chaîne
 
-[TIP]
+[NOTE]
 ====
-* *Un littéral chaîne peut être utilisé à tout endroit où un objet `String` peut l'être*
+* Un littéral chaîne peut être utilisé à tout endroit où un objet `String` peut l'être
 ** on peut invoquer des méthodes de `String` sur un littéral chaîne
 * L'opérateur `+` permet de concaténer des objets de type `String`
 ** c'est le seul opérateur surchargé pour un objet en Java
@@ -90,7 +91,8 @@ WARNING: *La redéfinition de `finalize` est fortement déconseillée* et son us
 
 .Les classes `StringBuilder` et `StringBuffer`
 * Les instances disposent à peu prés des mêmes accesseurs que `String`
-* Quelques mutateurs:
+* Quelques mutateurs :
+[horizontal]
 `append(...)`:: ajout de caractères
 `delete(...)`:: suppression de caractères
 `insert(...)`:: insertion de caractères
@@ -134,7 +136,7 @@ interface UneInterface extends UneSecondeInterface, UneAutreInterface {
 * Toutes les méthodes de l'interface sont implicitement `public` et `abstract`
 * Toutes les constantes de l'interface sont implicitement `public`, `static`, et `final`
 
-.Exemple : définir l'_ordre naturel_ des objets (interface https://docs.oracle.com/en/java/javase/15/docs/api/java.base/java/lang/Comparable.html[`Comparable`])
+.Exemple : définir l'_ordre naturel_ des objets (interface {apiurl}/java.base/java/lang/Comparable.html[`Comparable`])
 [source,java,indent=0]
 ----
 /**
@@ -152,7 +154,7 @@ interface Comparable<T> {
 === Objet et interface
 * Un objet peut être manipulé par une référence sur une interface si sa classe _implémente_ cette dernière
 +
-TIP: la référence étant alors du type de l'interface, seules les méthodes de l'interface sont accessibles
+IMPORTANT: la référence étant alors du type de l'interface, seules les méthodes de l'interface sont accessibles
 +
 .Exemple : manipuler une chaîne de caractères par le type `Comparable`
 [source,java,indent=0]
@@ -164,7 +166,7 @@ else if (uneChaine.compareTo("defg") == 0) System.out.println("abcd == defg");
 else System.out.println("abcd < defg");
 ----
 
-== Les classes en Java
+== Classes
 === Définition d'une classe
 La _définition_ d'une classe comporte deux parties: la _déclaration_ et le _corps_ de la classe
 
@@ -241,7 +243,7 @@ TypeRetour nomMethode(listeDeParametres) { // Déclaration
 ** la valeur d'une référence modifié dans la méthode ne le sera pas à l'extérieur
 ** dans la méthode, les appels de méthode sur un paramètre de type référence seront appliqués sur l'objet original (comme avec un pointeur en C)
 
-== Contrôle d'accès aux membres
+=== Contrôle d'accès aux membres
 * Le contrôle de l'accès aux membres permet de contrôler l'interface d'une classe
 * Le niveau d'accès est précisé en ajoutant un mot-clé devant la déclaration du membre (attribut ou méthode)
 * Il peut prendre l'une des valeurs `private, public, protected` ou être absent
@@ -258,7 +260,7 @@ aucun,X,X,,
 
 TIP: En général, afin de maintenir l'https://fr.wikipedia.org/wiki/Encapsulation_(programmation)[encapsulation], les attributs sont déclarés avec `private` et les méthodes avec le niveau le plus restrictif possible.
 
-== Un exemple de classe pour des nombres complexes
+=== Un exemple de classe pour des nombres complexes
 WARNING: Cet exemple est volontairement simplifié et sera étoffé par la suite.
 Une http://commons.apache.org/proper/commons-math/userguide/complex.html[classe complexe] plus complète peut être trouvée dans la bibliothèque http://commons.apache.org/proper/commons-math/[Apache Commons Math].
 
@@ -274,11 +276,11 @@ include::{srcdir}/classes/Complex.java[]
 include::{tstdir}/classes/ComplexTest.java[]
 ----
 
-== Membre de classe
+=== Membre de classe
 * Un _membre de classe_ est un attribut ou une méthode partagé par toutes les instances de la classe
 * Il se déclare avec le mot-clé `static`
 +
-TIP: L'accès à un membre de classe se fait de préférence par l'intermédiaire de la classe
+TIP: L'accès à un membre de classe se fait de préférence par l'intermédiaire de la classe et non d'une référence sur un objet
 * Pour un attribut de classe, le système alloue un espace mémoire pour un attribut par classe (et non pas un attribut par instance)
 * Un attribut de classe est souvent utilisé pour définir une constante (`static final`)
 +
@@ -305,11 +307,11 @@ include::{srcdir}/classes/ComplexWithCounter.java[]
 include::{tstdir}/classes/ComplexWithCounterTest.java[]
 ----
 
-WARNING: Si cet exemple illustre en effet la notion de _membre de classe_, il ne fonctionne pas en pratique pour compter le nombre d'instances d'une classe (cf. https://stackoverflow.com/questions/28947571/how-to-count-number-of-instances-of-a-class[How to Count Number of Instances of a Class] et en particulier la https://stackoverflow.com/a/28947722/3982584[réponse] utilisant `PhantomReference`).
+CAUTION: Si cet exemple illustre en effet la notion de _membre de classe_, il ne fonctionne pas en pratique pour compter le nombre d'instances d'une classe (cf. https://stackoverflow.com/questions/28947571/how-to-count-number-of-instances-of-a-class[How to Count Number of Instances of a Class] et en particulier la https://stackoverflow.com/a/28947722/3982584[réponse] utilisant `PhantomReference`).
 En effet, il n'existe pas en Java de moyens simples pour forcer la destruction d'objet et donc l'appel de `finalize`.
-De plus, *la redéfinition de cette dernière est fortement déconseillée* et son usage a même été https://docs.oracle.com/javase/9/docs/api/java/lang/Object.html#finalize--[déprécié dans Java 9] (cf. https://www.informit.com/articles/article.aspx?p=1216151&seqNum=7[Avoid finalizers], *Effective Java*, _Joshua Bloch_).
+De plus, *la redéfinition de cette dernière est fortement déconseillée* et son usage a même été {apiurl}/java.base/java/lang/Object.html#finalize[déprécié dans Java 9] (cf. https://www.informit.com/articles/article.aspx?p=1216151&seqNum=7[Avoid finalizers], *Effective Java*, _Joshua Bloch_).
 
-=== Le programme principal en Java : la méthode `main`
+=== Le programme principal en Java : la méthode `main`
 * Le point d'entrée d'une application Java est une méthode de classe nommée `main`
 * Lors de l'exécution, l'interpréteur Java est invoqué avec le nom d'une classe qui doit implémenter une méthode `main`
 * La déclaration de la méthode `main` est :
@@ -325,7 +327,7 @@ class Application {
 * Le paramètre de `main` est un tableau de chaînes de caractères contenant les _arguments de ligne de commande_ passés lors de l'appel du programme
 
 TIP: On limite en général le code se trouvant dans le `main` au strict minimum: création d'un objet application et invocation d'une méthode.
-En effet, en https://fr.wikipedia.org/wiki/Programmation_orient%C3%A9e_objet[programmation objet], un programme est composé d'un ensemble d'objets qui interagissent et non pas de méthodes de classe s'appelant les unes les autres. Cette dernière approche s'apparente plus à ce la https://fr.wikipedia.org/wiki/Programmation_proc%C3%A9durale[programmation procédurale].
+En effet, en https://fr.wikipedia.org/wiki/Programmation_orient%C3%A9e_objet[programmation objet], un programme est composé d'un ensemble d'objets qui interagissent et non pas de méthodes de classe s'appelant les unes les autres. Cette dernière approche s'apparente plus à de la https://fr.wikipedia.org/wiki/Programmation_proc%C3%A9durale[programmation procédurale].
 
 == Énumération
 * Un _type énuméré_ permet de contraindre l'ensemble des instances possibles pour un type donné
@@ -334,9 +336,9 @@ En effet, en https://fr.wikipedia.org/wiki/Programmation_orient%C3%A9e_objet[pro
 * Un type énuméré étant une classe, il peut contenir des méthodes et des attributs
 * De plus, le compilateur ajoute automatiquement certaines méthodes
 ** `values()` retourne un tableau contenant les constantes dans l'ordre de leur déclaration
-** un type énuméré hérite implicitement de la classe https://docs.oracle.com/en/java/javase/14/docs/api/java.base/java/lang/Enum.html[`Enum`]
+** un type énuméré hérite implicitement de la classe {apiurl}/java.base/java/lang/Enum.html[`Enum`]
 
-NOTE: Plus d'information dans le tutoriel https://docs.oracle.com/javase/tutorial/java/javaOO/enum.html[The Java Tutorials - Enum Types] ou dans la section {jlsurl}/jls-8.html#jls-8.9[8.9. Enum Types] de la spécification du langage.
+NOTE: Plus d'information dans le tutoriel {tutourl}/java/javaOO/enum.html[The Java Tutorials - Enum Types] ou dans la section {jlsurl}/jls-8.html#jls-8.9[8.9. Enum Types] de la spécification du langage.
 
 .Exemple : un singleton pour le programme principal
 [source,java,indent=0]
@@ -352,13 +354,13 @@ Cette approche possède plusieurs avantages :
 . le singleton est accessible dans tout le programme (`Application.APPLICATION`)
 . c'est un bon endroit pour conserver les informations partagées (configuration, ...)
 
-WARNING: Une surexploitation de cette classe conduit à l'anti-pattern https://fr.wikipedia.org/wiki/God_object[God object].
+CAUTION: Une surexploitation de cette classe conduit à l'anti-pattern https://fr.wikipedia.org/wiki/God_object[God object].
 ====
 
 == Généricité
 * La _généricité_ permet de paramétrer une classe par un ou plusieurs paramètres formels (généralement des types)
 * La généricité permet de définir une famille de classes, chaque classe étant instanciée lors du passage des paramètres effectifs
-* Cette notion est orthogonale au paradigme objet : on parle de _programmation générique_
+* Cette notion est orthogonale au paradigme objet : on parle de _programmation générique_
 * En Java, les _paramètres formels de type_ sont placés entre "`<`" et "`>`"
 * Un paramètre effectif est obligatoirement une classe (pas un type primitif)
 * Le mécanisme implémentant la généricité en Java se nomme _Type erasure_
@@ -439,4 +441,4 @@ Boite<? extends Number> b = //...
 Boite<?> b = //...
 ----
 
-NOTE: En complément : https://docs.oracle.com/javase/tutorial/java/generics/wildcardGuidelines.html[The Java Tutorials - Guidelines for Wildcard Use]
+NOTE: {tutourl}/java/generics/wildcardGuidelines.html[The Java Tutorials - Guidelines for Wildcard Use]
