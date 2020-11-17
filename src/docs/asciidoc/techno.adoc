@@ -112,6 +112,7 @@ NOTE: {tutourl}/essential/environment/paths.html[PATH and CLASSPATH] et {jlsurl}
 == Les indispensables pour développer en Java
 [TIP]
 ====
+* utiliser un environnement de développement adapté (https://www.jetbrains.com/idea/[IntelliJ IDEA] ou https://code.visualstudio.com/[Visual Studio Code]+https://marketplace.visualstudio.com/items?itemName=vscjava.vscode-java-pack[Java Extension Pack])
 * Adopter un _style de codage_ comme le https://google.github.io/styleguide/javaguide.html[Google Java Style Guide] et vérifier les violations avec https://checkstyle.sourceforge.io/[Checkstyle]
 * Utiliser un _système de gestion de versions_ (https://git-scm.com/[git]) et une _forge logicielle_ (https://github.com/[github], https://bitbucket.org/[bitbucket], https://gitlab.com/[gitlab])
 * Faire des _tests unitaires_ (https://junit.org/junit5/[JUnit])
@@ -122,7 +123,7 @@ NOTE: {tutourl}/essential/environment/paths.html[PATH and CLASSPATH] et {jlsurl}
 === Webographie
 * https://docs.oracle.com/en/java/javase/index.html[Java Platform, Standard Edition Documentation]
 * {apiurl}/index.html[Java API]
-* http://docs.oracle.com/javase/tutorial/[_The Java Tutorials_]
+* {tutourl}/[_The Java Tutorials_]
 * Aide-mémoire :
 https://dzone.com/asset/download/51834[Core Java],
 https://www.azul.com/files/12992683-dzone-refcard318-java13-v2.pdf[Java 13],
