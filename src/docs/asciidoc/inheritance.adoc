@@ -5,16 +5,20 @@ include::attributes.adoc[]
 endif::masterdoc[]
 
 == Sous-typage
-[IMPORTANT]
-====
 * Un type T~1~ est un _sous-type_ d'un type T~2~ si l'interface de T~1~ contient l'interface de T~2~.
 ** T~1~ possède une interface plus riche que celle de T~2~, i.e. au moins toutes les opérations de T~2~
 * De façon duale, un type T~1~ est un _sous-type_ d'un type T~2~ si l'ensemble des instances de T~2~ inclut l'ensemble des instances de T~1~.
 ** l'extension du super-type T~2~ contient l'extension du sous-type T~1~, i.e. tout objet de type T~1~ est aussi instance de T~2~
-====
+* En Java, les interfaces peuvent être organisées en hiérarchies
+** un lien entre interfaces est une relation de sous-typage
+** pour cela, on utilise le mot-clé `extends` dans la déclaration
+** Une interface peut avoir plusieurs super-interfaces
+* Une interface est formellement équivalente à une _classe abstraite_ ne possédant que des _méthodes abstraites_
 
-.Exemple : `Collection<E>` et `List<E>`
-[plantuml,collection_et_list,png]
+.Exemple : `Collection<E>` et `List<E>`
+[.float-group]
+--
+[plantuml,collection_et_list,svg,float="left"]
 ....
 interface Iterable<T> {
     +Iterator<T> iterator()
@@ -35,18 +39,12 @@ Iterable <|-- Collection
 Collection <|-- List
 ....
 
-* En Java, les interfaces peuvent être organisées en hiérarchies
-** un lien entre interfaces est une relation de sous-typage
-** pour cela, on utilise le mot-clé `extends` dans la déclaration
-** Une interface peut avoir plusieurs super-interfaces
-* Une interface est formellement équivalente à une _classe abstraite_ ne possédant que des _méthodes abstraites_
-
-.Exemple : définir l'_ordre naturel_ pour une classe
 [source,java,indent=0]
 ----
 public interface Iterable<T> {
   // ...
 }
+
 public interface Collection<E> extends Iterable<E> {
   //...
 }
@@ -55,12 +53,13 @@ public interface List<E> extends Collection<E> {
   //...
 }
 ----
+--
 
 === Classe et interface
 * Pour déclarer une classe qui implémente une ou plusieurs interfaces, on ajoute `implements ListeInterfaces` dans sa déclaration (après la clause `extends` si elle existe)
 * La classe doit alors implémenter toutes les méthodes de l'interface ou être déclarée abstraite
 
-.Exemple : définir l'_ordre naturel_ pour une classe
+.Exemple : définir l'_ordre naturel_ pour une classe
 [source,java,indent=0]
 ----
 class String implements Comparable<String> {
@@ -77,7 +76,7 @@ class String implements Comparable<String> {
 * L'_héritage_ permet de définir l'implémentation d'une classe à partir de l'implémentation d'une autre
 ** lors de la définition d'une nouvelle classe, seul ce qui change par rapport à une classe existante est précisé
 +
-.Exemple : rectangle et rectangle plein
+.Exemple : rectangle et rectangle plein
 [plantuml,rectangle_et_rectangle_plein,png]
 ....
 class Rectangle2D {
@@ -102,7 +101,7 @@ class Rectangle2DPlein extends Rectangle2D {
 }
 ----
 * Une classe ne peut avoir qu'une seule super-classe (pas d'héritage multiple)
-* Si `extends` n'est pas précisé, la classe hérite de la classe https://docs.oracle.com/en/java/javase/15/docs/api/java.base/java/lang/Object.html[`Object`]
+* Si `extends` n'est pas précisé, la classe hérite de la classe {apiurl}/java.base/java/lang/Object.html[`Object`]
 +
 IMPORTANT: Une classe Java a une et une seule super-classe
 * Une classe déclarée `final` ne peut plus être spécialisée
@@ -111,14 +110,14 @@ IMPORTANT: Une classe Java a une et une seule super-classe
 * Une classe _C_ hérite de sa super-classe _S_ les attributs et méthodes qu'elle possède
 ** tous les attributs de _S_ font partie de l'état des instances de _C_
 ** les méthodes publiques de _S_ font partie de l'interface publique de _C_
-* Les attributs et méthodes d'une super-classe ne sont pas formcément accessibles
-** les attributs privées de _S_ ne sont pas accessibles dans _C_
+* Les attributs et méthodes d'une super-classe ne sont pas forcément accessibles
+** les attributs privés de _S_ ne sont pas accessibles dans _C_
 ** les méthodes non privées de _S_ sont accessibles dans _C_
 ** les constructeurs de _S_ sont utilisables dans les constructeurs de _C_ mais ne font pas partie de l'interface publique de _C_
 * Une classe peut masquer un membre de sa super-classe si elle possède un membre de même nom (ou de même signature)
 ** Le mot clé `super` permet d'accéder aux membres masqués d'une super-classe
 
-.Exemple : définition de la classe `Rectangle2DPlein`
+.Exemple : définition de la classe `Rectangle2DPlein`
 [source,java,indent=0]
 ----
 include::{srcdir}/inheritance/Rectangle2DPlein.java[]
@@ -127,7 +126,7 @@ include::{srcdir}/inheritance/Rectangle2DPlein.java[]
 <1> `extends` exprime l'héritage
 <2> seuls les attributs supplémentaires sont déclarés dans la sous-classe
 <3> dans le constructeur, `super` permet d'appeler le constructeur de la super-classe
-<4> seule les méthodes supplémentaires sont définies dans la sous-classe
+<4> seules les méthodes supplémentaires sont définies dans la sous-classe
 
 .Utilisation de la classe `Rectangle2DPlein`
 [source,java,indent=0]
@@ -142,10 +141,10 @@ include::{tstdir}/inheritance/Rectangle2DPleinTest.java[tag=rect-plein-use-1]
 * L'héritage (ou _héritage d'implémentation_) est un mécanisme technique de réutilisation
 * Le sous-typage (ou _héritage d'interface_) décrit comment un objet peut être utilisé à la place d'un autre
 * Si Y est une sous-type de X, cela signifie que "Y est une sorte de X" (relation _IS-A_)
-* Dans un langage de programmation, les deux visions peuvent être représentées de la même façon:
+* Dans un langage de programmation, les deux visions peuvent être représentées de la même façon :
 le mécanisme d'héritage permet d'implémenter l'un ou l'autre
 
-.Exemple : héritage d'implémentation et d'interface
+.Exemple : héritage d'implémentation et d'interface
 [plantuml,heritage_et_interface,png]
 ....
 interface Déplaçable {
@@ -181,7 +180,7 @@ Modifiable <|.. Rectangle2D
 * Une sous-classe peut _redéfinir_ une méthode de sa super-classe pour spécialiser son comportement
 * Le choix de la méthode à appeler est retardé jusqu'à l'exécution du programme (_liaison dynamique ou retardée_)
 
-.Exemple : une description pour les rectangles
+.Exemple : une description pour les rectangles (méthode `toString`)
 [plantuml,description_des_rectangles,png]
 ....
 class Rectangle2D {
@@ -215,7 +214,7 @@ Rectangle2D <|-- Rectangle2DPlein
 * C'est le type de l'objet (et non pas de la référence) qui permettra de déterminer la méthode à invoquer et ce type ne peut être connu qu'au moment de l'exécution
 ====
 
-.Exemple : une description pour les rectangles (méthode `toString`)
+.Exemple : une description pour les rectangles (méthode `toString`)
 [plantuml,rectangle_et_rectangle_plein_polym,png]
 ....
 class Rectangle2D {
@@ -238,19 +237,19 @@ class Rectangle2DPlein {
 Rectangle2D <|-- Rectangle2DPlein
 ....
 
-.Exemple : redéfinition de la méthode `toString` de la classe `Rectangle2D`
+.Exemple : redéfinition de la méthode `toString` de la classe `Rectangle2D`
 [source,java,indent=0]
 ----
 include::{srcdir}/inheritance/Rectangle2D.java[tag=rect-tostring]
 ----
 
-.Exemple : redéfinition de la méthode `toString` de la classe `Rectangle2DPlein`
+.Exemple : redéfinition de la méthode `toString` de la classe `Rectangle2DPlein`
 [source,java,indent=0]
 ----
 include::{srcdir}/inheritance/Rectangle2DPlein.java[tag=rect-plein-tostring]
 ----
 
-.Exemple : utilisation du polymorphisme
+.Exemple : utilisation du polymorphisme
 [source,java,indent=0]
 ----
 include::{tstdir}/inheritance/Rectangle2DPleinTest.java[tag=rect-plein-use-2]
@@ -260,20 +259,20 @@ include::{tstdir}/inheritance/Rectangle2DPleinTest.java[tag=rect-plein-use-2]
 * La classe `Objet` définit et implémente le comportement dont chaque classe Java a besoin
 * C'est la plus générale des classes Java
 * Chaque classe Java hérite directement ou indirectement de `Object` (tout objet y compris les tableaux implémente les méthodes de `Object`)
-
-==== Les méthodes de la classe `Object`
 * Certaines méthodes de `Object` peuvent être redéfinies pour s'adapter à la sous-classe
-* `protected Object clone()` permet de dupliquer un objet
-* `boolean equals(Object obj)` permet de tester l'égalité de deux objets et `int hashCode()` de renvoyer une valeur de hashage
+[horizontal]
+`protected Object clone()`:: permet de dupliquer un objet
+`boolean equals(Object obj)`:: permet de tester l'égalité de deux objets et `int hashCode()` de renvoyer une valeur de hashage
 ** `Object.equals` teste l'identité
 ** `equals` et `hashCode` doivent être redéfinies ensembles
-* `protected void finalize()` représente le destructeur d'un objet
-* `String toString()` retourne une chaîne représentant l'objet
-** `toString` est très utile pour le débogage => toujours la redéfinir
-* Autres méthodes
-** `Class getClass()` retourne un objet de type `Class` représentant la classe de l'objet
-*** la classe `Class` est par exemple utile pour créer des objets dont la classe n'est pas connu à la compilation
-** quelques méthodes pour les _threads_
+`protected void finalize()`:: représente le destructeur d'un objet
+`String toString()`:: retourne une chaîne représentant l'objet
+TIP: `toString` est très utile pour le débogage => toujours la redéfinir
+* Autres méthodes :
+[horizontal]
+`Class getClass()`:: retourne un objet de type `Class` représentant la classe de l'objet
+TIP: la classe `Class` est par exemple utile pour créer des objets dont la classe n'est pas connu à la compilation
+* quelques méthodes pour les _threads_
 
 ==== Copie d'objets
 * L'opération de copie peut avoir différentes sémantiques
@@ -283,33 +282,41 @@ include::{tstdir}/inheritance/Rectangle2DPleinTest.java[tag=rect-plein-use-2]
 ** par un _constructeur de copie_
 ** par une méthode de classe (_méthode de fabrication_)
 ** par clonage (implémentation de l'interface `Cloneable` et redéfinition de la méthode `Object.clone`)
-* L'usage de `clone` est déconseillée
+
+.L'usage de `clone` est déconseillée
+[CAUTION]
+====
 ** http://www.artima.com/intv/bloch13.html[Copy Constructor versus Cloning], Josh Bloch, 2002
 ** https://programmingmitra.blogspot.fr/2017/01/Java-cloning-copy-constructor-versus-Object-clone-or-cloning.html[Java Cloning - Copy Constructor versus Cloning], Naresh Joshi, 2017
 ** https://stackoverflow.com/questions/1106102/clone-vs-copy-constructor-vs-factory-method[clone() vs copy constructor vs factory method?], stackoverflow, 2009
+====
 
-==== Egalité d'objets : la méthode `equals`
-* La méthode `boolean equals(Object o)` teste l'égalité de deux objets
-* La méthode `equals` de la classe `Object` se contente de tester l'égalité des références des objets, i.e. l'identité
+==== Egalité d'objets : la méthode `equals`
+* La méthode `boolean equals(Object o)` est destinée à tester l'égalité de deux objets
+* La méthode `equals` de la classe `Object` se contente de tester l'égalité des références des objets, i.e. l'identité et se comporte comme l'opérateur `==`
++
+TIP: l'opérateur `==` teste l'identité de ses opérandes, i.e. l'égalité des références
 * Il est donc en général nécessaire de redéfinir `equals` pour le test d'égalité
-* Rappel: l'opérateur `==` teste l'identité de ses opérandes, i.e. l'égalité des références
 
-==== Egalité d'objets : contraintes de `equals`
+.Contraintes de `equals`
+[WARNING]
+====
 * `equals` implémente une relation d'équivalence pour des références d'objet non nulles
-** `x.equals(x) == true`
-** `x.equals(y) == true` si et seulement si `y.equals(x) == true`
-** si `x.equals(y) == true` et `y.equals(z) == true` alors `x.equals(z) == true`
+** `x.equals(x) == true` (_réflexivité_)
+** `x.equals(y) == true` si et seulement si `y.equals(x) == true` (_symétrie_)
+** si `x.equals(y) == true` et `y.equals(z) == true` alors `x.equals(z) == true` (_transitivité_)
 ** `x.equals(null) == false`
 * Toute classe qui redéfinit `equals` doit également redéfinir `hashCode()`
 ** si deux objets sont égaux au sens de `equals` alors `hashCode` doit produire le même résultat pour les deux objets
+====
 
-.Exemple : égalité de rectangles
+.Exemple : égalité de rectangles
 [source,java,indent=0]
 ----
 include::{srcdir}/inheritance/Rectangle2D.java[tag=rect-equals]
 ----
 
-.Exemple : contraintes de `equals`
+.Exemple : contraintes de `equals`
 [source,java,indent=0]
 ----
 include::{tstdir}/inheritance/Rectangle2DTest.java[tag=rect-use-4]
@@ -327,7 +334,7 @@ WARNING: L'instanciation d'une telle classe est alors refusée par le compilateu
 * Toute sous-classe non abstraite d'une classe abstraite doit redéfinir les méthodes abstraites de cette classe
 * Une classe possédant des méthodes abstraites est obligatoirement abstraite
 
-.Exemple : La hiérarchie d'héritage des figures
+.Exemple : La hiérarchie d'héritage des figures
 [plantuml,hierarchie_heritage,png]
 ....
 abstract class FigureFermee2D {
@@ -342,17 +349,17 @@ class Cercle2D {
     +translate(dx: réel, dy: réel)
 }
 
-Forme <|-- Cercle2D
-Forme <|-- Rectangle2D
+FigureFermee2D <|-- Cercle2D
+FigureFermee2D <|-- Rectangle2D
 ....
 
-.Exemple : une classe abstraite (Java)
+.Exemple : une classe abstraite (Java)
 [source,java,indent=0]
 ----
 include::{srcdir}/inheritance/FigureFermee2D.java[lines=3..-1]
 ----
 
-.Exemple : redéfinition d'une méthode (Java)
+.Exemple : redéfinition d'une méthode (Java)
 .Translation dans la classe `Rectangle2D`
 [source,java,indent=0]
 ----
@@ -365,7 +372,7 @@ include::{srcdir}/inheritance/Rectangle2D.java[tag=rect-translate]
 include::{srcdir}/inheritance/Cercle2D.java[tag=cercle-translate]
 ----
 
-.Exemple : utilisation d'une classe abstraite (Java)
+.Exemple : utilisation d'une classe abstraite (Java)
 [source,java,indent=0]
 ----
 include::{tstdir}/inheritance/FigureFermee2DTest.java[tag=abstract-class-demo]
@@ -375,7 +382,7 @@ include::{tstdir}/inheritance/FigureFermee2DTest.java[tag=abstract-class-demo]
 * La classe `Number` est une classe abstraite de la librairie Java
 * Elle définit le comportement commun aux classes pour la gestion des nombres (les conversions)
 * Elle possède plusieurs sous-classes
-** les adaptateurs : `Byte`, `Double`, `Float`, `Integer`, `Long`, `Short`
+** les adaptateurs : `Byte`, `Double`, `Float`, `Integer`, `Long`, `Short`
 ** `BigDecimal`, `BigInteger`
 * Ces classes offrent une vue "objet" des types primitifs
 
@@ -387,10 +394,10 @@ TIP: La plupart des fonctions arithmétiques sont des méthodes de classe de la 
 
 [source,java,indent=0]
 ----
-Integer i = 12; // à la place de : Integer i = Integer.valueOf(12);
-int n = i; // à la place de : int n = i.intValue();
+Integer i = 12; // à la place de Integer i = Integer.valueOf(12);
+int n = i; // à la place de int n = i.intValue();
 ----
 
 ==== Les _adaptateurs_
-* Il existe d'autres adaptateurs : `Boolean`, `Character`, `Void`
+* Il existe d'autres adaptateurs : `Boolean`, `Character`, `Void`
 * Les adaptateurs sont des exemples du https://fr.wikipedia.org/wiki/Adaptateur_(patron_de_conception)[_pattern de conception Adaptateur_]
