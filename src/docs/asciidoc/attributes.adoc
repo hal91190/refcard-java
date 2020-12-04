@@ -7,4 +7,5 @@
 :manurl: {jseurl}/docs/specs/man
 :tutourl: https://docs.oracle.com/javase/tutorial
 :apiurl: {jseurl}/docs/api
+:J7: Java 7
 :source-highlighter: coderay

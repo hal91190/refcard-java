@@ -12,7 +12,7 @@ endif::masterdoc[]
 * Commentaires
 +
 [horizontal]
-`/* ... */`:: le texte entre `/*` et `*/` est ignoré
+`/* ... */`:: le texte entre `/* et */` est ignoré
 `// ...`:: le texte jusqu'à la fin de la ligne est ignoré
 
 NOTE: {jlsurl}/jls-3.html[Lexical Structure]
@@ -38,7 +38,7 @@ NOTE: {jlsurl}/jls-4.html#jls-4.2[Primitive Types and Values]
 Un _littéral_ est la représentation dans le code source d'une valeur d'un type.
 
 [horizontal]
-Entiers:: `123` de type `int`, `123L` de type `long`, `0x123F` en hexadécimal, `0b101` en binaire (depuis Java SE 7)
+Entiers:: `123` de type `int`, `123L` de type `long`, `0x123F` en hexadécimal, `0b101` en binaire ({J7})
 Flottants:: `1.23E-4` de type `double`, `1.23E-4F` de type `float`
 Booléens:: `true` ou `false`
 Caractères:: `'a'`, `'\t'` ou `'\u0000'`
@@ -48,7 +48,7 @@ WARNING: Même si un littéral existe, le type _chaîne de caractères_ n'est pa
 Null:: `null` (valeur des références non initialisées)
 
 .Remarques
-* Depuis _Java 7_, il est possible d'inclure le caractère `_` dans les littéraux numériques pour en améliorer la lisibilité
+* Il est possible d'inclure le caractère `_` dans les littéraux numériques pour en améliorer la lisibilité ({J7})
 
 NOTE: {jlsurl}/jls-3.html#jls-3.10[Literals]
 
@@ -152,12 +152,43 @@ include::{tstdir}/base/ArrayTest.java[tag=base-arrays]
 <5> `theSameArray` référence maintenant `anotherArray` donc `theSameArray` et `anotherArray` sont identiques mais `theSameArray` et `anArray` ne le sont plus
 <6> comme `theSameArray` et `anotherArray` sont identiques, la modification est visible par l'intermédiaire des deux références mais `anArray` n'a pas été modifié
 
+== Opérateurs
+Un _opérateur_ est une suite de symboles réalisant une opération spécifique.
+
+.Opérateurs par ordre de priorité
+[sidebar]
+****
+* `expr++` `expr--` (incrémentation/décrémentation post-fixée)
+* `++expr` `--expr` (incrémentation/décrémentation pré-fixée) `+expr` (+ unaire) `-expr` (- unaire) `~` (complément bit à bit) `!` (négation)
+* `*` (multiplication) `/` (division) `%` (reste)
+* `+` (addition/concaténation de chaînes) `-` (soustraction)
+* `<<` `>>` `>>>` (décalage à gauche/à droite/à droite non signé)
+* `<` `>` `<=` `>=` (comparaison) `instanceof` (comparaison à un type)
+* `==` `!=` (égalité/inégalité)
+* `&` (ET bit à bit)
+* `^` (OU exclusif bit à bit)
+* `|` (OU bit à bit)
+* `&&` (ET logique)
+* `||` (OU logique)
+* `? :` (conditionnel ternaire)
+* `=` `+=` `-=` `*=` `/=` `%=` `&=` `^=` `|=` `<<=` `>>=` `>>>=` (affectation)
+****
+
+NOTE: {tutourl}/java/nutsandbolts/operators.html[Operators]
+
 == Expressions, instructions et blocs
+* Une _expression_ est une construction conforme à la syntaxe du langage, formée de variables, d'opérateurs et d'appels de méthode qui est évaluée en une valeur unique.
+* Une _instruction_ est une _unité d'exécution_.
+En Java, chaque instruction est suivie d'un `;`.
+* Un _bloc_ est un groupe d'instructions entre accolades et peut être utilisé à tout endroit où une instruction peut l'être.
+
+NOTE: {tutourl}/java/nutsandbolts/expressions.html[Expressions, Statements, and Blocks],
+{jlsurl}/jls-15.html[Expressions],
+{jlsurl}/jls-14.html[Blocks and Statements]
+
+== Structures de contrôle
 //TODO à compléter
 À compléter
 
-NOTE: {tutourl}/java/nutsandbolts/operators.html[Operators],
-{tutourl}/java/nutsandbolts/expressions.html[Expressions, Statements, and Blocks],
-{tutourl}/java/nutsandbolts/flow.html[Control Flow Statements],
-{jlsurl}/jls-15.html[Expressions],
+NOTE: {tutourl}/java/nutsandbolts/flow.html[Control Flow Statements],
 {jlsurl}/jls-14.html[Blocks and Statements]
