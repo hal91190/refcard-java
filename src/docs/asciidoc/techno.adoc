@@ -18,8 +18,7 @@ NOTE: Cet aide-mémoire se focalise sur Java SE
 == Évolutions du langage
 * Depuis 2006, le code source de Java est _libre_ et _open source_ et l'implémentation de référence se nomme https://openjdk.java.net/[OpenJDK]
 * Depuis 2019 et suite à un changement de licence et de modèle de support opéré par Oracle, plusieurs distributions du JDK sont apparues (https://adoptopenjdk.net/[AdoptOpenJDK], https://aws.amazon.com/fr/corretto/[Amazon Corretto], https://www.graalvm.org/[GraalVM], https://www.azul.com/downloads/zulu-community/[Zulu OpenJDK])
-
-//TODO compléter cette section
+* Depuis 2019, une nouvelle version de Java SE est publiée tous les six mois. Une version tous les trois ans est une version à support étendue (_Long Term Support_ ou _LTS_) : Java SE 11 en sept. 2018 (LTS), Java SE 12 en mars 2019, Java SE 13 en septembre 2019, ...
 
 NOTE: https://docs.oracle.com/pls/topic/lookup?ctx=en/java/javase&id=java_language_changes[Java Language Changes],
 https://www.oracle.com/technetwork/java/javase/jdk-relnotes-index-2162236.html[JDK Release Notes]
