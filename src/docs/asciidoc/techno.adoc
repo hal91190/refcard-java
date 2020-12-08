@@ -14,8 +14,15 @@ NOTE: http://www.oracle.com/technetwork/java/langenv-140151.html[The Java Langua
 ** _Java Embedded_ pour les terminaux à ressources contraintes.
 +
 NOTE: Cet aide-mémoire se focalise sur Java SE
+
+== Évolutions du langage
 * Depuis 2006, le code source de Java est _libre_ et _open source_ et l'implémentation de référence se nomme https://openjdk.java.net/[OpenJDK]
 * Depuis 2019 et suite à un changement de licence et de modèle de support opéré par Oracle, plusieurs distributions du JDK sont apparues (https://adoptopenjdk.net/[AdoptOpenJDK], https://aws.amazon.com/fr/corretto/[Amazon Corretto], https://www.graalvm.org/[GraalVM], https://www.azul.com/downloads/zulu-community/[Zulu OpenJDK])
+
+//TODO compléter cette section
+
+NOTE: https://docs.oracle.com/pls/topic/lookup?ctx=en/java/javase&id=java_language_changes[Java Language Changes],
+https://www.oracle.com/technetwork/java/javase/jdk-relnotes-index-2162236.html[JDK Release Notes]
 
 == JRE et JDK
 * Le _Java Runtime Environment_ (JRE) fournit la _machine virtuelle Java_, les bibliothèques et d'autres composants nécessaires pour l'*exécution* de programmes Java
