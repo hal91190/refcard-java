@@ -187,8 +187,78 @@ NOTE: {tutourl}/java/nutsandbolts/expressions.html[Expressions, Statements, and 
 {jlsurl}/jls-14.html[Blocks and Statements]
 
 == Structures de contrôle
-//TODO à compléter
-À compléter
+=== Structure conditionnelle
+.Instruction `if`
+[source,java,indent=0]
+----
+include::{tstdir}/base/ControlTest.java[tag=if-stat]
+----
+<1> L'évaluation de la condition (entre parenthèse) doit produire un _booléen_.
+<2> Ces instructions sont évaluées si la condition est vraie.
+<3> Ces instructions sont évaluées si la condition est fausse.
 
-NOTE: {tutourl}/java/nutsandbolts/flow.html[Control Flow Statements],
-{jlsurl}/jls-14.html[Blocks and Statements]
+[NOTE]
+====
+* Le `else` est optionnel.
+* {tutourl}/java/nutsandbolts/if.html[The if-then and if-then-else Statements],
+{jlsurl}/jls-14.html#jls-14.9[The if Statement]
+====
+
+.Instruction `switch`
+[source,java,indent=0]
+----
+include::{tstdir}/base/ControlTest.java[tag=switch-stat]
+----
+<1> L'expression entre parenthèses doit être d'un type primitif `byte`, `short`, `char`, `int`, de type énuméré, de type `String` ou d'un type _wrapper_ (`Character`, `Byte`, `Short`, `Integer`).
+<2> Instructions exécutées si la valeur de l'expression est `1`.
+<3> Instructions exécutées si la valeur de l'expression est `2`.
+<4> Instructions exécutées dans les autres cas.
+
+[NOTE]
+====
+* Le `break` évite que les instructions suivantes dans le `switch` soient exécutées.
+* {tutourl}/java/nutsandbolts/switch.html[The switch Statements],
+{jlsurl}/jls-14.html#jls-14.11[The switch Statement]
+====
+
+=== Boucles
+.Instruction `for`
+[source,java,indent=0]
+----
+include::{tstdir}/base/ControlTest.java[tag=for-stat]
+----
+<1> Forme spécifique pour itérer sur les éléments d'une collection ou d'un tableau (référence de type {apiurl}/java.base/java/lang/Iterable.html[`Iterable`])
+<2> La référence `number` prendra successivement les valeurs de chaque élément de la collection
+<3> Trois parties séparées par `;` :
+* initialisation (exécutée une fois avant le début de la boucle),
+* tant que la condition est vraie, la boucle s'exécute (évalué en début de boucle),
+* instruction de fin de boucle (exécutée à la fin de chaque itération)
+<4> `i` a pour valeurs successives `1`, `2`, ..., `10`
+
+NOTE: {tutourl}/java/nutsandbolts/for.html[The for Statement],
+{jlsurl}/jls-14.html#jls-14.14[The for Statement]
+
+.Instructions `while` et `do while`
+[source,java,indent=0]
+----
+include::{tstdir}/base/ControlTest.java[tag=while-stat]
+----
+<1> Tant que la condition est vraie, la boucle s'exécute (test en début de boucle).
+<2> `count` a pour valeurs successives `1`, `2`, ..., `10`
+<3> `count` a pour valeur `11`
+<4> La boucle s'exécute tant que la condition est vraie  (test en fin de boucle).
+
+NOTE: {tutourl}/java/nutsandbolts/while.html[The while and do-while Statements],
+{jlsurl}/jls-14.html#jls-14.12[The while Statement],
+{jlsurl}/jls-14.html#jls-14.13[The do Statement]
+
+=== Instructions de branchement
+[horizontal]
+`break`:: (avec ou sans label) saute à la fin de la boucle
+`continue`:: (avec ou sans label) saute à l'itération suivante de la boucle
+`return`:: termine une méthode en retournant éventuellement un résultat
+
+NOTE: {tutourl}/java/nutsandbolts/branch.html[Branching Statements],
+{jlsurl}/jls-14.html#jls-14.15[The break Statement],
+{jlsurl}/jls-14.html#jls-14.16[The continue Statement],
+{jlsurl}/jls-14.html#jls-14.17[The return Statement],
