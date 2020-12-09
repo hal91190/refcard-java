@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" contentScriptType="application/ecmascript" contentStyleType="text/css" height="360px" preserveAspectRatio="none" style="width:204px;height:360px;" version="1.1" viewBox="0 0 204 360" width="204px" zoomAndPan="magnify"><defs><filter height="300%" id="f1teu8nduixqrn" width="300%" x="-1" y="-1"><feGaussianBlur result="blurOut" stdDeviation="2.0"/><feColorMatrix in="blurOut" result="blurOut2" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 .4 0"/><feOffset dx="4.0" dy="4.0" in="blurOut2" result="blurOut3"/><feBlend in="SourceGraphic" in2="blurOut3" mode="normal"/></filter></defs><g><!--MD5=[47de47a8b5f06cbc5e036fae0a9149b7]
+class Iterable--><rect fill="#FEFECE" filter="url(#f1teu8nduixqrn)" height="73.6094" id="Iterable" style="stroke: #A80036; stroke-width: 1.5;" width="147" x="24.5" y="8"/><ellipse cx="64.7" cy="24" fill="#B4A7E5" rx="11" ry="11" style="stroke: #A80036; stroke-width: 1.0;"/><path d="M60.6219,19.7656 L60.6219,17.6094 L68.0125,17.6094 L68.0125,19.7656 L65.5438,19.7656 L65.5438,27.8438 L68.0125,27.8438 L68.0125,30 L60.6219,30 L60.6219,27.8438 L63.0906,27.8438 L63.0906,19.7656 L60.6219,19.7656 Z "/><text fill="#000000" font-family="sans-serif" font-size="12" font-style="italic" lengthAdjust="spacingAndGlyphs" textLength="48" x="84.3" y="28.1543">Iterable</text><rect fill="#FFFFFF" height="15.9688" style="stroke: #000000; stroke-width: 1.0; stroke-dasharray: 2.0,2.0;" width="9" x="165.5" y="5"/><text fill="#000000" font-family="sans-serif" font-size="12" font-style="italic" lengthAdjust="spacingAndGlyphs" textLength="7" x="166.5" y="17.1387">T</text><line style="stroke: #A80036; stroke-width: 1.5;" x1="25.5" x2="170.5" y1="40" y2="40"/><line style="stroke: #A80036; stroke-width: 1.5;" x1="25.5" x2="170.5" y1="48" y2="48"/><ellipse cx="35.5" cy="59" fill="#84BE84" rx="3" ry="3" style="stroke: #038048; stroke-width: 1.0;"/><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacingAndGlyphs" textLength="121" x="44.5" y="62.2104">Iterator&lt;T&gt; iterator()</text><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacingAndGlyphs" textLength="20" x="44.5" y="75.0151">//...</text><!--MD5=[c160724f8e3bb89ca8141a12554ac2e3]
+class Collection--><rect fill="#FEFECE" filter="url(#f1teu8nduixqrn)" height="73.6094" id="Collection" style="stroke: #A80036; stroke-width: 1.5;" width="122" x="37" y="142"/><ellipse cx="59.65" cy="158" fill="#B4A7E5" rx="11" ry="11" style="stroke: #A80036; stroke-width: 1.0;"/><path d="M55.5719,153.7656 L55.5719,151.6094 L62.9625,151.6094 L62.9625,153.7656 L60.4938,153.7656 L60.4938,161.8438 L62.9625,161.8438 L62.9625,164 L55.5719,164 L55.5719,161.8438 L58.0406,161.8438 L58.0406,153.7656 L55.5719,153.7656 Z "/><text fill="#000000" font-family="sans-serif" font-size="12" font-style="italic" lengthAdjust="spacingAndGlyphs" textLength="61" x="75.35" y="162.1543">Collection</text><rect fill="#FFFFFF" height="15.9688" style="stroke: #000000; stroke-width: 1.0; stroke-dasharray: 2.0,2.0;" width="10" x="152" y="139"/><text fill="#000000" font-family="sans-serif" font-size="12" font-style="italic" lengthAdjust="spacingAndGlyphs" textLength="8" x="153" y="151.1387">E</text><line style="stroke: #A80036; stroke-width: 1.5;" x1="38" x2="158" y1="174" y2="174"/><line style="stroke: #A80036; stroke-width: 1.5;" x1="38" x2="158" y1="182" y2="182"/><ellipse cx="48" cy="193" fill="#84BE84" rx="3" ry="3" style="stroke: #038048; stroke-width: 1.0;"/><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacingAndGlyphs" textLength="96" x="57" y="196.2104">boolean add(E e)</text><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacingAndGlyphs" textLength="20" x="57" y="209.0151">//...</text><!--MD5=[3d4177ac58b4411586d067f34e84928f]
+class List--><rect fill="#FEFECE" filter="url(#f1teu8nduixqrn)" height="73.6094" id="List" style="stroke: #A80036; stroke-width: 1.5;" width="184" x="6" y="276"/><ellipse cx="77.25" cy="292" fill="#B4A7E5" rx="11" ry="11" style="stroke: #A80036; stroke-width: 1.0;"/><path d="M73.1719,287.7656 L73.1719,285.6094 L80.5625,285.6094 L80.5625,287.7656 L78.0938,287.7656 L78.0938,295.8438 L80.5625,295.8438 L80.5625,298 L73.1719,298 L73.1719,295.8438 L75.6406,295.8438 L75.6406,287.7656 L73.1719,287.7656 Z "/><text fill="#000000" font-family="sans-serif" font-size="12" font-style="italic" lengthAdjust="spacingAndGlyphs" textLength="21" x="97.75" y="296.1543">List</text><rect fill="#FFFFFF" height="15.9688" style="stroke: #000000; stroke-width: 1.0; stroke-dasharray: 2.0,2.0;" width="10" x="183" y="273"/><text fill="#000000" font-family="sans-serif" font-size="12" font-style="italic" lengthAdjust="spacingAndGlyphs" textLength="8" x="184" y="285.1387">E</text><line style="stroke: #A80036; stroke-width: 1.5;" x1="7" x2="189" y1="308" y2="308"/><line style="stroke: #A80036; stroke-width: 1.5;" x1="7" x2="189" y1="316" y2="316"/><ellipse cx="17" cy="327" fill="#84BE84" rx="3" ry="3" style="stroke: #038048; stroke-width: 1.0;"/><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacingAndGlyphs" textLength="158" x="26" y="330.2104">ListIterator&lt;E&gt; listIterator()</text><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacingAndGlyphs" textLength="20" x="26" y="343.0151">//...</text><!--MD5=[30609b773d1acd1d8ef4d49cf63668f8]
+reverse link Iterable to Collection--><path d="M98,102.5351 C98,115.8601 98,129.6949 98,141.8737 " fill="none" id="Iterable&lt;-Collection" style="stroke: #A80036; stroke-width: 1.0;"/><polygon fill="none" points="91.0001,102.3265,98,82.3265,105.0001,102.3264,91.0001,102.3265" style="stroke: #A80036; stroke-width: 1.0;"/><!--MD5=[0159284274f96a472eb2618ad803aaca]
+reverse link Collection to List--><path d="M98,236.5351 C98,249.8601 98,263.6949 98,275.8737 " fill="none" id="Collection&lt;-List" style="stroke: #A80036; stroke-width: 1.0;"/><polygon fill="none" points="91.0001,236.3265,98,216.3265,105.0001,236.3264,91.0001,236.3265" style="stroke: #A80036; stroke-width: 1.0;"/><!--MD5=[a4f05510e74ab9d080ce8ef6ca203a85]
+@startuml
+interface Iterable<T> {
+    +Iterator<T> iterator()
+    {method}//...
+}
+
+interface Collection<E> {
+    +boolean add(E e)
+    {method}//...
+}
+
+interface List<E> {
+    +ListIterator<E> listIterator()
+    {method}//...
+}
+
+Iterable <|- - Collection
+Collection <|- - List
+@enduml
+
+PlantUML version 1.2019.12(Sun Nov 03 10:24:54 UTC 2019)
+(APACHE source distribution)
+Java Runtime: OpenJDK Runtime Environment
+JVM: OpenJDK 64-Bit Server VM
+Java Version: 11.0.9+11-LTS
+Operating System: Linux
+Default Encoding: UTF-8
+Language: en
+Country: 
+--></g></svg>
