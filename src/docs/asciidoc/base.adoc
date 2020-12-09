@@ -49,8 +49,18 @@ Null:: `null` (valeur des références non initialisées)
 
 .Remarques
 * Il est possible d'inclure le caractère `_` dans les littéraux numériques pour en améliorer la lisibilité ({J7})
+* Une chaîne de caractères sur plusieurs lignes peut être représentée par un _bloc de texte_ ({J15}).
++
+[source,java,indent=0]
+----
+System.out.println("""
+    This is the first line
+    This is the second line
+    This is the third line
+    """);
+----
 
-NOTE: {jlsurl}/jls-3.html#jls-3.10[Literals]
+NOTE: {jlsurl}/jls-3.html#jls-3.10[Literals], https://docs.oracle.com/en/java/javase/15/text-blocks/index.html[Programmer's Guide to Text Blocks]
 
 == Variables
 * Une _variable_ permet d'associer un nom (identifiant) à une valeur.
@@ -61,6 +71,11 @@ NOTE: {jlsurl}/jls-3.html#jls-3.10[Literals]
 ----
 include::{tstdir}/base/BaseTest.java[tag=base-var-decl]
 ----
+
+* Lors de sa déclaration et si elle est initialisée, le type d'une variable *locale* peut être remplacé par le mot-clé `var` ({J10}).
+Le type de la variable est alors inféré depuis le contexte.
++
+TIP: http://openjdk.java.net/projects/amber/LVTIstyle.html[Local Variable Type Inference: Style Guidelines]
 
 NOTE: {jlsurl}/jls-4.html#jls-4.12[Variables]
 
@@ -182,6 +197,30 @@ NOTE: {tutourl}/java/nutsandbolts/operators.html[Operators]
 En Java, chaque instruction est suivie d'un `;`.
 * Un _bloc_ est un groupe d'instructions entre accolades et peut être utilisé à tout endroit où une instruction peut l'être.
 
+.Expression `switch` ({J14})
+[source,java,indent=0]
+----
+int numLetters = switch (day) {
+    case MONDAY, FRIDAY, SUNDAY -> { //<1>
+        yield 6; //<2>
+    }
+    case TUESDAY -> {
+        yield 7;
+    }
+    case THURSDAY, SATURDAY -> {
+        yield 8;
+    }
+    case WEDNESDAY -> {
+        yield 9;
+    }
+    default -> {
+        throw new IllegalStateException("Invalid day: " + day);
+    }
+};
+----
+<1> `case` suivi de `->`
+<2> `yield` renvoie le résultat
+
 NOTE: {tutourl}/java/nutsandbolts/expressions.html[Expressions, Statements, and Blocks],
 {jlsurl}/jls-15.html[Expressions],
 {jlsurl}/jls-14.html[Blocks and Statements]
@@ -220,6 +259,19 @@ include::{tstdir}/base/ControlTest.java[tag=switch-stat]
 * {tutourl}/java/nutsandbolts/switch.html[The switch Statements],
 {jlsurl}/jls-14.html#jls-14.11[The switch Statement]
 ====
+
+.Instruction `switch` "améliorée" ({J14})
+[source,java,indent=0]
+----
+switch (day) {
+    case MONDAY, FRIDAY, SUNDAY -> numLetters = 6; //<1>
+    case TUESDAY                -> numLetters = 7;
+    case THURSDAY, SATURDAY     -> numLetters = 8;
+    case WEDNESDAY              -> numLetters = 9;
+    default -> throw new IllegalStateException("Invalid day: " + day);
+};
+----
+<1> `case` est suivi de `->` et non plus de `:`, `break` n'est plus nécessaire.
 
 === Boucles
 .Instruction `for`

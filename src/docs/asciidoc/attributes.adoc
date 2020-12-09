@@ -8,4 +8,8 @@
 :tutourl: https://docs.oracle.com/javase/tutorial
 :apiurl: {jseurl}/docs/api
 :J7: Java 7
+:J9: Java 9
+:J10: Java 10
+:J14: Java 14
+:J15: Java 15
 :source-highlighter: coderay

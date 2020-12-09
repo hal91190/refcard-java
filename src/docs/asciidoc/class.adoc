@@ -151,6 +151,11 @@ interface Comparable<T> {
 }
 ----
 
+=== Compléments sur les interfaces
+* À l'origine, un interface pouvait contenir uniquement des méthodes abstraites et des constantes
+* Les possibilités ont été étendues au fil des versions successives :
+** les méthodes privées sont supportées ({J9})
+
 === Objet et interface
 * Un objet peut être manipulé par une référence sur une interface si sa classe _implémente_ cette dernière
 +
